@@ -1,0 +1,12 @@
+{
+    "name": "glark.io", 
+    "version": "0.0.1",
+    "description": "Drag and Collaborate editor.", 
+    "author": "Glark <staff@glark.io>", 
+    "private": true, 
+    "dependencies": {
+        "express": "*", 
+        "socket.io": "*"
+    }, 
+    "engine": "node >= 0.8.3"
+}

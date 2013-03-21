@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" ng-app="glark">
+<head>
+    <meta charset="utf-8">
+    <title>glark.io</title>
+
+    <link rel="stylesheet" href="css/app.css"/>
+    <link rel="stylesheet" href="css/ace.css"/>
+    <link rel="stylesheet" href="css/tab.css"/>
+</head>
+<body>
+
+    <!--**********************
+    *   Top bar
+    **************************-->
+
+    <div id="editor-top-bar">
+        <div ng-include="'./partials/tabs.html'"></div>
+    </div>
+
+    <!--**********************
+    *   Editor
+    **************************-->
+
+    <div ng-controller="DragDropController" ng-model="droppedFiles" drop-zone="openDroppedFiles()">
+        <div id="editor" ng-non-bindable></div>
+    </div>
+    
+    <!--**********************
+    *   Scripts
+    **************************-->
+    
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        if(typeof jQuery == 'undefined') {
+            document.write("<script src='lib/jquery.js' type='text/javascript'><\/script>");
+        }
+    </script>
+    
+    <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        if(typeof ace == 'undefined') {
+            document.write("<script src='lib/ace/ace.js' type='text/javascript'><\/script>");
+        }
+    </script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
+    <script type="text/javascript">
+        if(typeof angular == 'undefined') {
+            document.write("<script src='lib/angular/angular.js' type='text/javascript'><\/script>");
+        }
+    </script>
+
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/directives.js"></script>
+
+</body>
+</html>

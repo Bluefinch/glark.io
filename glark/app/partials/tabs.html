@@ -1,0 +1,19 @@
+<!--
+*   Partial for tabs view
+* -->
+    
+<div ng-controller="TabController">
+    <ul id="tab-list-active-files" ng-cloak>
+        <li class="tab-item active-{{file == workspace.activeFile}}" ng-repeat="file in workspace.files" ng-click="setActiveFile(file)">
+            <a class="label" title="path">{{file.name | filePath}}<span class="file-name">{{file.name | fileName}}</span></a>
+            <a class="close" ng-click="closeFile(file)">x</a>
+        </li>
+    </ul>
+    <!---
+    <div id="tab-dropdown">
+        <a id="tab-dropdown-button" class="icon-down-open"></a>
+    </div>
+    <ul id="dropdown-list-active-files"></ul>
+    <div class="bar"></div>
+    --->
+</div>
