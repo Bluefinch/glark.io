@@ -1,6 +1,7 @@
-/* This file is part of the PPEA project.
- * Copyright Florent Galland & Luc Verdier 2012. */
+/* This file is part of the glark.io project.
+ * Copyright Florent Galland & Luc Verdier 2013. */
 
+var config = require('./config.js');
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -8,59 +9,63 @@ var path = require('path');
 
 var app = express();
 
-app.configure(function () {
-    app.set('port', process.env.PORT || 3000);
-    // app.set('port', process.env.PORT || 80);
-    //app.set('views', __dirname + '/app');
-    //app.set('view engine', 'jade');
-    app.use(express.favicon());
-    app.use(express.logger('dev'));
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    app.use(app.router);
-    app.use(express.static(path.join(__dirname, 'app')));
-
-    /* Here we define the last non-error middleware. Since nothing else
-     * responded, we assume 404. */
-    app.use(function (req, res, next) {
-        res.status(404);
-        
-        // Respond with html page.
-        if (req.accepts('html')) {
-            //res.render('404', { url: req.url });
-            return;
-        }
-
-        // Respond with json.
-        if (req.accepts('json')) {
-            res.send({ error: 'Not found' });
-            return;
-        }
-
-        // Default to plain text.
-        res.type('txt').send('Not found');
-    });
-
-    /* Finally the error middleware. */
-    app.use(function (err, req, res, next) {
-        res.status(err.status || 500);
-        //res.render('500', { error: err });
-    });
-});
-
-app.configure('development', function () {
-    app.use(express.errorHandler());
-});
-
 // Make the title of the app available everywhere.
-app.set('title', 'PPEA');
+app.set('title', 'glark.io');
+
+// Listen to the port given in the env var if it exists or the one given in config.
+app.set('port', process.env.PORT || config.server.listenPort);
+
+// From now on, log everything.
+app.use(express.logger('dev'));
+
+// Serve static files.
+app.use(express.compress());
+app.use(express.favicon(path.join(config.server.distFolder, 'img/favicon.ico')));
+app.use(express['static'](config.server.distFolder));
+
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+
+/* Here we define the last non-error middleware. Since nothing else
+ * responded, we assume 404. */
+// app.use(function (req, res, next) {
+    // res.status(404);
+
+    // // Respond with html page.
+    // if (req.accepts('html')) {
+        // //res.render('404', { url: req.url });
+        // return;
+    // }
+
+    // // Respond with json.
+    // if (req.accepts('json')) {
+        // res.send({ error: 'Not found' });
+        // return;
+    // }
+
+    // // Default to plain text.
+    // res.type('txt').send('Not found');
+// });
+
+/* Finally the error middleware. */
+// app.use(function (err, req, res, next) {
+    // res.status(err.status || 500);
+    // //res.render('500', { error: err });
+// });
+
+// app.configure('development', function () {
+app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+// });
+
 
 // -----------------------------------
 //  Route the requests.
 // -----------------------------------
 
-app.get('/', function (req, res, next) {
-    res.sendFile('app/index.html');
+/* Route everything that was not answered yet to the main page. */
+app.all('/*', function (req, res, next) {
+    debugger;
+    res.sendFile('index.html', { root: config.server.distFolder });
 });
 
 

@@ -5,8 +5,7 @@
     "author": "Glark <staff@glark.io>", 
     "private": true, 
     "dependencies": {
-        "express": "*", 
-        "socket.io": "*"
+        "express": "3.0.x"
     }, 
     "engine": "node >= 0.8.3"
 }
