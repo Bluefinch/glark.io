@@ -2,30 +2,38 @@
 
 /* jasmine specs for controllers go here */
 
-describe('MyCtrl1', function(){
-  var myCtrl1;
+describe('TabController', function(){
+    var tabController;
 
-  beforeEach(function(){
-    myCtrl1 = new MyCtrl1();
-  });
+    beforeEach(function(){
+        // Inject the controllers module.
+        angular.mock.module('glark.controllers');
+        angular.mock.inject(function ($rootScope, $controller) {
+            this.scope = $rootScope.$new();
+            $controller('TabController', {
+                $scope: this.scope
+            });
+
+        // tabController = new 
+    });
 
 
-  it('should ....', function() {
-    //spec body
-  });
+    it('should ....', function() {
+        //spec body
+    });
 });
 
 
 describe('MyCtrl2', function(){
-  var myCtrl2;
+    var myCtrl2;
 
 
-  beforeEach(function(){
-    myCtrl2 = new MyCtrl2();
-  });
+    beforeEach(function(){
+        myCtrl2 = new MyCtrl2();
+    });
 
 
-  it('should ....', function() {
-    //spec body
-  });
+    it('should ....', function() {
+        //spec body
+    });
 });
