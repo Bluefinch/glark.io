@@ -3,3 +3,8 @@ glark.io is an emanation of the incrediblissime [Codiad](https://github.com/Codi
 
 ##Architecture outline##
 The _glark_ directory will contain the client side code, an editor based on our Codiad and Ace experience. This editor will be served by the server side code, located inside the _cabble_ directory. This server side should be using [nodejs](http://nodejs.org).
+
+##License###
+glark.io is distributed under the term of the [Affero GPL license](http://www.gnu.org/licenses/why-affero-gpl.html).
+
+_Status:_ Pre-alpha state, not working.
