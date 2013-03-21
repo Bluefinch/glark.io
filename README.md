@@ -6,3 +6,5 @@ The _glark_ directory will contain the client side code, an editor based on our 
 
 ##License###
 glark.io is distributed under the term of the [Affero GPL license](http://www.gnu.org/licenses/why-affero-gpl.html).
+
+_Status:_ Pre-alpha state, not working.
