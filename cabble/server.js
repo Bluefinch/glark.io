@@ -26,6 +26,7 @@ app.use(express['static'](config.server.distFolder));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 
+// TODO Build the 404 and error pages.
 /* Here we define the last non-error middleware. Since nothing else
  * responded, we assume 404. */
 // app.use(function (req, res, next) {
@@ -63,9 +64,9 @@ app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 // -----------------------------------
 
 /* Route everything that was not answered yet to the main page. */
-app.all('/*', function (req, res, next) {
-    debugger;
-    res.sendFile('index.html', { root: config.server.distFolder });
+// FIXME disable this when implementing the invite collab feature.
+app.all('*', function (req, res) {
+    res.redirect('/');
 });
 
 
