@@ -13,4 +13,6 @@
   - cd ../client
   - npm install --quiet
 
- script: grunt release
+ script:
+  - testacular start glark/config/testacular.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox
+  - testacular start glark/config/testacular-e2e.conf.js --reporters=dots --browsers=Firefox
