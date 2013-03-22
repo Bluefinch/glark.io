@@ -75,6 +75,18 @@ angular.module('glark.services', [])
     .factory('workspace', function($rootScope) {
         return {
             files: [],
-            activeFile: null
+            activeFile: null,
+            
+            addFile: function (file) {
+                this.files.append(file);
+            },
+
+            setActiveFile: function (file) {
+                this.activeFile = file;
+            },
+
+            getActiveFile: function () {
+                return this.activeFile;
+            }
         }
     });

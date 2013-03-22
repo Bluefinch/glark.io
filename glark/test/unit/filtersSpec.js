@@ -2,18 +2,32 @@
 
 /* jasmine specs for filters go here */
 
-describe('filter', function() {
-  beforeEach(module('myApp.filters'));
+describe('The filters', function () {
+    debugger;
+    var fullPath, filename, basename;
 
+    beforeEach(function () {
+        angular.mock.module('glark.filters');
+        fullPath = '/glark/cabble/file.io';
+        filename = 'file.io';
+        basename = '/glark/cabble/';
+    });
 
-  describe('interpolate', function() {
-    beforeEach(module(function($provide) {
-      $provide.value('version', 'TEST_VER');
-    }));
+    describe('The basename filter', function () {
 
+        it('should return the base path of the full file path',
+            angular.mock.inject(function (filePath) {
+                console.log(fullPath);
+                console.log(filePath(fullPath));
+                expect(filePath(fullPath)).toBe(basename);
+            }));
+    });
 
-    it('should replace VERSION', inject(function(interpolateFilter) {
-      expect(interpolateFilter('before %VERSION% after')).toEqual('before TEST_VER after');
-    }));
-  });
+    describe('The filename filter', function () {
+
+        it('should return the filename of the full file path',
+            angular.mock.inject(function (fileName) {
+                expect(fileName(fullPath)).toBe(filename);
+            }));
+    });
 });

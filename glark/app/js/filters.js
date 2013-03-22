@@ -4,7 +4,7 @@
 
 angular.module('glark.filters', [])
     .filter('filePath', function() {
-        return function(input, uppercase) {
+        return function(input) {
             var pos1 = input.lastIndexOf("\\");
             var pos2 = input.lastIndexOf("/");
             var pos = pos1;
@@ -16,7 +16,7 @@ angular.module('glark.filters', [])
     })
 
     .filter('fileName', function() {
-        return function(input, uppercase) {
+        return function(input) {
             return input.replace(/^.*[\\\/]/, '');
         }
     });

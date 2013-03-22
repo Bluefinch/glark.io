@@ -2,38 +2,24 @@
 
 /* jasmine specs for controllers go here */
 
-describe('TabController', function(){
-    var tabController;
+describe('The controllers', function () {
+    beforeEach(angular.mock.module('glark.controllers'));
 
-    beforeEach(function(){
-        // Inject the controllers module.
-        angular.mock.module('glark.controllers');
-        angular.mock.inject(function ($rootScope, $controller) {
-            this.scope = $rootScope.$new();
-            $controller('TabController', {
-                $scope: this.scope
-            });
+    describe('The TabController', function () {
+        var editor, workspace;
 
-        // tabController = new 
-    });
+        beforeEach(function () {
+            angular.mock.module('glark.controllers');
+            editor = null;
+            workspace = { files: ['toto', 'titi'], activeFile: 'titi' };
+        });
 
+        it('should have a reference to the workspace service in its scope',
+            angular.mock.inject(function ($rootScope, $controller) {
+                var scope = $rootScope.$new();
+                $controller('TabController', { $scope: scope, editor: editor, workspace: workspace });
 
-    it('should ....', function() {
-        //spec body
-    });
-});
-
-
-describe('MyCtrl2', function(){
-    var myCtrl2;
-
-
-    beforeEach(function(){
-        myCtrl2 = new MyCtrl2();
-    });
-
-
-    it('should ....', function() {
-        //spec body
+                expect(scope.workspace).toBe(workspace);
+            }));
     });
 });
