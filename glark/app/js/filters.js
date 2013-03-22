@@ -3,7 +3,7 @@
 /* Filters */
 
 angular.module('glark.filters', [])
-    .filter('filePath', function() {
+    .filter('basename', function() {
         return function(input) {
             var pos1 = input.lastIndexOf("\\");
             var pos2 = input.lastIndexOf("/");
@@ -15,7 +15,7 @@ angular.module('glark.filters', [])
         }
     })
 
-    .filter('fileName', function() {
+    .filter('filename', function() {
         return function(input) {
             return input.replace(/^.*[\\\/]/, '');
         }

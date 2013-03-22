@@ -16,22 +16,22 @@ describe('The services', function () {
 
         it('should have the 3 files in its files collection',
             angular.mock.inject(function (workspace) {
-        workspace.addFile(file1);
-        workspace.addFile(file2);
-        workspace.addFile(file3);
+                workspace.addFile(file1);
+                workspace.addFile(file2);
+                workspace.addFile(file3);
 
-        expect(workspace.fileCount()).toBe(3);
-        }));
+                expect(workspace.getFileCount()).toBe(3);
+            }));
 
         it('should have the file2 as its active file',
             angular.mock.inject(function (workspace) {
-        workspace.addFile(file1);
-        workspace.addFile(file2);
-        workspace.addFile(file3);
+                workspace.addFile(file1);
+                workspace.addFile(file2);
+                workspace.addFile(file3);
 
-        workspace.setActiveFile(file2);
+                workspace.setActiveFile(file2);
 
-        expect(workspace.getActiveFile()).toBe(file2);
-        }));
+                expect(workspace.getActiveFile()).toBe(file2);
+            }));
     });
 });
