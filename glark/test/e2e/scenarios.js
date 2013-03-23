@@ -2,44 +2,33 @@
 
 /* http://docs.angularjs.org/guide/dev_guide.e2e-testing */
 
-describe('my app', function() {
+describe('glark.io', function () {
 
-  beforeEach(function() {
-    browser().navigateTo('../../app/index.html');
-  });
-
-
-  it('should automatically redirect to /view1 when location hash/fragment is empty', function() {
-    expect(browser().location().url()).toBe("/view1");
-  });
-
-
-  describe('view1', function() {
-
-    beforeEach(function() {
-      browser().navigateTo('#/view1');
+    beforeEach(function () {
+        browser().navigateTo('./app/index.html');
     });
 
 
-    it('should render view1 when user navigates to /view1', function() {
-      expect(element('[ng-view] p:first').text()).
-        toMatch(/partial for view 1/);
+    it('should automatically redirect to main editor page when location hash/fragment is empty', function () {
+        expect(browser().location().url()).toBe('');
     });
 
-  });
-
-
-  describe('view2', function() {
-
-    beforeEach(function() {
-      browser().navigateTo('#/view2');
+    it('should automatically redirect to main editor page when location hash/fragment is something', function () {
+        browser().navigateTo('/somethingsilly')
+        expect(browser().location().url()).toBe('');
     });
 
 
-    it('should render view2 when user navigates to /view2', function() {
-      expect(element('[ng-view] p:first').text()).
-        toMatch(/partial for view 2/);
+    describe('Main editor', function () {
+
+        beforeEach(function () {
+            browser().navigateTo('/');
+        });
+
+        it('after initialization, ace editor must be loaded', function () {
+            expect(element('.ace_editor').count()).toBe(1);
+        });
+
     });
 
-  });
 });

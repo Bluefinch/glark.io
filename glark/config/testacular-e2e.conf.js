@@ -7,13 +7,14 @@ files = [
 ];
 
 autoWatch = false;
+// autoWatch = true;
 
-browsers = ['Chrome'];
+browsers = ['chromium-browser'];
 
 singleRun = true;
 
 proxies = {
-  '/': 'http://localhost:8000/'
+  '/': 'http://localhost:3000/'
 };
 
 junitReporter = {
