@@ -3,13 +3,22 @@
 /* jasmine specs for services go here */
 
 describe('The services', function () {
-    var file1, file2, file3;
+    var mockSession, mockEditor, file1, file2, file3;
 
     beforeEach(function () {
         angular.mock.module('glark.services');
-        file1 = 'toto';
-        file2 = 'titi';
-        file3 = 'tutu';
+        
+        mockEditor = { setSession: jasmine.createSpy() };
+        mockSession = { setValue: jasmine.createSpy() };
+        
+        module(function($provide) {
+            $provide.value('editor', mockEditor);
+        });
+        
+        file1 = { name: 'toto', session: mockSession};
+        file2 = { name: 'titi', session: mockSession};
+        file3 = { name: 'tutu', session: mockSession};
+        
     });
 
     describe('The workspace', function () {
@@ -20,7 +29,7 @@ describe('The services', function () {
                 workspace.addFile(file2);
                 workspace.addFile(file3);
 
-                expect(workspace.getFileCount()).toBe(3);
+                expect(workspace.fileCount).toBe(3);
             }));
 
         it('should have the file2 as its active file',
@@ -29,9 +38,9 @@ describe('The services', function () {
                 workspace.addFile(file2);
                 workspace.addFile(file3);
 
-                workspace.setActiveFile(file2);
+                workspace.activeFile = file2;
 
-                expect(workspace.getActiveFile()).toBe(file2);
+                expect(workspace.activeFile).toBe(file2);
             }));
     });
 });

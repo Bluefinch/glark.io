@@ -6,7 +6,7 @@ describe('The controllers', function () {
     beforeEach(angular.mock.module('glark.controllers'));
 
     describe('The TabController', function () {
-        var editor, workspace;
+        var editor, workspace, file;
 
         beforeEach(function () {
             angular.mock.module('glark.controllers');

@@ -8,9 +8,8 @@ angular.module('glark.controllers', [])
 
         var openFile = function (fileEntry) {
             var file = new File(fileEntry);
-            editor.setSession(file.session);
-            workspace.activeFile = file;
             workspace.files.push(file);
+            workspace.activeFile = file;
         };
 
         $scope.openDroppedFiles = function () {
@@ -25,19 +24,13 @@ angular.module('glark.controllers', [])
         $scope.workspace = workspace;
 
         $scope.setActiveFile = function (file) {
-            editor.setSession(file.session);
             workspace.activeFile = file;
         };
 
         $scope.closeFile = function (file) {
-            var idx = workspace.files.indexOf(file);
-            if (idx != -1) {
-                workspace.files.splice(idx, 1);
-                file.session.setValue('', -1);
-
-                if (workspace.files.length > 0) {
-                    $scope.setActiveFile(workspace.files[0]);
-                }
+            var removed = workspace.removeFile(file);
+            if (removed && workspace.files.length > 0) {
+                workspace.activeFile = workspace.files[0];
             }
         };
     });

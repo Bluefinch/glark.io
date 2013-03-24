@@ -85,25 +85,41 @@ angular.module('glark.services', [])
         };
     })
 
-    .factory('workspace', function ($rootScope) {
-        return {
-            files: [],
-            activeFile: null,
-            
-            addFile: function (file) {
-                this.files.push(file);
-            },
-
-            getFileCount: function () {
-                return this.files.length;
-            },
-
-            setActiveFile: function (file) {
-                this.activeFile = file;
-            },
-
-            getActiveFile: function () {
-                return this.activeFile;
-            }
+    .factory('workspace', function (editor) {
+        var workspace = {};
+        
+        workspace.files = [];
+        
+        workspace.addFile = function (file) {
+            workspace.files.push(file);
         };
+        
+        workspace.removeFile = function (file) {
+            var idx = workspace.files.indexOf(file);
+            if (idx != -1) {
+                workspace.files.splice(idx, 1);
+                file.session.setValue('', -1);
+                return true;
+            }
+            return false;
+        }
+
+        Object.defineProperty(workspace, "fileCount", {
+            get: function () {
+                return workspace.files.length;
+            }
+        });
+
+        var activeFile = null;        
+        Object.defineProperty(workspace, "activeFile", {
+            get: function () {
+                return activeFile;
+            },
+            set: function(value) {
+                activeFile = value;
+                editor.setSession(value.session);
+            }
+        });
+    
+        return workspace;
     });
