@@ -10,7 +10,7 @@
   - cd cabble
   - node server.js &
   - sleep 3 # give server some time to start
-  - cd ../glark
+  - cd ..
 
  script:
   - testacular start glark/config/testacular.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox
