@@ -50,25 +50,38 @@ angular.module('glark.services', [])
             }
         };
     })
-
-    .factory('File', function (EditSession) {
-        var readAndSetFileContent = function (file, fileEntry) {
-            var reader = new FileReader();
-            reader.onload = function (event) {
-                file.session.setValue(event.target.result, -1);
-            };
-            reader.readAsText(fileEntry);
+    
+    .factory('filesystem', function ($q, $rootScope) {
+        return {
+            getFileContent: function (fileEntry) {
+                var defered = $q.defer();
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    defered.resolve(event.target.result);
+                    $rootScope.$digest();
+                };
+                reader.readAsText(fileEntry);
+                return defered.promise;
+            }
         };
+    })
+
+    .factory('File', function (filesystem, EditSession) {
 
         return function (fileEntry) {
-            this.fileEntry = fileEntry;
-            this.name = fileEntry.name;
-            this.session = new EditSession('');
+            var file = this;
+            
+            file.fileEntry = fileEntry;
+            file.name = fileEntry.name;
+            file.session = new EditSession('');
 
             // TODO: Should be changed.
-            this.session.setMode("ace/mode/javascript");
-
-            readAndSetFileContent(this, fileEntry);
+            file.session.setMode("ace/mode/javascript");
+            
+            var promise = filesystem.getFileContent(fileEntry);
+            promise.then(function (content) {
+                file.session.setValue(content, -1);
+            });
         };
     })
 
