@@ -4,15 +4,6 @@
     border-radius: 5px;
 }
 
-.bar {
-    z-index: 2;
-    position: relative;
-    height: 10px;
-    width: 100%;
-    background: #202020;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .9);
-}
-
 /************************
  * Tab list
  ************************/
