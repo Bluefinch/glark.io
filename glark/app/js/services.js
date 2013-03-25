@@ -51,6 +51,7 @@ angular.module('glark.services', [])
         };
     })
     
+    /* Helper providing services to handle the html5 filesystem api. */
     .factory('filesystem', function ($q, $rootScope) {
         return {
             getFileContent: function (fileEntry) {
@@ -66,6 +67,7 @@ angular.module('glark.services', [])
         };
     })
 
+    /* Create a glark.services.File object from a html5 File or Blob object. */
     .factory('File', function (filesystem, EditSession) {
 
         return function (fileEntry) {
@@ -85,15 +87,21 @@ angular.module('glark.services', [])
         };
     })
 
+    /* Main model of the glark.io application. Contains among other all the
+     * data describing the files of the workspace, the open ones and the active
+     * one. */
     .factory('workspace', function (editor) {
         var workspace = {};
         
+        /* Files of the workspace. A collection of glark.services.File object. */
         workspace.files = [];
         
+        /* @param file is a glark.services.File object. */
         workspace.addFile = function (file) {
             workspace.files.push(file);
         };
         
+        /* @param file is a glark.services.File object. */
         workspace.removeFile = function (file) {
             var idx = workspace.files.indexOf(file);
             if (idx != -1) {

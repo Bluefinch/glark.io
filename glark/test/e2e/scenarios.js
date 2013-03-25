@@ -29,6 +29,30 @@ describe('glark.io', function () {
             expect(element('.ace_editor').count()).toBe(1);
         });
 
+        describe('Tabs', function () {
+
+            beforeEach(function () {
+                /* Get the scope and some services. */
+                var $scope = angular.element('body').scope();
+                var workspace = angular.element('body').injector().get('workspace');
+                var File = angular.element('body').injector().get('File');
+
+                /* Create a Blob mocking a File. */
+                var fileEntry = new Blob(["/* I'm a javascript file. */"], {type: "text"});
+                fileEntry.name = "mockFile.js";
+                var mockedFile = new File(fileEntry);
+
+                /* Add it to the workspace. */
+                $scope.$apply(workspace.addFile(mockedFile));
+            });
+
+            it('should have tab with the "mockedfile.js" title', function () {
+                expect(element('.file-name').text()).toBe('mockFile.js');
+                // expect(true).toBeTruthy();
+            });
+
+        });
+
     });
 
 });
