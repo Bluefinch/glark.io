@@ -9,8 +9,8 @@ files = [
 autoWatch = false;
 // autoWatch = true;
 
-// browsers = ['chromium-browser'];
-browsers = ['PhantomJS'];
+browsers = ['chromium-browser'];
+// browsers = ['PhantomJS'];
 
 singleRun = true;
 

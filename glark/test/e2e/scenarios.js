@@ -4,12 +4,8 @@
 
 describe('glark.io', function () {
 
-    beforeEach(function () {
-        browser().navigateTo('./app/index.html');
-    });
-
-
     it('should automatically redirect to main editor page when location hash/fragment is empty', function () {
+        browser().navigateTo('./app/index.html');
         expect(browser().location().url()).toBe('');
     });
 
@@ -25,33 +21,25 @@ describe('glark.io', function () {
             browser().navigateTo('/');
         });
 
-        it('after initialization, ace editor must be loaded', function () {
+        it('should have ace editor loaded just after initialization', function () {
             expect(element('.ace_editor').count()).toBe(1);
         });
 
-        describe('Tabs', function () {
-
-            beforeEach(function () {
-                /* Get the scope and some services. */
-                var $scope = angular.element('body').scope();
-                var workspace = angular.element('body').injector().get('workspace');
-                var File = angular.element('body').injector().get('File');
-
-                /* Create a Blob mocking a File. */
-                var fileEntry = new Blob(["/* I'm a javascript file. */"], {type: "text"});
-                fileEntry.name = "mockFile.js";
-                var mockedFile = new File(fileEntry);
-
-                /* Add it to the workspace. */
-                $scope.$apply(workspace.addFile(mockedFile));
-            });
-
-            it('should have tab with the "mockedfile.js" title', function () {
-                expect(element('.file-name').text()).toBe('mockFile.js');
-                // expect(true).toBeTruthy();
-            });
-
+        it('should have a tab with the "welcome.md" title', function () {
+            expect(element('.file-name').text()).toBe('welcome.md');
         });
+
+        it('tab with title "welcome.md" should be active', function () {
+            expect(element('.active-true .file-name').text()).toBe('welcome.md');
+        });
+
+        //TODO test that the file has mode 'markdown'.
+
+        it('clicking on "close" icon should close the tab', function () {
+            element('.tab-item .close').click();
+            expect(element('.tab-item').count()).toBe(0);
+        });
+
 
     });
 
