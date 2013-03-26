@@ -125,6 +125,7 @@ angular.module('glark.services', [])
         };
         
         workspace.setActiveFile = function(file) {
+            workspace.addFile(file);
             activeFile = file;
             editor.setSession(file.session);
         };

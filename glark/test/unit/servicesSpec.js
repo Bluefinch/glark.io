@@ -37,7 +37,7 @@ describe('The services:', function () {
                 workspace.addFile(file1);
                 workspace.addFile(file1);
 
-                expect(workspace.fileCount).toBe(1);
+                expect(workspace.getFileCount()).toBe(1);
             }));
 
         it('has a method to set some file as active file',
@@ -55,10 +55,10 @@ describe('The services:', function () {
             angular.mock.inject(function (workspace) {
                 workspace.addFile(file1);
 
-                workspace.activeFile = file2;
+                workspace.setActiveFile(file2);
 
-                expect(workspace.fileCount).toBe(2);
-                expect(workspace.activeFile).toBe(file2);
+                expect(workspace.getFileCount()).toBe(2);
+                expect(workspace.getActiveFile()).toBe(file2);
             }));
     });
 });
