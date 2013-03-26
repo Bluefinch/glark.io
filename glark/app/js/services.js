@@ -100,7 +100,9 @@ angular.module('glark.services', [])
         
         /* @param file is a glark.services.File object. */
         workspace.addFile = function (file) {
-            workspace.files.push(file);
+            if (workspace.files.indexOf(file) == -1) {
+                workspace.files.push(file);
+            }
         };
         
         /* @param file is a glark.services.File object. */
