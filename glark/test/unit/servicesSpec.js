@@ -29,7 +29,7 @@ describe('The services', function () {
                 workspace.addFile(file2);
                 workspace.addFile(file3);
 
-                expect(workspace.fileCount).toBe(3);
+                expect(workspace.getFileCount()).toBe(3);
             }));
 
         it('should have the file2 as its active file',
@@ -38,9 +38,9 @@ describe('The services', function () {
                 workspace.addFile(file2);
                 workspace.addFile(file3);
 
-                workspace.activeFile = file2;
+                workspace.setActiveFile(file2);
 
-                expect(workspace.activeFile).toBe(file2);
+                expect(workspace.getActiveFile()).toBe(file2);
             }));
     });
 });

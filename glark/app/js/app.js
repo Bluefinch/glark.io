@@ -42,5 +42,5 @@ angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters
 
     /* Add it to the workspace and give it the focus. */
     workspace.addFile(welcomeFile);
-    workspace.activeFile = welcomeFile;
+    workspace.setActiveFile(welcomeFile);
 });

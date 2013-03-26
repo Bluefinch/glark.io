@@ -4,7 +4,7 @@
     
 <div ng-controller="TabController">
     <ul id="tab-list-active-files" ng-cloak>
-        <li class="tab-item active-{{file == workspace.activeFile}}" ng-repeat="file in workspace.files" ng-click="setActiveFile(file)">
+        <li class="tab-item active-{{workspace.isActiveFile(file)}}" ng-repeat="file in workspace.files" ng-click="setActiveFile(file)">
             <a class="label" title="path">{{file.name | basename}}<span class="file-name">{{file.name | filename}}</span></a>
             <a class="close" ng-click="closeFile(file)">x</a>
         </li>

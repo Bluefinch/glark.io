@@ -93,6 +93,8 @@ angular.module('glark.services', [])
     .factory('workspace', function (editor) {
         var workspace = {};
         
+        var activeFile = null;
+        
         /* Files of the workspace. A collection of glark.services.File object. */
         workspace.files = [];
         
@@ -110,24 +112,24 @@ angular.module('glark.services', [])
                 return true;
             }
             return false;
-        }
-
-        Object.defineProperty(workspace, "fileCount", {
-            get: function () {
-                return workspace.files.length;
-            }
-        });
-
-        var activeFile = null;        
-        Object.defineProperty(workspace, "activeFile", {
-            get: function () {
-                return activeFile;
-            },
-            set: function(value) {
-                activeFile = value;
-                editor.setSession(value.session);
-            }
-        });
+        };
+        
+        workspace.getFileCount = function() {
+             return workspace.files.length;
+        };
+        
+        workspace.getActiveFile = function() {
+             return activeFile;
+        };
+        
+        workspace.setActiveFile = function(file) {
+            activeFile = file;
+            editor.setSession(file.session);
+        };
+        
+        workspace.isActiveFile = function(file) {
+            return file == activeFile;
+        };
     
         return workspace;
     });
