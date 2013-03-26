@@ -98,7 +98,9 @@ angular.module('glark.services', [])
         
         /* @param file is a glark.services.File object. */
         workspace.addFile = function (file) {
-            workspace.files.push(file);
+            if (workspace.files.indexOf(file) == -1) {
+                workspace.files.push(file);
+            }
         };
         
         /* @param file is a glark.services.File object. */
@@ -110,7 +112,7 @@ angular.module('glark.services', [])
                 return true;
             }
             return false;
-        }
+        };
 
         Object.defineProperty(workspace, "fileCount", {
             get: function () {
@@ -118,12 +120,13 @@ angular.module('glark.services', [])
             }
         });
 
-        var activeFile = null;        
+        var activeFile = null;
         Object.defineProperty(workspace, "activeFile", {
             get: function () {
                 return activeFile;
             },
-            set: function(value) {
+            set: function (value) {
+                this.addFile(value);
                 activeFile = value;
                 editor.setSession(value.session);
             }
