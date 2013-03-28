@@ -20,7 +20,7 @@ var config = require('./config.js');
 var express = require('express');
 var http = require('http');
 var path = require('path');
-//var socketio = require('socket.io');
+var socketio = require('socket.io');
 
 var app = express();
 
@@ -94,14 +94,17 @@ app.all('*', function (req, res) {
 // -----------------------------------
 
 var server = http.createServer(app);
-//var io = socketio.listen(server);
+var io = socketio.listen(server);
 // var io = socketio.listen(server, {log: false});
     
 server.listen(app.get('port'), function () {
     console.log("Express server listening on port " + app.get('port'));
 });
 
-/*io.sockets.on('connection', function (socket) {
+io.sockets.on('connection', function (socket) {
     console.log('Websocket connection.');
-});*/
+    socket.emit('ping', function (data) {
+        console.log(data);
+    });
+});
 

@@ -59,4 +59,13 @@ angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters
     /* Add it to the workspace and give it the focus. */
     workspace.addFile(welcomeFile);
     workspace.setActiveFile(welcomeFile);
+
+    /* Connect to socketio. */
+    var socket = io.connect();
+    socket.on('connect', function () {
+        socket.on('ping', function (fn) {
+            fn('pong');
+        });
+    });
+
 });
