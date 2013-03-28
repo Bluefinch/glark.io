@@ -66,6 +66,10 @@ angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters
         socket.on('ping', function (fn) {
             fn('pong');
         });
+
+        socket.on('workspace', function (data) {
+            console.log(data);
+        });
     });
 
 });

@@ -41,34 +41,6 @@ app.use(express['static'](config.server.distFolder));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 
-// TODO Build the 404 and error pages.
-/* Here we define the last non-error middleware. Since nothing else
- * responded, we assume 404. */
-// app.use(function (req, res, next) {
-    // res.status(404);
-
-    // // Respond with html page.
-    // if (req.accepts('html')) {
-        // //res.render('404', { url: req.url });
-        // return;
-    // }
-
-    // // Respond with json.
-    // if (req.accepts('json')) {
-        // res.send({ error: 'Not found' });
-        // return;
-    // }
-
-    // // Default to plain text.
-    // res.type('txt').send('Not found');
-// });
-
-/* Finally the error middleware. */
-// app.use(function (err, req, res, next) {
-    // res.status(err.status || 500);
-    // //res.render('500', { error: err });
-// });
-
 app.configure('development', function () {
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
@@ -106,5 +78,7 @@ io.sockets.on('connection', function (socket) {
     socket.emit('ping', function (data) {
         console.log(data);
     });
+
+    socket.emit('workspace', {wksp: 'toto'});
 });
 
