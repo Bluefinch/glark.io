@@ -116,20 +116,24 @@ angular.module('glark.services', [])
             return false;
         };
         
+        /* @return the number of files. */
         workspace.getFileCount = function() {
              return workspace.files.length;
         };
         
+        /* @return the active glark.services.File file. */
         workspace.getActiveFile = function() {
              return activeFile;
         };
         
+        /* @param file is a glark.services.File object. */
         workspace.setActiveFile = function(file) {
             workspace.addFile(file);
             activeFile = file;
             editor.setSession(file.session);
         };
         
+        /* @param file is a glark.services.File object. */
         workspace.isActiveFile = function(file) {
             return file == activeFile;
         };
