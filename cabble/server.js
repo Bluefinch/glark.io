@@ -17,7 +17,6 @@ You should have received a copy of the GNU Affero General Public License
 along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 var config = require('./config.js');
-var cors = require('cors');
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -33,12 +32,6 @@ app.set('port', process.env.PORT || config.server.listenPort);
 
 // From now on, log everything.
 app.use(express.logger('dev'));
-
-// Allow cross origin resource sharing for ace cdn.
-var corsOptions = {
-    origin: 'http://d1n0x3qji82z53.cloudfront.net'
-};
-app.use(cors(corsOptions));
 
 // Serve static files.
 app.use(express.compress());
@@ -91,7 +84,7 @@ app.configure('production', function () {
 
 /* Route everything that was not answered yet to the main page. */
 // FIXME disable this when implementing the invite collab feature.
-app.all('*', cors(corsOptions), function (req, res) {
+app.all('*', function (req, res) {
     res.redirect('/');
 });
 
