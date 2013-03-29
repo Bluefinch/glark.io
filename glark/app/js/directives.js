@@ -40,4 +40,25 @@ angular.module('glark.directives', [])
                 });
             }
         };
+    })
+    
+    .directive('layoutSlider', function (layout) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                element.mousedown(function (e) {
+                    e.preventDefault();
+                    
+                    var onmousemove = function(event) {
+                        layout.setLeftBarWidth(event.pageX);
+                    }
+                    
+                    var $html = angular.element('html');
+                    $html.mousemove(onmousemove);
+                    $html.mouseup(function() {
+                        $html.unbind('mousemove', onmousemove);
+                    });
+                });
+            }
+        };
     });

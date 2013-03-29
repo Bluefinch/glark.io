@@ -70,6 +70,8 @@ angular.module('glark.services', [])
     /* Helper providing services to manage the layout . */
     .factory('layout', function () {
         var layout = {}
+        
+        var minLeftBarWidth = 50;
 
         /* Reset the layout. */
         layout.resetLayout = function() {
@@ -97,6 +99,20 @@ angular.module('glark.services', [])
                     width: '150px'
                 });
         };
+        
+        /* @param width is in pixel. */
+        layout.setLeftBarWidth = function(width) {
+            if(width<minLeftBarWidth) return;
+            
+            angular.element('#editor')
+                .css('left', width + 'px');
+                
+            angular.element('#editor-top-bar')
+                .css('left', width + 'px');
+                
+            angular.element('#editor-left-bar')
+                .css('width', width + 'px');
+        }
         
         /* Reset the layout at the first access. */
         layout.resetLayout();
