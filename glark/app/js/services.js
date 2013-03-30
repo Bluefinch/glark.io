@@ -67,6 +67,59 @@ angular.module('glark.services', ['glark.filters'])
         };
     })
     
+    /* Helper providing services to manage the layout . */
+    .factory('layout', function () {
+        var layout = {}
+        
+        var minLeftBarWidth = 50;
+
+        /* Reset the layout. */
+        layout.resetLayout = function() {
+            angular.element('#editor')
+                .css({
+                    top: '35px',
+                    left: '150px',
+                    width: '100%',
+                    height: '100%'
+                });
+                
+            angular.element('#editor-top-bar')
+                .css({
+                    top: '0',
+                    left: '150px',
+                    height: '35px',
+                    width: '100%'
+                });
+                
+            angular.element('#editor-left-bar')
+                .css({
+                    top: '0',
+                    left: '0',
+                    height: '100%',
+                    width: '150px'
+                });
+        };
+        
+        /* @param width is in pixel. */
+        layout.setLeftBarWidth = function(width) {
+            if(width<minLeftBarWidth) return;
+            
+            angular.element('#editor')
+                .css('left', width + 'px');
+                
+            angular.element('#editor-top-bar')
+                .css('left', width + 'px');
+                
+            angular.element('#editor-left-bar')
+                .css('width', width + 'px');
+        }
+        
+        /* Reset the layout at the first access. */
+        layout.resetLayout();
+        
+        return layout;
+    })
+    
     /* Helper providing services to handle the html5 filesystem api. */
     .factory('filesystem', function ($q, $rootScope) {
         return {

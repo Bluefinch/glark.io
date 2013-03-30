@@ -19,7 +19,7 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 /* Controllers */
 
 angular.module('glark.controllers', [])
-    .controller('DragDropController', function ($scope, editor, workspace, File) {
+    .controller('DragDropController', function ($scope, workspace, File) {
         $scope.droppedFile = null;
 
         var openFile = function (fileEntry, setAsActiveFile) {
@@ -78,7 +78,7 @@ angular.module('glark.controllers', [])
 
     })
 
-    .controller('TabController', function ($scope, editor, workspace) {
+    .controller('TabController', function ($scope, workspace) {
         $scope.workspace = workspace;
 
         $scope.setActiveFile = function (file) {
@@ -91,4 +91,8 @@ angular.module('glark.controllers', [])
                 workspace.setActiveFile(workspace.files[0]);
             }
         };
+    })
+    
+    .controller('FileTreeController', function ($scope, workspace) {
+        $scope.workspace = workspace;
     });
