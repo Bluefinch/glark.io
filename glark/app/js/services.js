@@ -69,50 +69,68 @@ angular.module('glark.services', ['glark.filters'])
     
     /* Helper providing services to manage the layout . */
     .factory('layout', function () {
-        var layout = {}
+        var layout = {};
         
         var minLeftBarWidth = 50;
+        
+        var components = {};
+        var styles = {};
+        
+        /* Register a new component. */
+        layout.registerComponent = function(name, selector, style) {
+            var $component = angular.element(selector);
+            $component.css(style);
+            components[name] = $component;
+            styles[name] = style;
+        };
 
         /* Reset the layout. */
         layout.resetLayout = function() {
-            angular.element('#editor')
-                .css({
-                    top: '35px',
-                    left: '150px',
-                    width: '100%',
-                    height: '100%'
-                });
-                
-            angular.element('#editor-top-bar')
-                .css({
-                    top: '0',
-                    left: '150px',
-                    height: '35px',
-                    width: '100%'
-                });
-                
-            angular.element('#editor-left-bar')
-                .css({
-                    top: '0',
-                    left: '0',
-                    height: '100%',
-                    width: '150px'
-                });
+            angular.forEach(components, function($component, name) {
+                $component.css(styles[name]);
+            });
+        };
+        
+        /* @param name is the component name. */
+        layout.width = function(name) {
+            return components[name].width();
         };
         
         /* @param width is in pixel. */
         layout.setLeftBarWidth = function(width) {
             if(width<minLeftBarWidth) return;
             
-            angular.element('#editor')
+            components['editor']
                 .css('left', width + 'px');
                 
-            angular.element('#editor-top-bar')
+            components['top-bar']
                 .css('left', width + 'px');
                 
-            angular.element('#editor-left-bar')
+            components['left-bar']
                 .css('width', width + 'px');
-        }
+        };
+        
+        /* Register default components. */
+        layout.registerComponent('editor', '#editor', {
+            top: '35px',
+            left: '150px',
+            width: '100%',
+            height: '100%'
+        });
+        
+        layout.registerComponent('top-bar', '#editor-top-bar', {
+            top: '0',
+            left: '150px',
+            height: '35px',
+            width: '100%'
+        });
+        
+        layout.registerComponent('left-bar', '#editor-left-bar', {
+            top: '0',
+            left: '0',
+            height: '100%',
+            width: '150px'
+        });
         
         /* Reset the layout at the first access. */
         layout.resetLayout();
