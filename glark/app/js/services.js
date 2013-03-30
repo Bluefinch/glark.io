@@ -113,22 +113,22 @@ angular.module('glark.services', ['glark.filters'])
         /* Register default components. */
         layout.registerComponent('editor', '#editor', {
             top: '35px',
+            bottom: '0',
             left: '150px',
-            width: '100%',
-            height: '100%'
+            right: '0'
         });
         
         layout.registerComponent('top-bar', '#editor-top-bar', {
             top: '0',
-            left: '150px',
             height: '35px',
-            width: '100%'
+            left: '150px',
+            right: '0'
         });
         
         layout.registerComponent('left-bar', '#editor-left-bar', {
             top: '0',
+            bottom: '0',
             left: '0',
-            height: '100%',
             width: '150px'
         });
         
