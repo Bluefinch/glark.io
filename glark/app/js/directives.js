@@ -46,12 +46,13 @@ angular.module('glark.directives', [])
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
+                element.css('cursor', 'w-resize');
                 element.mousedown(function (e) {
                     e.preventDefault();
                     
                     var onmousemove = function(event) {
                         layout.setLeftBarWidth(event.pageX);
-                    }
+                    };
                     
                     var $html = angular.element('html');
                     $html.mousemove(onmousemove);

@@ -95,6 +95,10 @@ angular.module('glark.controllers', [])
     
     .controller('FileTreeController', function ($scope, workspace) {
         $scope.workspace = workspace;
+        
+        $scope.setActiveFile = function (file) {
+            workspace.setActiveFile(file);
+        };
 
         /* TODO Build a tree/walk object here from the workspace.
          * it will be a list of objects:

@@ -4,9 +4,8 @@
     
 <div ng-controller="FileTreeController">
     <ul id="filetree" ng-cloak>
-        <li class="filetree-file active-{{workspace.isActiveFile(file)}}" ng-repeat="file in workspace.files">
-            <a class="label" title="path">{{file.name | basename}}<span class="file-name">{{file.name | filename}}</span></a>
-            <a class="close" ng-click="closeFile(file)">x</a>
+        <li ng-repeat="file in workspace.files">
+            <a title="{{file.name | filename}}" ng-dblclick="setActiveFile(file)">{{file.name | filename}}</a>
         </li>
     </ul>
 </div>
