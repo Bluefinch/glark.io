@@ -42,16 +42,23 @@ angular.module('glark.directives', [])
         };
     })
     
-    .directive('layoutSlider', function (layout) {
+    .directive('layoutLeftSlider', function (layout) {
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
+                var component = attrs.layoutLeftSlider;
+                
                 element.css('cursor', 'w-resize');
                 element.mousedown(function (e) {
                     e.preventDefault();
                     
+                    var initialWidth = layout.getWidth(component);
+                    var initialPageX = e.pageX;
+                    
                     var onmousemove = function(event) {
-                        layout.setLeftBarWidth(event.pageX);
+                        var deltaX = initialPageX - event.pageX;
+                        var newWidth = initialWidth - deltaX;
+                        layout.setWidth(component, newWidth);
                     };
                     
                     var $html = angular.element('html');

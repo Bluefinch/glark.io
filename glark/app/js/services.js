@@ -71,17 +71,32 @@ angular.module('glark.services', ['glark.filters'])
     .factory('layout', function () {
         var layout = {};
         
-        var minLeftBarWidth = 50;
-        
         var components = {};
         var styles = {};
+        var resizes = {};
         
         /* Register a new component. */
-        layout.registerComponent = function(name, selector, style) {
+        layout.registerComponent = function(name, selector, style, resizeWidth, resizeHeight) {
             var $component = angular.element(selector);
             $component.css(style);
+            
             components[name] = $component;
             styles[name] = style;
+            
+            resizes[name] = {};
+            if(resizeWidth !== undefined) {
+                resizes[name].width = resizeWidth;
+            }
+            else {
+                resizes[name].width = function() {};
+            }
+            
+            if(resizeHeight !== undefined) {
+                resizes[name].height = resizeHeight;
+            }
+            else {
+                resizes[name].height = function() {};
+            }
         };
 
         /* Reset the layout. */
@@ -92,22 +107,14 @@ angular.module('glark.services', ['glark.filters'])
         };
         
         /* @param name is the component name. */
-        layout.width = function(name) {
+        layout.getWidth = function(name) {
             return components[name].width();
         };
         
-        /* @param width is in pixel. */
-        layout.setLeftBarWidth = function(width) {
-            if(width<minLeftBarWidth) return;
-            
-            components['editor']
-                .css('left', width + 'px');
-                
-            components['top-bar']
-                .css('left', width + 'px');
-                
-            components['left-bar']
-                .css('width', width + 'px');
+        /* @param name is the component name. 
+         * @param width is in pixel. */
+        layout.setWidth = function(name, width) {
+            resizes[name].width(width);
         };
         
         /* Register default components. */
@@ -130,6 +137,11 @@ angular.module('glark.services', ['glark.filters'])
             bottom: '0',
             left: '0',
             width: '150px'
+        }, function(width) {
+            if(width<50) return;
+            components['editor'].css('left', width + 'px');
+            components['top-bar'].css('left', width + 'px');
+            components['left-bar'].css('width', width + 'px');
         });
         
         /* Reset the layout at the first access. */
