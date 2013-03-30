@@ -22,18 +22,60 @@ angular.module('glark.controllers', [])
     .controller('DragDropController', function ($scope, editor, workspace, File) {
         $scope.droppedFile = null;
 
-        var openFile = function (fileEntry) {
+        var openFile = function (fileEntry, setAsActiveFile) {
+            console.log(fileEntry);
             var file = new File(fileEntry);
-            workspace.files.push(file);
-            workspace.setActiveFile(file);
+            workspace.addFile(file);
+            if (setAsActiveFile) {
+                workspace.setActiveFile(file);
+            }
         };
 
-        $scope.openDroppedFiles = function () {
-            var fileEntries = $scope.droppedFiles;
-            angular.forEach(fileEntries, function (fileEntry) {
-                openFile(fileEntry);
+        var readDirectoryEntries = function (directoryReader) {
+            directoryReader.readEntries(function (entries) {
+                for (var i = 0; i < entries.length; ++i) {
+                    readFileTree(entries[i]);
+                }
+            }, function (err) {
+                console.log(err);
             });
         };
+        
+        var readFileTree = function (entry) {
+            if (entry.isFile) {
+                openFile(entry, false);
+            } else if (entry.isDirectory) {
+                var directoryReader = entry.createReader();
+                readDirectoryEntries(directoryReader);
+            }
+        };
+
+
+        $scope.openDroppedFiles = function () {
+            var dataTransfer = $scope.dataTransfer;
+            /* FIXME for firefox use dataTransfer.mozGetDataAt(i). */
+            if (typeof dataTransfer.items !== 'undefined') {
+                angular.forEach(dataTransfer.items, function (item) {
+                    var entry = null;
+                    if (typeof item.webkitGetAsEntry === "function") {
+                        entry = item.webkitGetAsEntry();
+
+                        /* If it's a file open it directly. */
+                        if (entry.isFile) {
+                            openFile(entry, true);
+                            return;
+                        }
+
+                        readFileTree(entry);
+                    }
+                });
+            } else {
+                angular.forEach(dataTransfer.files, function (entry) {
+                    openFile(entry, true);
+                });
+            }
+        };
+
     })
 
     .controller('TabController', function ($scope, editor, workspace) {

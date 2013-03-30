@@ -18,7 +18,7 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 /* Services */
 
-angular.module('glark.services', [])
+angular.module('glark.services', ['glark.filters'])
     .factory('ace', function () {
         return ace.edit('editor');
     })
@@ -84,22 +84,37 @@ angular.module('glark.services', [])
     })
 
     /* Create a glark.services.File object from a html5 File or Blob object. */
-    .factory('File', function (filesystem, EditSession) {
+    .factory('File', function (filesystem, EditSession, basenameFilter) {
 
         return function (fileEntry) {
             var file = this;
             
             file.fileEntry = fileEntry;
+
             file.name = fileEntry.name;
+            file.basename = '/';
+            if (typeof fileEntry.fullPath !== 'undefined') {
+                file.basename = basenameFilter(fileEntry.fullPath);
+            }
+
             file.session = new EditSession('');
 
             // TODO: Should be changed.
             file.session.setMode("ace/mode/javascript");
             
-            var promise = filesystem.getFileContent(fileEntry);
-            promise.then(function (content) {
-                file.session.setValue(content, -1);
-            });
+            if (typeof fileEntry.file === 'function') {
+                fileEntry.file(function (blob) {
+                    var promise = filesystem.getFileContent(blob);
+                    promise.then(function (content) {
+                        file.session.setValue(content, -1);
+                    });
+                });
+            } else {
+                var promise = filesystem.getFileContent(fileEntry);
+                promise.then(function (content) {
+                    file.session.setValue(content, -1);
+                });
+            }
         };
     })
 

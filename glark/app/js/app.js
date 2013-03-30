@@ -68,7 +68,7 @@ angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters
         });
 
         socket.on('workspace', function (data) {
-            console.log(data);
+            // console.log(data);
         });
     });
 

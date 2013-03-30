@@ -31,9 +31,9 @@ angular.module('glark.directives', [])
                 element.bind('drop', function (e) {
                     e.preventDefault();
 
-                    var droppedFiles = e.originalEvent.dataTransfer.files;
+                    var dataTransfer = e.originalEvent.dataTransfer;
                     var model = attrs.ngModel;
-                    scope[model] = droppedFiles;
+                    scope[model] = dataTransfer;
                     scope.$apply(attrs.dropZone);
 
                     return false;
