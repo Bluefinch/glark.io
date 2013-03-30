@@ -95,4 +95,9 @@ angular.module('glark.controllers', [])
     
     .controller('FileTreeController', function ($scope, workspace) {
         $scope.workspace = workspace;
+
+        /* TODO Build a tree/walk object here from the workspace.
+         * it will be a list of objects:
+         * {directory: '/toto/titi', containedDirectories: ['tata', 'tutu'], containedFiles: ['popo', 'pupu']}*/
+        // $scope.tree = [];
     });
