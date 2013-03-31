@@ -25,7 +25,7 @@ angular.module('glark.services')
         };
         
         return LayoutComponent;
-    }
+    })
 
     /* Helper providing services to manage the layout . */
     .factory('layout', function () {
