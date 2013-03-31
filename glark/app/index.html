@@ -12,29 +12,37 @@
 <body>
 
     <!--**********************
-    *   Top bar
+    *   Left Panel
     **************************-->
 
-    <div id="editor-top-bar">
-        <div ng-include="'./partials/tabs.html'"></div>
-        <div class="bar"></div>
-    </div>
-    
-    <!--**********************
-    *   Left bar
-    **************************-->
-
-    <div id="editor-left-bar">
+    <div id="left-panel">
         <div ng-include="'./partials/filetree.html'"></div>
-        <div class="slider" layout-left-slider="left-bar"></div>
+        <div class="slider" layout-left-slider="left-panel"></div>
     </div>
     
     <!--**********************
-    *   Editor
+    *   Rigth Panel
     **************************-->
 
-    <div ng-controller="DragDropController" ng-model="dataTransfer" drop-zone="openDroppedFiles()">
-        <div id="editor" ng-non-bindable></div>
+    <div id="right-panel">
+    
+        <!--**********************
+        *   Top bar
+        **************************-->
+    
+        <div id="editor-top-bar">
+            <div ng-include="'./partials/tabs.html'"></div>
+            <div class="bar"></div>
+        </div>
+        
+        <!--**********************
+        *   Editor
+        **************************-->
+    
+        <div ng-controller="DragDropController" ng-model="dataTransfer" drop-zone="openDroppedFiles()">
+            <div id="editor" ng-non-bindable></div>
+        </div>
+    
     </div>
     
     <!--**********************

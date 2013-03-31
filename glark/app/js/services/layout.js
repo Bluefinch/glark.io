@@ -20,90 +20,142 @@ angular.module('glark.services')
 
     .factory('LayoutComponent', function () {
         var LayoutComponent = function (name, $element, options) {
+            var settings = {
+                parent: null,
+                defaultWidth: null,
+                defaultHeight: null,
+                maxWidth: null,
+                minWidth: null,
+                setWidth: null,
+                maxHeight: null,
+                minHeight: null,
+                setHeight: null
+            };
+            options = jQuery.extend({}, settings, options);
+            
+            if(options.setWidth !== null) {
+                options.setWidth.bind(this);
+            }
+            if(options.setHeight !== null) {
+                options.setHeight.bind(this);
+            }
+            
+            this.options = options;
             this.name = name;
             this.$el = $element;
+        };
+        
+        LayoutComponent.prototype.propertyValue = function(name) {
+            if(this.options[name] !== undefined) {
+                return this.options[name];
+            } else if(this.options.parent !== undefined) {
+                return this.options.parent.propertyValue(name);
+            }
+            else {
+                return null;
+            }
+        };
+        
+        LayoutComponent.prototype.setWidth = function (width) {
+            var setWidth = this.propertyValue('setWidth');
+            if(setWidth === null) return;
+            
+            var minWidth = this.propertyValue('minWidth');
+            var maxWidth = this.propertyValue('maxWidth');
+            if(minWidth !== null && width < minWidth) return;
+            if(maxWidth !== null && width > maxWidth) return;
+            
+            setWidth(width);
+        };
+        
+        LayoutComponent.prototype.setHeight = function (height) {
+            var setHeight = this.propertyValue('setHeight');
+            if(setHeight === null) return;
+            
+            var minHeight = this.propertyValue('minHeight');
+            var maxHeight = this.propertyValue('maxHeight');
+            if(minHeight !== null && height < minHeight) return;
+            if(maxHeight !== null && height > maxHeight) return;
+            
+            setHeight(height);
+        };
+        
+        LayoutComponent.prototype.resetSize = function (height) {
+            var defaultWidth = this.propertyValue('defaultWidth');
+            if(defaultWidth !== null) {
+                this.setWidth(defaultWidth);
+            }
+            
+            var defaultHeight = this.propertyValue('defaultHeight');
+            if(defaultHeight !== null) {
+                this.setHeight(defaultHeight);
+            }
         };
         
         return LayoutComponent;
     })
 
     /* Helper providing services to manage the layout . */
-    .factory('layout', function () {
+    .factory('layout', function (LayoutComponent) {
         var layout = {};
-        
         var components = {};
-        var styles = {};
-        var resizes = {};
         
         /* Register a new component. */
-        layout.registerComponent = function (name, selector, style, resizeWidth, resizeHeight) {
+        layout.registerComponent = function (name, selector, options) {
             var $component = angular.element(selector);
-            $component.css(style);
-            
-            components[name] = $component;
-            styles[name] = style;
-            
-            resizes[name] = {};
-            if(resizeWidth !== undefined) {
-                resizes[name].width = resizeWidth;
-            }
-            else {
-                resizes[name].width = function () {};
-            }
-            
-            if(resizeHeight !== undefined) {
-                resizes[name].height = resizeHeight;
-            }
-            else {
-                resizes[name].height = function () {};
-            }
+            var component = new LayoutComponent(name, $component, options);
+            components[name] = component;
         };
 
         /* Reset the layout. */
         layout.resetLayout = function () {
-            angular.forEach(components, function ($component, name) {
-                $component.css(styles[name]);
+            angular.forEach(components, function (component, name) {
+                component.resetSize();
             });
         };
         
         /* @param name is the component name. */
         layout.getWidth = function (name) {
-            return components[name].width();
+            return components[name].$el.width();
+        };
+        
+        /* @param name is the component name. */
+        layout.getHeight = function (name) {
+            return components[name].$el.height();
         };
         
         /* @param name is the component name. 
          * @param width is in pixel. */
         layout.setWidth = function (name, width) {
-            resizes[name].width(width);
+            components[name].setWidth(width);
+        };
+        
+        /* @param name is the component name. 
+         * @param height is in pixel. */
+        layout.setHeight = function (name, height) {
+            components[name].setHeight(height);
         };
         
         /* Register default components. */
+        layout.registerComponent('left-panel', '#left-panel', {
+            defautWidth: 150,
+            minWidth: 50,
+            setWidth: function (width) {
+                components['left-panel'].$el.css('width', width + 'px');
+                components['right-panel'].$el.css('left', width + 'px');
+            }
+        });
+        
+        layout.registerComponent('right-panel', '#right-panel');
+        
+        layout.registerComponent('editor-top-bar', '#editor-top-bar', {
+            parent: components['right-panel']
+        });
+        
         layout.registerComponent('editor', '#editor', {
-            top: '35px',
-            bottom: '0',
-            left: '150px',
-            right: '0'
+            parent: components['right-panel']
         });
-        
-        layout.registerComponent('top-bar', '#editor-top-bar', {
-            top: '0',
-            height: '35px',
-            left: '150px',
-            right: '0'
-        });
-        
-        layout.registerComponent('left-bar', '#editor-left-bar', {
-            top: '0',
-            bottom: '0',
-            left: '0',
-            width: '150px'
-        }, function (width) {
-            if(width<50) return;
-            components['editor'].css('left', width + 'px');
-            components['top-bar'].css('left', width + 'px');
-            components['left-bar'].css('width', width + 'px');
-        });
-        
+            
         /* Reset the layout at the first access. */
         layout.resetLayout();
         
