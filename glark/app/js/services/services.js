@@ -199,16 +199,22 @@ angular.module('glark.services', ['glark.filters'])
                     }
                 }
 
+                var parentEntry = this.tree;
                 if (splitBasename.length > 0) {
-                    var parentEntry = this.tree;
                     for (var dirIdx = 0; dirIdx < splitBasename.length; ++dirIdx) {
                         if (splitBasename[dirIdx] in parentEntry.containedDirectories) {
                             parentEntry = parentEntry.containedDirectories[splitBasename[dirIdx]];
                         } else {
                             var dirEntry = buildDirectoryEntry(splitBasename.slice(dirIdx));
                             parentEntry.containedDirectories[splitBasename[dirIdx]] = dirEntry;
+                            parentEntry = dirEntry;
                         }
                     }
+                }
+
+                /* Now add the file if necessary. */
+                if (!(this.files[fileIdx] in parentEntry.containedFiles)) {
+                    parentEntry.containedFiles[this.files[fileIdx].name] = this.files[fileIdx];
                 }
             }
         };
