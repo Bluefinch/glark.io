@@ -76,7 +76,7 @@ angular.module('glark.services', ['glark.filters'])
         var resizes = {};
         
         /* Register a new component. */
-        layout.registerComponent = function(name, selector, style, resizeWidth, resizeHeight) {
+        layout.registerComponent = function (name, selector, style, resizeWidth, resizeHeight) {
             var $component = angular.element(selector);
             $component.css(style);
             
@@ -88,32 +88,32 @@ angular.module('glark.services', ['glark.filters'])
                 resizes[name].width = resizeWidth;
             }
             else {
-                resizes[name].width = function() {};
+                resizes[name].width = function () {};
             }
             
             if(resizeHeight !== undefined) {
                 resizes[name].height = resizeHeight;
             }
             else {
-                resizes[name].height = function() {};
+                resizes[name].height = function () {};
             }
         };
 
         /* Reset the layout. */
-        layout.resetLayout = function() {
-            angular.forEach(components, function($component, name) {
+        layout.resetLayout = function () {
+            angular.forEach(components, function ($component, name) {
                 $component.css(styles[name]);
             });
         };
         
         /* @param name is the component name. */
-        layout.getWidth = function(name) {
+        layout.getWidth = function (name) {
             return components[name].width();
         };
         
         /* @param name is the component name. 
          * @param width is in pixel. */
-        layout.setWidth = function(name, width) {
+        layout.setWidth = function (name, width) {
             resizes[name].width(width);
         };
         
@@ -137,7 +137,7 @@ angular.module('glark.services', ['glark.filters'])
             bottom: '0',
             left: '0',
             width: '150px'
-        }, function(width) {
+        }, function (width) {
             if(width<50) return;
             components['editor'].css('left', width + 'px');
             components['top-bar'].css('left', width + 'px');
@@ -211,46 +211,90 @@ angular.module('glark.services', ['glark.filters'])
         
         /* Files of the workspace. A collection of glark.services.File object. */
         workspace.files = [];
+
+        /* A file tree representation of the files collection. */
+        workspace.tree = {directory: '/', containedDirectories: {}, containedFiles: {}};
         
         /* @param file is a glark.services.File object. */
         workspace.addFile = function (file) {
-            if (workspace.files.indexOf(file) == -1) {
-                workspace.files.push(file);
+            if (this.files.indexOf(file) == -1) {
+                this.files.push(file);
+                this.updateTree();
             }
         };
         
         /* @param file is a glark.services.File object. */
         workspace.removeFile = function (file) {
-            var idx = workspace.files.indexOf(file);
+            var idx = this.files.indexOf(file);
             if (idx != -1) {
-                workspace.files.splice(idx, 1);
+                this.files.splice(idx, 1);
                 file.session.setValue('', -1);
+                this.updateTree();
                 return true;
             }
             return false;
         };
-        
+
         /* @return the number of files. */
-        workspace.getFileCount = function() {
-             return workspace.files.length;
+        workspace.getFileCount = function () {
+            return this.files.length;
         };
-        
+
         /* @return the active glark.services.File file. */
-        workspace.getActiveFile = function() {
-             return activeFile;
+        workspace.getActiveFile = function () {
+            return activeFile;
         };
-        
+
         /* @param file is a glark.services.File object. */
-        workspace.setActiveFile = function(file) {
-            workspace.addFile(file);
+        workspace.setActiveFile = function (file) {
+            this.addFile(file);
             activeFile = file;
             editor.setSession(file.session);
         };
-        
+
         /* @param file is a glark.services.File object. */
-        workspace.isActiveFile = function(file) {
+        workspace.isActiveFile = function (file) {
             return file == activeFile;
         };
-    
+
+
+        /* Update the file tree description when the files collection changes. */
+        workspace.updateTree = function () {
+            var buildDirectoryEntry = function (splitBasename) {
+                var dirEntry = {directory: splitBasename[0], containedDirectories: {}, containedFiles: {}};
+                for (var dirIdx = 1; dirIdx < splitBasename.length; ++dirIdx) {
+                    var dirName = splitBasename[dirIdx];
+                    if (!(dirName in dirEntry.containedDirectories)) {
+                        dirEntry.containedDirectories[dirName] = buildDirectoryEntry(splitBasename.slice(1));
+                    }
+                }
+
+                return dirEntry;
+            };
+
+            for (var fileIdx = 0; fileIdx < workspace.files.length; ++fileIdx) {
+                /* Split and remove empty elements. */
+                var splitBasename = [];
+                var split = this.files[fileIdx].basename.split('/');
+                for (var i = 0; i < split.length; ++i) {
+                    if (split[i] !== '') {
+                        splitBasename.push(split[i]);
+                    }
+                }
+
+                if (splitBasename.length > 0) {
+                    var parentEntry = this.tree;
+                    for (var dirIdx = 0; dirIdx < splitBasename.length; ++dirIdx) {
+                        if (splitBasename[dirIdx] in parentEntry.containedDirectories) {
+                            parentEntry = parentEntry.containedDirectories[splitBasename[dirIdx]];
+                        } else {
+                            var dirEntry = buildDirectoryEntry(splitBasename.slice(dirIdx));
+                            parentEntry.containedDirectories[splitBasename[dirIdx]] = dirEntry;
+                        }
+                    }
+                }
+            }
+        };
+
         return workspace;
     });
