@@ -16,6 +16,11 @@ You should have received a copy of the GNU Affero General Public License
 along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 'use strict';
 
+angular.module('glark.controllers', []);
+angular.module('glark.directives', []);
+angular.module('glark.filters', []);
+angular.module('glark.services', []);
+
 angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters', 'glark.services'])
 .run(function ($rootScope, File, workspace, layout) {
     var KEY = {};
