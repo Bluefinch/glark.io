@@ -17,6 +17,44 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 'use strict';
 
 angular.module('glark.services')
+
+    .factory('FileTree', function () {
+        
+        
+        var DirectoryNode = function(name) {
+            this.isDirectory = true;
+            this.isFile = false;
+            
+            this.name = name;
+            this.children = [];
+        };
+        
+        var FileNode = function(file) {
+            this.isDirectory = false;
+            this.isFile = true;
+            
+            this.name = false.name;
+            this.file = file;
+        };
+        
+        var FileTree = function() {
+            this.rootNode = new DirectoryNode('root');
+        }
+        
+        FileTree.prototype.addFile = function(file) {
+            var directories = file.basename.split('/');
+            var activeNode = this.rootNode;
+            angular.forEach(directories, function(directory) {
+                if(!(directory in activeNode.children)) {
+                    activeNode.children.push(new DirectoryNode(directory));
+                }
+                activeNode = activeNode[directory];
+            });
+            activeNode.children.push(new FileNode(file));
+        };
+        
+        return FileTree;
+    }
     
     /* Main model of the glark.io application. Contains among other all the
      * data describing the files of the workspace, the open ones and the active
