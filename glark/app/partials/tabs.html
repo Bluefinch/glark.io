@@ -1,9 +1,9 @@
 <!--
-*   Partial for tabs view
+*   Partial for editor-tabs view
 * -->
-    
-<div ng-controller="TabController">
-    <ul id="tab-list-active-files" ng-cloak>
+  
+<div id="editor-tabs" ng-controller="TabController">
+    <ul id="tab-list" ng-cloak>
         <li class="tab-item active-{{workspace.isActiveFile(file)}}" ng-repeat="file in workspace.files" ng-click="setActiveFile(file)">
             <a class="label" title="path">{{file.name | basename}}<span class="file-name">{{file.name | filename}}</span></a>
             <a class="close" ng-click="closeFile(file)">x</a>
@@ -13,6 +13,7 @@
     <div id="tab-dropdown">
         <a id="tab-dropdown-button" class="icon-down-open"></a>
     </div>
-    <ul id="dropdown-list-active-files"></ul>
+    <ul id="tab-dropdown-list"></ul>
     -->
+    <div class="bar"></div>
 </div>

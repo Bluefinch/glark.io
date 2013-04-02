@@ -1,0 +1,45 @@
+/* editor css stylesheet */
+
+#editor-wrapper {
+    /* Component managed by the
+     * layout service. */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#editor { 
+    position: absolute;
+    top: 35px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    color: #fff;
+}
+
+#editor-tabs {
+    position: absolute;
+    top: 0;
+    height: 35px;
+    left: 0;
+    right: 0;
+    
+    font-size: 12px;
+    color: #999;
+    background: #303030;
+    box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .9);
+    overflow: hidden;
+}
+
+#editor-tabs .bar {
+    position: absolute;
+    height: 10px;
+    width: 100%;
+    z-index: 2;
+
+    background: #202020;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .9);
+}

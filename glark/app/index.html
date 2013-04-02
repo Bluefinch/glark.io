@@ -6,8 +6,9 @@
 
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/ace.css"/>
-    <link rel="stylesheet" href="css/tab.css"/>
+    <link rel="stylesheet" href="css/editor.css"/>
     <link rel="stylesheet" href="css/filetree.css"/>
+    <link rel="stylesheet" href="css/tabs.css"/>
 </head>
 <body>
 
@@ -21,28 +22,16 @@
     </div>
     
     <!--**********************
-    *   Rigth Panel
+    *   Center Panel
     **************************-->
 
-    <div id="right-panel">
-    
-        <!--**********************
-        *   Top bar
-        **************************-->
-    
-        <div id="editor-top-bar">
+    <div id="center-panel">
+        <div id="editor-wrapper">
             <div ng-include="'./partials/tabs.html'"></div>
-            <div class="bar"></div>
+            <div ng-controller="DragDropController" ng-model="dataTransfer" drop-zone="openDroppedFiles()">
+                <div id="editor" ng-non-bindable></div>
+            </div>
         </div>
-        
-        <!--**********************
-        *   Editor
-        **************************-->
-    
-        <div ng-controller="DragDropController" ng-model="dataTransfer" drop-zone="openDroppedFiles()">
-            <div id="editor" ng-non-bindable></div>
-        </div>
-    
     </div>
     
     <!--**********************

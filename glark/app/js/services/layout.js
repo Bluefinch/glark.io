@@ -50,8 +50,7 @@ angular.module('glark.services')
                 return this.options[name];
             } else if(this.options.parent !== undefined) {
                 return this.options.parent.propertyValue(name);
-            }
-            else {
+            } else {
                 return null;
             }
         };
@@ -142,19 +141,11 @@ angular.module('glark.services')
             minWidth: 50,
             setWidth: function (width) {
                 components['left-panel'].$el.css('width', width + 'px');
-                components['right-panel'].$el.css('left', width + 'px');
+                components['center-panel'].$el.css('left', width + 'px');
             }
         });
         
-        layout.registerComponent('right-panel', '#right-panel');
-        
-        layout.registerComponent('editor-top-bar', '#editor-top-bar', {
-            parent: components['right-panel']
-        });
-        
-        layout.registerComponent('editor', '#editor', {
-            parent: components['right-panel']
-        });
+        layout.registerComponent('center-panel', '#center-panel');
             
         /* Reset the layout at the first access. */
         layout.resetLayout();
