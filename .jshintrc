@@ -8,6 +8,8 @@
     "noempty": true, 
     "nonew": true, 
     "predef": [
+        "jasmine",
+        "module",
         "beforeEach", 
         "expect", 
         "angular", 
