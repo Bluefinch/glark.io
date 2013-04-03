@@ -30,7 +30,8 @@ angular.module('glark.services')
         workspace.files = [];
 
         /* A file tree representation of the files collection. */
-        workspace.tree = {directory: '/', containedDirectories: {}, containedFiles: {}};
+        // entry = {name: '', isDirectory: true, file: null}
+        workspace.tree = {directory: '/', entries: };
         
         /* @param file is a glark.services.File object. */
         workspace.addFile = function (file) {
