@@ -25,6 +25,7 @@ angular.module('glark.services')
             
             this.name = name;
             this.children = {};
+            this.collapsed = true;
         };
         
         var FileNode = function(file) {
