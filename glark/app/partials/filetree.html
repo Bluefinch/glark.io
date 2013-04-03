@@ -2,23 +2,16 @@
 *   Partial for filetree view
 * -->
     
-<script type="text/ng-template" id="directory_node_template">
-    <a title="{{dirname}}">{{dirname}}</a>
+<script type="text/ng-template" id="filetree_node_template">
+    <a title="{{node.name}}">{{node.name}}</a>
     <ul>
-        <li ng-repeat="(dirname, dirEntry) in dirEntry.containedDirectories" ng-include="'directory_node_template'"></li>
-    </ul>
-</script>
-
-<script type="text/ng-template" id="file_node_template">
-    <a title="{{filename}}">{{filename}}</a>
-    <ul>
-        <li ng-repeat="(filename, fileEntry) in dirEntry.containedFiles" ng-include="'file_node_template'"></li>
+        <li ng-repeat="node in node.children" ng-include="'filetree_node_template'"></li>
     </ul>
 </script>
 
 <div ng-controller="FileTreeController">
     <ul id="filetree">
-        <li ng-repeat="(dirname, dirEntry) in workspace.tree.containedDirectories" ng-include="'directory_node_template'"></li>
+        <li ng-repeat="node in workspace.tree.rootNode.children" ng-include="'filetree_node_template'"></li>
     </ul>
 </div>
 

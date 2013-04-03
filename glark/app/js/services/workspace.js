@@ -17,11 +17,49 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 'use strict';
 
 angular.module('glark.services')
+
+    .factory('FileTree', function () {
+        var DirectoryNode = function(name) {
+            this.isDirectory = true;
+            this.isFile = false;
+            
+            this.name = name;
+            this.children = {};
+        };
+        
+        var FileNode = function(file) {
+            this.isDirectory = false;
+            this.isFile = true;
+            
+            this.name = file.name;
+            this.file = file;
+        };
+        
+        var FileTree = function() {
+            this.rootNode = new DirectoryNode('root');
+        };
+        
+        FileTree.prototype.addFile = function(file) {
+            var directories = file.basename.split('/');
+            var activeNode = this.rootNode;
+            angular.forEach(directories, function(directory) {
+                if(directory !== '') {
+                    if(!(directory in activeNode.children)) {
+                        activeNode.children[directory] = new DirectoryNode(directory);
+                    }
+                    activeNode = activeNode.children[directory];
+                }
+            });
+            activeNode.children[file.name] = new FileNode(file);
+        };
+        
+        return FileTree;
+    })
     
     /* Main model of the glark.io application. Contains among other all the
      * data describing the files of the workspace, the open ones and the active
      * one. */
-    .factory('workspace', function (editor) {
+    .factory('workspace', function (editor, FileTree) {
         var workspace = {};
         
         var activeFile = null;
@@ -30,14 +68,13 @@ angular.module('glark.services')
         workspace.files = [];
 
         /* A file tree representation of the files collection. */
-        // entry = {name: '', isDirectory: true, file: null}
-        workspace.tree = {directory: '/', entries: };
+        workspace.tree = new FileTree();
         
         /* @param file is a glark.services.File object. */
         workspace.addFile = function (file) {
             if (this.files.indexOf(file) == -1) {
                 this.files.push(file);
-                this.updateTree();
+                this.tree.addFile(file);
             }
         };
         
@@ -47,7 +84,7 @@ angular.module('glark.services')
             if (idx != -1) {
                 this.files.splice(idx, 1);
                 file.session.setValue('', -1);
-                this.updateTree();
+                //this.tree.removeFile(file); /*TODO*/
                 return true;
             }
             return false;
@@ -73,51 +110,6 @@ angular.module('glark.services')
         /* @param file is a glark.services.File object. */
         workspace.isActiveFile = function (file) {
             return file == activeFile;
-        };
-
-
-        /* Update the file tree description when the files collection changes. */
-        workspace.updateTree = function () {
-            var buildDirectoryEntry = function (splitBasename) {
-                var dirEntry = {directory: splitBasename[0], containedDirectories: {}, containedFiles: {}};
-                for (var dirIdx = 1; dirIdx < splitBasename.length; ++dirIdx) {
-                    var dirName = splitBasename[dirIdx];
-                    if (!(dirName in dirEntry.containedDirectories)) {
-                        dirEntry.containedDirectories[dirName] = buildDirectoryEntry(splitBasename.slice(1));
-                    }
-                }
-
-                return dirEntry;
-            };
-
-            for (var fileIdx = 0; fileIdx < workspace.files.length; ++fileIdx) {
-                /* Split and remove empty elements. */
-                var splitBasename = [];
-                var split = this.files[fileIdx].basename.split('/');
-                for (var i = 0; i < split.length; ++i) {
-                    if (split[i] !== '') {
-                        splitBasename.push(split[i]);
-                    }
-                }
-
-                var parentEntry = this.tree;
-                if (splitBasename.length > 0) {
-                    for (var dirIdx = 0; dirIdx < splitBasename.length; ++dirIdx) {
-                        if (splitBasename[dirIdx] in parentEntry.containedDirectories) {
-                            parentEntry = parentEntry.containedDirectories[splitBasename[dirIdx]];
-                        } else {
-                            var dirEntry = buildDirectoryEntry(splitBasename.slice(dirIdx));
-                            parentEntry.containedDirectories[splitBasename[dirIdx]] = dirEntry;
-                            parentEntry = dirEntry;
-                        }
-                    }
-                }
-
-                /* Now add the file if necessary. */
-                if (!(this.files[fileIdx] in parentEntry.containedFiles)) {
-                    parentEntry.containedFiles[this.files[fileIdx].name] = this.files[fileIdx];
-                }
-            }
         };
 
         return workspace;
