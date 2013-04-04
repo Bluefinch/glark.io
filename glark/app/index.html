@@ -35,6 +35,14 @@
     </div>
     
     <!--**********************
+    *   Hidden div to initialize e2e tests
+    **************************-->
+
+    <div id="e2e-tests-initializer" ng-controller="TestsController" style="visibility: hidden">
+        <a ng-click="initializeTests()"></a>
+    </div>
+
+    <!--**********************
     *   Scripts
     **************************-->
     
@@ -68,15 +76,18 @@
 
     <script src="js/app.js"></script>
     <!-- Services -->
-    <script src="js/services/File.js"></script>
     <script src="js/services/ace.js"></script>
     <script src="js/services/editor.js"></script>
+    <script src="js/services/File.js"></script>
     <script src="js/services/filesystem.js"></script>
+    <script src="js/services/FileTree.js"></script>
     <script src="js/services/layout.js"></script>
     <script src="js/services/workspace.js"></script>
     <!-- Controllers -->
     <script src="js/controllers/DragDropController.js"></script>
+    <script src="js/controllers/FileTreeController.js"></script>
     <script src="js/controllers/TabController.js"></script>
+    <script src="js/controllers/TestsController.js"></script>
     <!-- Filters -->
     <script src="js/filters/basename.js"></script>
     <script src="js/filters/filename.js"></script>

@@ -1,12 +1,25 @@
 <!--
 *   Partial for filetree view
 * -->
+    
+<script type="text/ng-template" id="filetree_node_template">
+    <div ng-switch on="node.isDirectory" >
+        <div ng-switch-when="true">
+            <a ng-show="node.collapsed" title="{{node.name}}" ng-click="switchCollapsed(node)">+{{node.name}}</a>
+            <a ng-hide="node.collapsed" title="{{node.name}}" ng-click="switchCollapsed(node)">-{{node.name}}</a>
+            <ul ng-hide="node.collapsed">
+                <li ng-repeat="node in node.children" ng-include="'filetree_node_template'"></li>
+            </ul>
+        </div>
+        <div ng-switch-when="false">
+            <a title="{{node.name}}">{{node.name}}</a>
+        </div>
+    </div>
+</script>
 
 <div ng-controller="FileTreeController">
-    <ul id="filetree" ng-cloak>
-        <li ng-repeat="file in workspace.files">
-            <a title="{{file.name | filename}}" ng-dblclick="setActiveFile(file)">{{file.name | filename}}</a>
-        </li>
+    <ul id="filetree">
+        <li ng-repeat="node in workspace.tree.rootNode.children" ng-include="'filetree_node_template'"></li>
     </ul>
 </div>
 

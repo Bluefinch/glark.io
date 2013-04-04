@@ -10,7 +10,7 @@ describe('glark.io', function () {
     });
 
     it('should automatically redirect to main editor page when location hash/fragment is something', function () {
-        browser().navigateTo('/somethingsilly')
+        browser().navigateTo('/somethingsilly');
         expect(browser().location().url()).toBe('');
     });
 
@@ -40,6 +40,22 @@ describe('glark.io', function () {
             expect(element('.tab-item').count()).toBe(0);
         });
 
+    });
+
+    describe('The file tree in left pane', function () {
+
+        beforeEach(function () {
+            browser().navigateTo('/');
+        });
+
+        it('should contain a file with name "welcome.md"', function () {
+            expect(element('#filetree a').attr('title')).toBe('welcome.md');
+        });
+
+        it('should contain 6 entries', function () {
+            element('#e2e-tests-initializer a').click();
+            expect(element('#filetree a').count()).toBe(6);
+        });
 
     });
 
