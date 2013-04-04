@@ -8,6 +8,10 @@
     "noempty": true, 
     "nonew": true, 
     "predef": [
+        "browser",
+        "element",
+        "expect",
+        "Blob",
         "jasmine",
         "module",
         "beforeEach", 
