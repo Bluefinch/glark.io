@@ -87,12 +87,13 @@ describe('The services:', function () {
             expect(fileTree.rootNode.children.tata.collapsed).toBeTruthy();
             expect(fileTree.rootNode.children.tata.children.tete).not.toBeUndefined();
 
-            expect(fileTree.rootNode.children.tata.children.tete.toto).not.toBeUndefined();
-            expect(fileTree.rootNode.children.tata.children.tete.toto.isDirectory).toBeFalsy();
-            expect(fileTree.rootNode.children.tata.children.tete.toto.isFile).toBeTruthy();
+            expect(fileTree.rootNode.children.tata.children.tete.children.toto).not.toBeUndefined();
+            expect(fileTree.rootNode.children.tata.children.tete.children.toto.isDirectory).toBeFalsy();
+            expect(fileTree.rootNode.children.tata.children.tete.children.toto.isFile).toBeTruthy();
 
-            expect(fileTree.rootNode.children.tata.children.tete.toto.name).toBe('toto');
-            expect(fileTree.rootNode.children.tata.children.tete.toto.basename).toBe('/tata/tete/');
+            expect(fileTree.rootNode.children.tata.children.tete.children.toto.name).toBe('toto');
+            expect(fileTree.rootNode.children.tata.children.tete.children.toto.file.name).toBe('toto');
+            expect(fileTree.rootNode.children.tata.children.tete.children.toto.file.basename).toBe('/tata/tete/');
         });
 
     });

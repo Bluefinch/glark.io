@@ -31,12 +31,5 @@ angular.module('glark.controllers')
                 workspace.setActiveFile(workspace.files[0]);
             }
         };
-    })
-    
-    .controller('FileTreeController', function ($scope, workspace) {
-        $scope.workspace = workspace;
-        
-        $scope.setActiveFile = function (file) {
-            workspace.setActiveFile(file);
-        };
     });
+
