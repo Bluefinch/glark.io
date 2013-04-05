@@ -54,6 +54,10 @@ angular.module('glark.services')
 
             findPrevious: function () {
                 return ace.findPrevious();
+            },
+
+            previewFile: function (file) {
+                this.setSession(file.session);
             }
         };
     });
