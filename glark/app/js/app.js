@@ -22,7 +22,7 @@ angular.module('glark.filters', []);
 angular.module('glark.services', []);
 
 angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters', 'glark.services'])
-.run(function ($rootScope, File, workspace, layout) {
+.run(function ($rootScope, File, workspace, layout, Connector) {
     var KEY = {};
     // create key map A - Z
     for (var i = 65; i <= 90; i++) {
