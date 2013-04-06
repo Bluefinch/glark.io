@@ -5,14 +5,14 @@
 <script type="text/ng-template" id="filetree_node_template">
     <div ng-switch on="node.isDirectory" >
         <div ng-switch-when="true">
-            <a ng-show="node.collapsed" title="{{node.name}}" ng-click="switchCollapsed(node)">+{{node.name}}</a>
-            <a ng-hide="node.collapsed" title="{{node.name}}" ng-click="switchCollapsed(node)">-{{node.name}}</a>
+            <a ng-show="node.collapsed" title="{{node.name}}" ng-click="toggleCollapsed(node)">+{{node.name}}</a>
+            <a ng-hide="node.collapsed" title="{{node.name}}" ng-click="toggleCollapsed(node)">-{{node.name}}</a>
             <ul ng-hide="node.collapsed">
                 <li ng-repeat="node in node.children" ng-include="'filetree_node_template'"></li>
             </ul>
         </div>
         <div ng-switch-when="false">
-            <a title="{{node.name}}">{{node.name}}</a>
+            <a title="{{node.name}}"  ng-click="editor.previewFile(node.file)" ng-dblclick="workspace.setActiveFile(node.file)">{{node.name}}</a>
         </div>
     </div>
 </script>
