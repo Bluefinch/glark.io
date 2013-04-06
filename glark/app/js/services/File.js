@@ -18,37 +18,39 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
     
-    /* Create a glark.services.File object from a html5 File or Blob object. */
-    .factory('File', function (filesystem, EditSession, basenameFilter) {
+    .factory('File', function (filesystem, EditSession, filenameFilter, basenameFilter) {
 
-        return function (fileEntry) {
+        /* Create a glark.services.File object giving the fullPath of the file
+         * and a promise callback allowing to get the content of the file itself. */
+        return function (fullPath, getFileContentCallback) {
             var file = this;
             
-            file.fileEntry = fileEntry;
+            // file.fileEntry = fileEntry;
 
-            file.name = fileEntry.name;
-            file.basename = '/';
-            if (typeof fileEntry.fullPath !== 'undefined') {
-                file.basename = basenameFilter(fileEntry.fullPath);
-            }
+            file.name = filenameFilter(fullPath);
+            file.basename = basenameFilter(fullPath);
 
             file.session = new EditSession('');
 
             // TODO: Should be changed.
             file.session.setMode("ace/mode/javascript");
+
+            getFileContentCallback(function (content) {
+                file.session.setValue(content, -1);
+            });
             
-            if (typeof fileEntry.file === 'function') {
-                fileEntry.file(function (blob) {
-                    var promise = filesystem.getFileContent(blob);
-                    promise.then(function (content) {
-                        file.session.setValue(content, -1);
-                    });
-                });
-            } else {
-                var promise = filesystem.getFileContent(fileEntry);
-                promise.then(function (content) {
-                    file.session.setValue(content, -1);
-                });
-            }
+            // if (typeof fileEntry.file === 'function') {
+                // fileEntry.file(function (blob) {
+                    // var promise = filesystem.getFileContent(blob);
+                    // promise.then(function (content) {
+                        // file.session.setValue(content, -1);
+                    // });
+                // });
+            // } else {
+                // var promise = filesystem.getFileContent(fileEntry);
+                // promise.then(function (content) {
+                    // file.session.setValue(content, -1);
+                // });
+            // }
         };
     });

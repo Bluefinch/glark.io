@@ -25,8 +25,13 @@ angular.module('glark.services')
                 var defered = $q.defer();
                 var reader = new FileReader();
                 reader.onload = function (event) {
-                    defered.resolve(event.target.result);
-                    $rootScope.$digest();
+                    console.log('b resolve');
+                    console.log(event);
+                    $rootScope.$apply(function () {
+                        defered.resolve(event.target.result);
+                    });
+                    console.log('a resolve');
+
                 };
                 reader.readAsText(fileEntry);
                 return defered.promise;

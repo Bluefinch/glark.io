@@ -59,11 +59,11 @@ angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters
      * server would be better. */
     var fileEntry = new Blob(["###glark.io###\nWelcome to _glark.io_ the drag'n'collaborate editor.\nJust drag some files here and start editing."], {type: "text"});
     fileEntry.name = "welcome.md";
-    var welcomeFile = new File(fileEntry);
+    // var welcomeFile = new File(fileEntry);
 
     /* Add it to the workspace and give it the focus. */
-    workspace.addFile(welcomeFile);
-    workspace.setActiveFile(welcomeFile);
+    // workspace.addFile(welcomeFile);
+    // workspace.setActiveFile(welcomeFile);
 
     /* Connect to socketio. */
     var socket = io.connect();
