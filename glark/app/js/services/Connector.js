@@ -23,7 +23,7 @@ angular.module('glark.services')
         var address = "192.168.0.3";
         var port = "3001";
         
-        var Files = $resource('http:' + address + '\\:' + port + '/files');
+        var Files = $resource('http://' + address + '\\:' + port + '/files');
         var files = Files.get(function() {
             angular.forEach(files.data, function(file) {
                 var entryFile = {
@@ -32,7 +32,5 @@ angular.module('glark.services')
                 };
                 workspace.addFile(entryFile);
             });
-            
-            
         });
     });
