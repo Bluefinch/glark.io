@@ -20,16 +20,18 @@ angular.module('glark.services')
     
     /* Create a connector */
     .factory('Connector', function ($resource, $log, workspace, RemoteFile) {
-        var address = "192.168.0.3";
-        var port = "3001";
         
-        var Files = $resource('http://' + address + '\\:' + port + '/files');
-        var GetFiles = $resource('http://' + address + '\\:' + port + '/files/:filename', {filename:'@filename'});
-        
-        var files = Files.get(function() {
-            angular.forEach(files.data, function(filename) {
-                var file = new RemoteFile(filename, GetFiles);
-                workspace.addFile(file);
+        var Connector = function(address, port) {
+            var Files = $resource('http://' + address + '\\:' + port + '/files');
+            var GetFiles = $resource('http://' + address + '\\:' + port + '/files/:filename', {filename:'@filename'});
+            
+            var files = Files.get(function() {
+                angular.forEach(files.data, function(filename) {
+                    var file = new RemoteFile(filename, GetFiles);
+                    workspace.addFile(file);
+                });
             });
-        });
+        };
+        
+        return new Connector("192.168.0.3", 3001);
     });
