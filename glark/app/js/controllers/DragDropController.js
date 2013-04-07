@@ -22,14 +22,7 @@ angular.module('glark.controllers')
         $scope.droppedFile = null;
 
         var openFile = function (fileEntry, setAsActiveFile) {
-            console.log(fileEntry);
-            var file = new File(fileEntry.fullPath, function (handleContentCallback) {
-                fileEntry.file(function (blob) {
-                    filesystem.getFileContent(blob).then(function (content) {
-                        handleContentCallback(content);
-                    });
-                });
-            });
+            var file = new File(fileEntry);
             workspace.addFile(file);
             if (setAsActiveFile) {
                 workspace.setActiveFile(file);
@@ -54,7 +47,6 @@ angular.module('glark.controllers')
                 readDirectoryEntries(directoryReader);
             }
         };
-
 
         $scope.openDroppedFiles = function () {
             var dataTransfer = $scope.dataTransfer;

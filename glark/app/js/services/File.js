@@ -18,39 +18,35 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
     
-    .factory('File', function (filesystem, EditSession, filenameFilter, basenameFilter) {
+    /* Create a glark.services.File object from a html5 File or Blob object. */
+    .factory('File', function (filesystem, basenameFilter, $q) {
+        
+        var File = function (fileEntry) {
+            this.fileEntry = fileEntry;
 
-        /* Create a glark.services.File object giving the fullPath of the file
-         * and a promise callback allowing to get the content of the file itself. */
-        return function (fullPath, getFileContentCallback) {
-            var file = this;
-            
-            // file.fileEntry = fileEntry;
-
-            file.name = filenameFilter(fullPath);
-            file.basename = basenameFilter(fullPath);
-
-            file.session = new EditSession('');
-
-            // TODO: Should be changed.
-            file.session.setMode("ace/mode/javascript");
-
-            getFileContentCallback(function (content) {
-                file.session.setValue(content, -1);
-            });
-            
-            // if (typeof fileEntry.file === 'function') {
-                // fileEntry.file(function (blob) {
-                    // var promise = filesystem.getFileContent(blob);
-                    // promise.then(function (content) {
-                        // file.session.setValue(content, -1);
-                    // });
-                // });
-            // } else {
-                // var promise = filesystem.getFileContent(fileEntry);
-                // promise.then(function (content) {
-                    // file.session.setValue(content, -1);
-                // });
-            // }
+            this.name = fileEntry.name;
+            this.basename = '/';
+            if (typeof fileEntry.fullPath !== 'undefined') {
+                this.basename = basenameFilter(fileEntry.fullPath);
+            }
         };
+        
+        File.prototype.getContent = function() {
+            var promise;
+            if (typeof this.fileEntry.file === 'function') {
+                var defered = $q.defer();
+                this.fileEntry.file(function (blob) {
+                    var fsPromise = filesystem.getFileContent(blob);
+                    fsPromise.then(function(content) {
+                        defered.resolve(content);
+                    });
+                });
+                promise = defered.promise;
+            } else {
+                promise = filesystem.getFileContent(this.fileEntry);
+            }
+            return promise;
+        };
+        
+        return File;
     });
