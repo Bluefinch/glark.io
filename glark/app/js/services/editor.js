@@ -27,7 +27,7 @@ angular.module('glark.services')
                     ace.focus();
                 }, 0);
             },
-
+            
             setSession: function (session) {
                 session.setFoldStyle('markbegin');
 

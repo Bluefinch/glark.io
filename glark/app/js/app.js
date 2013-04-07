@@ -38,5 +38,9 @@ angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters
     /* Add it to the default workspace and give it the focus. */
     workspace.addFile(welcomeFile);
     workspace.setActiveFile(welcomeFile);
+    
+    /* Create another local workspace */
+    var workspace = new Workspace('Local bis');
+    workspaces.addWorkspace(workspace);
 
 });

@@ -18,7 +18,7 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('workspaces', function () {
+    .factory('workspaces', function (editor) {
         var workspaces = {};
         
         workspaces.workspaces = [];
@@ -34,8 +34,14 @@ angular.module('glark.services')
         
         /* @param workspace is a glark.services.Workspace object. */
         workspaces.setActiveWorkspace = function(workspace) {
+            editor.clearSession();
             this.addWorkspace(workspace);
-            activeWorkspace = workspace; 
+            activeWorkspace = workspace;
+            
+            var activeFile = workspace.getActiveFile();
+            if(activeFile !== null){
+                editor.setSession(activeFile.session);
+            }
         };
         
         workspaces.getActiveWorkspace = function() {

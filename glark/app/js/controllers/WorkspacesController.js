@@ -20,5 +20,9 @@ angular.module('glark.controllers')
 
     .controller('WorkspacesController', function ($scope, workspaces) {
         $scope.workspaces = workspaces;
+        
+        $scope.setActiveWorkspace = function(workspace) {
+            workspaces.setActiveWorkspace(workspace);
+        };
     });
 
