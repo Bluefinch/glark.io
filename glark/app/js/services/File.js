@@ -19,9 +19,9 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.services')
     
     /* Create a glark.services.File object from a html5 File or Blob object. */
-    .factory('File', function (filesystem, EditSession, basenameFilter) {
-
-        return function (fileEntry) {
+    .factory('File', function (filesystem, basenameFilter, $q) {
+        
+        var File = function (fileEntry) {
             var file = this;
             
             file.fileEntry = fileEntry;
@@ -31,24 +31,24 @@ angular.module('glark.services')
             if (typeof fileEntry.fullPath !== 'undefined') {
                 file.basename = basenameFilter(fileEntry.fullPath);
             }
-
-            file.session = new EditSession('');
-
-            // TODO: Should be changed.
-            file.session.setMode("ace/mode/javascript");
-            
-            if (typeof fileEntry.file === 'function') {
-                fileEntry.file(function (blob) {
-                    var promise = filesystem.getFileContent(blob);
-                    promise.then(function (content) {
-                        file.session.setValue(content, -1);
+        };
+        
+        File.prototype.getContent = function() {
+            var promise;
+            if (typeof this.fileEntry.file === 'function') {
+                var defered = $q.defer();
+                this.fileEntry.file(function (blob) {
+                    var fsPromise = filesystem.getFileContent(blob);
+                    fsPromise.then(function(content) {
+                        defered.resolve(content);
                     });
                 });
+                promise = defered.promise;
             } else {
-                var promise = filesystem.getFileContent(fileEntry);
-                promise.then(function (content) {
-                    file.session.setValue(content, -1);
-                });
+                promise = filesystem.getFileContent(this.fileEntry);
             }
+            return promise;
         };
+        
+        return File;
     });

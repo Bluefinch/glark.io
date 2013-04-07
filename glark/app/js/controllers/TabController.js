@@ -26,9 +26,9 @@ angular.module('glark.controllers')
         };
 
         $scope.closeFile = function (file) {
-            var removed = workspace.removeFile(file);
-            if (removed && workspace.files.length > 0) {
-                workspace.setActiveFile(workspace.files[0]);
+            var closed = workspace.closeFile(file);
+            if (closed && workspace.openFiles.length > 0) {
+                workspace.setActiveFile(workspace.openFiles[0]);
             }
         };
     });
