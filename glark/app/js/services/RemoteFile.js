@@ -19,33 +19,17 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.services')
     
     /* Create a glark.services.File object from a html5 File or Blob object. */
-    .factory('File', function (filesystem, basenameFilter, $q) {
+    .factory('RemoteFile', function (filesystem, basenameFilter, $q) {
         
-        var File = function (fileEntry) {
-            this.fileEntry = fileEntry;
-
-            this.name = fileEntry.name;
+        var File = function (filename) {
+            this.name = filename;
             this.basename = '/';
-            if (typeof fileEntry.fullPath !== 'undefined') {
-                this.basename = basenameFilter(fileEntry.fullPath);
-            }
         };
         
         File.prototype.getContent = function() {
-            var promise;
-            if (typeof this.fileEntry.file === 'function') {
-                var defered = $q.defer();
-                this.fileEntry.file(function (blob) {
-                    var fsPromise = filesystem.getFileContent(blob);
-                    fsPromise.then(function(content) {
-                        defered.resolve(content);
-                    });
-                });
-                promise = defered.promise;
-            } else {
-                promise = filesystem.getFileContent(this.fileEntry);
-            }
-            return promise;
+            var defered = $q.defer();
+            defered.resolve('');
+            return defered.promise;
         };
         
         return File;
