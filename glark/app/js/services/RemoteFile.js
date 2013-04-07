@@ -21,14 +21,17 @@ angular.module('glark.services')
     /* Create a glark.services.File object from a html5 File or Blob object. */
     .factory('RemoteFile', function (filesystem, basenameFilter, $q) {
         
-        var File = function (filename) {
+        var File = function (filename, ressource) {
             this.name = filename;
             this.basename = '/';
+            this.ressource = ressource;
         };
         
         File.prototype.getContent = function() {
             var defered = $q.defer();
-            defered.resolve('');
+            var content = this.ressource.get({filename: this.name}, function() {
+                defered.resolve(content.data.content);
+            });
             return defered.promise;
         };
         
