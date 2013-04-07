@@ -22,37 +22,11 @@ angular.module('glark.filters', []);
 angular.module('glark.services', []);
 
 angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters', 'glark.services'])
-.run(function ($rootScope, File, workspace, layout) {
-    var KEY = {};
-    // create key map A - Z
-    for (var i = 65; i <= 90; i++) {
-        KEY[String.fromCharCode(i).toUpperCase()] = i;
-    }
-
-    var applyEvent = function (eventName, event) {
-        event.preventDefault();
-        $rootScope.$apply(function () {
-            $rootScope.$broadcast(eventName);
-        });
-    };
-
-    document.addEventListener('keydown', function (event) {
-
-        // ESC
-        if (event.keyCode === 27) {
-            applyEvent('escape', event);
-            return;
-        }
-
-        if (!event.metaKey && !event.ctrlKey) {
-            return;
-        }
-
-        switch (event.keyCode) {
-            case KEY.S:
-                return applyEvent('save', event);
-        }
-    });
+.run(function (Workspace, File, workspaces, layout) {
+        
+    /* Create the default local workspace */
+    var workspace = new Workspace('Local');
+    workspaces.setActiveWorkspace(workspace);
 
     /* Open a file to display tutorial and info to the user. */
     /* TODO This is hard-coded for now, maybe requesting this from the
@@ -61,20 +35,8 @@ angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters
     fileEntry.name = "welcome.md";
     var welcomeFile = new File(fileEntry);
 
-    /* Add it to the workspace and give it the focus. */
+    /* Add it to the default workspace and give it the focus. */
     workspace.addFile(welcomeFile);
     workspace.setActiveFile(welcomeFile);
-
-    /* Connect to socketio. */
-    var socket = io.connect();
-    socket.on('connect', function () {
-        socket.on('ping', function (fn) {
-            fn('pong');
-        });
-
-        socket.on('workspace', function (data) {
-            // console.log(data);
-        });
-    });
 
 });

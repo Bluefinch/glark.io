@@ -18,14 +18,23 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.controllers')
 
-    .controller('TabController', function ($scope, workspace) {
-        $scope.workspace = workspace;
+    .controller('TabController', function ($scope, workspaces) {
+        
+        var getActiveWorkspace = function () {
+            return workspaces.getActiveWorkspace();
+        };
+        $scope.getActiveWorkspace = getActiveWorkspace;
+        
+        $scope.isActiveFile = function (file) {
+            return getActiveWorkspace().isActiveFile(file);
+        };
 
         $scope.setActiveFile = function (file) {
-            workspace.setActiveFile(file);
+            getActiveWorkspace().setActiveFile(file);
         };
 
         $scope.closeFile = function (file) {
+            var workspace = getActiveWorkspace();
             var closed = workspace.closeFile(file);
             if (closed && workspace.openFiles.length > 0) {
                 workspace.setActiveFile(workspace.openFiles[0]);

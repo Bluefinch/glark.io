@@ -18,11 +18,14 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.controllers')
 
-    .controller('FileTreeController', function ($scope, workspace, editor) {
-        $scope.workspace = workspace;
-
+    .controller('FileTreeController', function ($scope, workspaces, editor) {
         $scope.editor = editor;
         
+        var getActiveWorkspace = function () {
+            return workspaces.getActiveWorkspace();
+        };
+        $scope.getActiveWorkspace = getActiveWorkspace;
+
         $scope.toggleCollapsed = function (node) {
             node.collapsed = !node.collapsed;
         };

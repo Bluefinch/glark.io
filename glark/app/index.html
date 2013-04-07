@@ -16,16 +16,25 @@
     *   Left Panel
     **************************-->
 
-    <div id="left-panel">
-        <div ng-include="'./partials/filetree.html'"></div>
-        <div class="slider" layout-left-slider="left-panel"></div>
+    <div id="left-panel" class="panel">
+    
+        <div id="left-panel-top" class="inner-panel">
+            <div ng-include="'./partials/filetree.html'"></div>
+            <div class="h-bottom-slider" layout-top-slider="left-panel-top"></div>
+        </div>
+        
+        <div id="left-panel-bottom" class="inner-panel">
+            <div ng-include="'./partials/filetree.html'"></div>
+        </div>
+        
+        <div class="v-right-slider" layout-left-slider="left-panel"></div>
     </div>
     
     <!--**********************
     *   Center Panel
     **************************-->
 
-    <div id="center-panel">
+    <div id="center-panel" class="panel">
         <div id="editor-wrapper">
             <div ng-include="'./partials/tabs.html'"></div>
             <div ng-controller="DragDropController" ng-model="dataTransfer" drop-zone="openDroppedFiles()">
@@ -82,7 +91,8 @@
     <script src="js/services/filesystem.js"></script>
     <script src="js/services/FileTree.js"></script>
     <script src="js/services/layout.js"></script>
-    <script src="js/services/workspace.js"></script>
+    <script src="js/services/Workspace.js"></script>
+    <script src="js/services/workspaces.js"></script>
     <!-- Controllers -->
     <script src="js/controllers/DragDropController.js"></script>
     <script src="js/controllers/FileTreeController.js"></script>
@@ -94,6 +104,7 @@
     <!-- Directives -->
     <script src="js/directives/dropZone.js"></script>
     <script src="js/directives/layoutLeftSlider.js"></script>
+    <script src="js/directives/layoutTopSlider.js"></script>
 
 </body>
 </html>

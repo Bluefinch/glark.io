@@ -137,13 +137,24 @@ angular.module('glark.services')
         
         /* Register default components. */
         layout.registerComponent('left-panel', '#left-panel', {
-            defautWidth: 150,
+            defaultWidth: 150,
             minWidth: 50,
             setWidth: function (width) {
                 components['left-panel'].$el.css('width', width + 'px');
                 components['center-panel'].$el.css('left', width + 'px');
             }
         });
+        
+        layout.registerComponent('left-panel-top', '#left-panel-top', {
+            defaultHeight: 150,
+            minHeight: 150,
+            setHeight: function (height) {
+                components['left-panel-top'].$el.css('height', height + 'px');
+                components['left-panel-bottom'].$el.css('top', height + 'px');
+            }
+        });
+        
+        layout.registerComponent('left-panel-bottom', '#left-panel-bottom');
         
         layout.registerComponent('center-panel', '#center-panel');
             

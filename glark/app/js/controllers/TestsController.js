@@ -18,7 +18,7 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.controllers')
 
-    .controller('TestsController', function ($scope, File, workspace) {
+    .controller('TestsController', function ($scope, File, workspaces) {
         
         $scope.initializeTests = function () {
             var fileEntry = new Blob(["toto"], {type: "text"});
@@ -26,7 +26,7 @@ angular.module('glark.controllers')
             fileEntry.fullPath = "titi/tutu/toto";
             var totoFile = new File(fileEntry);
 
-            workspace.addFile(totoFile);
+            workspaces.getActiveWorkspace().addFile(totoFile);
         };
     });
     

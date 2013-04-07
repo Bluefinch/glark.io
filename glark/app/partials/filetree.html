@@ -12,14 +12,14 @@
             </ul>
         </div>
         <div ng-switch-when="false">
-            <a title="{{node.name}}"  ng-click="editor.previewFile(node.file)" ng-dblclick="workspace.setActiveFile(node.file)">{{node.name}}</a>
+            <a title="{{node.name}}"  ng-click="editor.previewFile(node.file)" ng-dblclick="getActiveWorkspace().setActiveFile(node.file)">{{node.name}}</a>
         </div>
     </div>
 </script>
 
 <div ng-controller="FileTreeController">
     <ul id="filetree">
-        <li ng-repeat="node in workspace.tree.rootNode.children" ng-include="'filetree_node_template'"></li>
+        <li ng-repeat="node in getActiveWorkspace().tree.rootNode.children" ng-include="'filetree_node_template'"></li>
     </ul>
 </div>
 
