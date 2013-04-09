@@ -18,8 +18,24 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.controllers')
 
-    .controller('WorkspacesController', function ($scope, workspaces) {
+    .controller('WorkspacesController', function ($window, $scope, workspaces, Workspace) {
         $scope.workspaces = workspaces;
+        
+        $scope.addLocalWorkspace = function() {
+            var workspace = new Workspace('Local');
+            workspaces.addWorkspace(workspace);
+        };
+        
+        $scope.addRemoteWorkspace = function() {
+            /* TODO : temporar UI... */
+            var result = $window.prompt("adress:port","");
+            var split = result.split(':');
+            var adress = split[0];
+            var port = split[1];
+            
+            var workspace = new Workspace('Remote');
+            workspaces.addWorkspace(workspace);
+        };
         
         $scope.setActiveWorkspace = function(workspace) {
             workspaces.setActiveWorkspace(workspace);

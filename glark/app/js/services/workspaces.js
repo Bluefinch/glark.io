@@ -34,13 +34,15 @@ angular.module('glark.services')
         
         /* @param workspace is a glark.services.Workspace object. */
         workspaces.setActiveWorkspace = function(workspace) {
-            editor.clearSession();
             this.addWorkspace(workspace);
             activeWorkspace = workspace;
             
             var activeFile = workspace.getActiveFile();
             if(activeFile !== null){
                 editor.setSession(activeFile.session);
+            } 
+            else {
+                editor.clearSession();
             }
         };
         

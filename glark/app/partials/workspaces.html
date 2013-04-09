@@ -3,6 +3,11 @@
 * -->
     
 <div ng-controller="WorkspacesController">
+    <div>Add: 
+        <a ng-click="addLocalWorkspace()">local</a>
+         | 
+        <a ng-click="addRemoteWorkspace()">remote</a>
+    </div>
     <ul id="workspaces" ng-repeat="workspace in workspaces.workspaces">
         <li ng-click="setActiveWorkspace(workspace)">{{workspace.name}}</li>
     </ul>
