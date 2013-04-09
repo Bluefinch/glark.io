@@ -23,7 +23,7 @@ angular.module('glark.services', ['ngResource']);
 
 angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters', 'glark.services'])
 
-.run(function (Workspace, File, workspaces, layout) {
+.run(function (Workspace, LocalFile, workspaces, layout) {
         
     /* Create the default local workspace */
     var workspace = new Workspace('Default');
