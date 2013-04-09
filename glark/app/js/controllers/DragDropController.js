@@ -31,7 +31,7 @@ angular.module('glark.controllers')
 
         var readDirectoryEntries = function (directoryReader) {
             directoryReader.readEntries(function (entries) {
-                $scope.$apply(function() {
+                $scope.$apply(function () {
                     for (var i = 0; i < entries.length; ++i) {
                         readFileTree(entries[i]);
                     }
