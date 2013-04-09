@@ -18,23 +18,20 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
     
-    /* Helper providing services to handle the html5 filesystem api. */
-    .factory('filesystem', function ($q, $rootScope) {
-        return {
-            getFileContent: function (fileEntry) {
-                var defered = $q.defer();
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    console.log('b resolve');
-                    console.log(event);
-                    $rootScope.$apply(function () {
-                        defered.resolve(event.target.result);
-                    });
-                    console.log('a resolve');
-
-                };
-                reader.readAsText(fileEntry);
-                return defered.promise;
-            }
+    /* Create a connector */
+    .factory('Connector', function ($resource, $log, workspace, RemoteFile) {
+        
+        var Connector = function(address, port) {
+            var Files = $resource('http://' + address + '\\:' + port + '/files');
+            var GetFiles = $resource('http://' + address + '\\:' + port + '/files/:filename', {filename:'@filename'});
+            
+            var files = Files.get(function() {
+                angular.forEach(files.data, function(filename) {
+                    var file = new RemoteFile(filename, GetFiles);
+                    workspace.addFile(file);
+                });
+            });
         };
+        
+        return new Connector("192.168.0.3", 3001);
     });

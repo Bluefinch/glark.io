@@ -19,17 +19,15 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.services')
     
     /* Create a glark.services.File object from a html5 File or Blob object. */
-    .factory('File', function (filesystem, basenameFilter, $q) {
+    .factory('LocalFile', function (filesystem, basenameFilter, $q) {
         
         var File = function (fileEntry) {
-            var file = this;
-            
-            file.fileEntry = fileEntry;
+            this.fileEntry = fileEntry;
 
-            file.name = fileEntry.name;
-            file.basename = '/';
+            this.name = fileEntry.name;
+            this.basename = '/';
             if (typeof fileEntry.fullPath !== 'undefined') {
-                file.basename = basenameFilter(fileEntry.fullPath);
+                this.basename = basenameFilter(fileEntry.fullPath);
             }
         };
         
