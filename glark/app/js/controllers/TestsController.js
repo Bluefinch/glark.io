@@ -18,7 +18,7 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.controllers')
 
-    .controller('TestsController', function ($scope, File, workspaces) {
+    .controller('TestsController', function ($scope, LocalFile, workspaces) {
         
         $scope.initializeTests = function () {
             var fileEntry = new Blob(["toto"], {type: "text"});

@@ -18,11 +18,11 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.controllers')
 
-    .controller('DragDropController', function ($scope, workspaces, File) {
+    .controller('DragDropController', function ($scope, workspaces, LocalFile) {
         $scope.droppedFile = null;
 
         var openFile = function (fileEntry, setAsActiveFile) {
-            var file = new File(fileEntry);
+            var file = new LocalFile(fileEntry);
             workspaces.getActiveWorkspace().addFile(file);
             if (setAsActiveFile) {
                 workspaces.getActiveWorkspace().setActiveFile(file);
