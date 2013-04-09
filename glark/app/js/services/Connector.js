@@ -33,5 +33,5 @@ angular.module('glark.services')
             });
         };
         
-        return Connector
+        return Connector;
     });
