@@ -23,21 +23,19 @@ angular.module('glark.controllers')
 
         var openFile = function (fileEntry, setAsActiveFile) {
             var file = new File(fileEntry);
-            /* since we modify a not-injected scope here, esure that a
-            digest cycle will occur by wrapping this in an apply. */
-            $scope.$apply(function () {
-                workspaces.getActiveWorkspace().addFile(file);
-                if (setAsActiveFile) {
-                    workspaces.getActiveWorkspace().setActiveFile(file);
-                }
-            });
+            workspaces.getActiveWorkspace().addFile(file);
+            if (setAsActiveFile) {
+                workspaces.getActiveWorkspace().setActiveFile(file);
+            }
         };
 
         var readDirectoryEntries = function (directoryReader) {
             directoryReader.readEntries(function (entries) {
-                for (var i = 0; i < entries.length; ++i) {
-                    readFileTree(entries[i]);
-                }
+                $scope.$apply(function() {
+                    for (var i = 0; i < entries.length; ++i) {
+                        readFileTree(entries[i]);
+                    }
+                });
             }, function (err) {
                 console.log(err);
             });
