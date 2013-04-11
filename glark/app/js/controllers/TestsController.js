@@ -24,9 +24,9 @@ angular.module('glark.controllers')
             var fileEntry = new Blob(["toto"], {type: "text"});
             fileEntry.name = "toto";
             fileEntry.fullPath = "titi/tutu/toto";
-            var totoFile = new File(fileEntry);
+            var totoFile = new LocalFile(fileEntry);
 
-            workspaces.getActiveWorkspace().addFile(totoFile);
+            workspaces.getActiveWorkspace().addEntry(totoFile);
         };
     });
     

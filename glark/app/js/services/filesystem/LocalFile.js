@@ -19,34 +19,38 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.services')
     
     /* Create a glark.services.File object from a html5 File or Blob object. */
-    .factory('LocalFile', function (filesystem, basenameFilter, $q) {
+    .factory('LocalFile', function ($rootScope, $q) {
         
-        var File = function (fileEntry) {
-            this.fileEntry = fileEntry;
-
-            this.name = fileEntry.name;
+        var LocalFile = function (entry) {
+            this.isDirectory = false;
+            this.isFile = true;
+            
+            this.name = entry.name;
             this.basename = '/';
-            if (typeof fileEntry.fullPath !== 'undefined') {
-                this.basename = basenameFilter(fileEntry.fullPath);
-            }
-        };
-        
-        File.prototype.getContent = function() {
-            var promise;
-            if (typeof this.fileEntry.file === 'function') {
-                var defered = $q.defer();
-                this.fileEntry.file(function (blob) {
-                    var fsPromise = filesystem.getFileContent(blob);
-                    fsPromise.then(function(content) {
-                        defered.resolve(content);
-                    });
+            
+            this.blob = null;
+            
+            /* Retreive blob from entry. */
+            var _this = this;
+            if (typeof entry.file === 'function') {
+                entry.file(function (blob) {
+                    _this.blob = blob;
                 });
-                promise = defered.promise;
             } else {
-                promise = filesystem.getFileContent(this.fileEntry);
+                _this.blob = entry;   
             }
-            return promise;
         };
         
-        return File;
+        LocalFile.prototype.getContent = function () {
+            var defered = $q.defer();
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                defered.resolve(event.target.result);
+                $rootScope.$apply();
+            };
+            reader.readAsText(this.blob);
+            return defered.promise;
+        };
+        
+        return LocalFile;
     });

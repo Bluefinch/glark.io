@@ -18,36 +18,32 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('Workspace', function (editor, FileTree, EditSession) {
+    .factory('Workspace', function (editor, EditSession) {
         /* Main model of the glark.io application. Contains among other all the
          * data describing the files of the workspace, the open ones and the active
          * one. */
-        var Workspace = function(name) {
+        var Workspace = function(name, rootDirectory) {
             this.name = name;
             
             /* Private member active file. */
             this.activeFile = null;    
             
-            /* Files of the workspace. A collection of glark.services.File object. */
-            this.files = [];
+            /* A glark.services.*Directory object. */
+            this.rootDirectory = rootDirectory;
+            rootDirectory.collapsed = false;
             
             /* Open files of the workspace. A collection of glark.services.File object,
              * extended with File.session. */
             this.openFiles = [];
-            
-            /* A file tree representation of the files collection. */
-            this.tree = new FileTree();
         };
         
-        /* @param file is a glark.services.File object. */
-        Workspace.prototype.addFile = function (file) {
-            if (this.files.indexOf(file) == -1) {
-                this.files.push(file);
-                this.tree.addFile(file);
-            }
+        /* @param entry is a glark.services.*File object or
+         * a glark.services.*Directory object. */
+        Workspace.prototype.addEntry = function (entry) {
+            this.rootDirectory.addEntry(entry);
         };
         
-        /* @param file is a glark.services.File object. */
+        /* @param file is a glark.services.*File object. */
         Workspace.prototype.openFile = function (file) {
             if (this.openFiles.indexOf(file) == -1) {
                 this.openFiles.push(file);
@@ -64,25 +60,27 @@ angular.module('glark.services')
         
         /* @param file is a glark.services.File object. */
         Workspace.prototype.addAndOpenFile = function (file) {
-            this.addFile(file);
+            this.addEntry(file);
             this.openFile(file);
         };
         
-        /* @param file is a glark.services.File object. */
-        Workspace.prototype.removeFile = function (file) {
+        /* @param entry is a glark.services.*File object or
+         * a glark.services.*Directory object. */
+        Workspace.prototype.removeEntry = function (entry) {
             /* Remove from open files */
-            this.closeFile(file);
-            /* Remove from files. */
-            var idx = this.files.indexOf(file);
+            if(entry.isFile) {
+                this.closeFile(entry);
+            }
+            /* Remove from entries. */
+            var idx = this.entries.indexOf(entry);
             if (idx != -1) {
-                this.files.splice(idx, 1);
-                //this.tree.removeFile(file); /*TODO*/
+                this.entries.splice(idx, 1);
                 return true;
             }
             return false;
         };
         
-        /* @param file is a glark.services.File object. */
+        /* @param file is a glark.services.*File object. */
         Workspace.prototype.closeFile = function (file) {
             if(file == this.activeFile) {
                 this.activeFile = null;
@@ -97,11 +95,6 @@ angular.module('glark.services')
             return false;
         };
 
-        /* @return the number of files. */
-        Workspace.prototype.getFileCount = function () {
-            return this.files.length;
-        };
-
         /* @return the active glark.services.File file. */
         Workspace.prototype.getActiveFile = function () {
             return this.activeFile;
@@ -109,7 +102,7 @@ angular.module('glark.services')
 
         /* @param file is a glark.services.File object. */
         Workspace.prototype.setActiveFile = function (file) {
-            this.addAndOpenFile(file);
+            this.openFile(file);
             this.activeFile = file;
             editor.setSession(file.session);
         };

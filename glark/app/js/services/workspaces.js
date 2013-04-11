@@ -18,7 +18,7 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('workspaces', function (editor) {
+    .factory('workspaces', function ($rootScope, $q, editor, Workspace, LocalDirectory) {
         var workspaces = {};
         
         workspaces.workspaces = [];
@@ -29,7 +29,14 @@ angular.module('glark.services')
         workspaces.addWorkspace = function(workspace) {
             if (this.workspaces.indexOf(workspace) == -1) {
                 this.workspaces.push(workspace);
+                workspace.rootDirectory.updateChildren();
             }
+        };
+        
+        workspaces.createLocalWorkspace = function(name) {
+            var rootDirectory = new LocalDirectory(name);
+            var workspace = new Workspace(name, rootDirectory);
+            return workspace;
         };
         
         /* @param workspace is a glark.services.Workspace object. */

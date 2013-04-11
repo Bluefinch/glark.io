@@ -57,7 +57,9 @@ angular.module('glark.services')
             },
 
             previewFile: function (file) {
-                this.setSession(file.session);
+                if(file.session !== undefined) {
+                    this.setSession(file.session);
+                }
             }
         };
     });

@@ -24,7 +24,7 @@
         </div>
         
         <div id="left-panel-bottom" class="inner-panel">
-            <div ng-include="'./partials/filetree.html'"></div>
+            <div ng-include="'./partials/workspace.html'"></div>
         </div>
         
         <div class="v-right-slider" layout-left-slider="left-panel"></div>
@@ -69,14 +69,14 @@
         }
     </script>
 
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script>
     <script type="text/javascript">
         if(typeof angular == 'undefined') {
             document.write("<script src='lib/angular/angular.js' type='text/javascript'><\/script>");
         }
     </script>
     
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular-resource.min.js"></script>
     <script type="text/javascript">
         if(typeof angular == 'undefined') {
             document.write("<script src='lib/angular/angular-resource.js' type='text/javascript'><\/script>");
@@ -94,17 +94,17 @@
     <!-- Services -->
     <script src="js/services/ace.js"></script>
     <script src="js/services/editor.js"></script>
-    <script src="js/services/LocalFile.js"></script>
-    <script src="js/services/RemoteFile.js"></script>
-    <script src="js/services/filesystem.js"></script>
-    <script src="js/services/FileTree.js"></script>
     <script src="js/services/layout.js"></script>
-    <script src="js/services/Workspace.js"></script>
     <script src="js/services/workspaces.js"></script>
     <script src="js/services/Connector.js"></script>
+    <script src="js/services/Workspace.js"></script>
+    <script src="js/services/filesystem/LocalDirectory.js"></script>
+    <script src="js/services/filesystem/LocalFile.js"></script>
+    <script src="js/services/filesystem/RemoteDirectory.js"></script>
+    <script src="js/services/filesystem/RemoteFile.js"></script>
     <!-- Controllers -->
     <script src="js/controllers/DragDropController.js"></script>
-    <script src="js/controllers/FileTreeController.js"></script>
+    <script src="js/controllers/WorkspaceController.js"></script>
     <script src="js/controllers/WorkspacesController.js"></script>
     <script src="js/controllers/TabController.js"></script>
     <script src="js/controllers/TestsController.js"></script>

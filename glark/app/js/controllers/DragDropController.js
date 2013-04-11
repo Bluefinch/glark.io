@@ -18,59 +18,31 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.controllers')
 
-    .controller('DragDropController', function ($scope, workspaces, LocalFile) {
+    .controller('DragDropController', function ($scope, workspaces, LocalDirectory, LocalFile) {
         $scope.droppedFile = null;
-
-        var openFile = function (fileEntry, setAsActiveFile) {
-            var file = new LocalFile(fileEntry);
-            workspaces.getActiveWorkspace().addFile(file);
-            if (setAsActiveFile) {
-                workspaces.getActiveWorkspace().setActiveFile(file);
-            }
-        };
-
-        var readDirectoryEntries = function (directoryReader) {
-            directoryReader.readEntries(function (entries) {
-                $scope.$apply(function () {
-                    for (var i = 0; i < entries.length; ++i) {
-                        readFileTree(entries[i]);
-                    }
-                });
-            }, function (err) {
-                console.log(err);
-            });
-        };
-        
-        var readFileTree = function (entry) {
-            if (entry.isFile) {
-                openFile(entry, false);
-            } else if (entry.isDirectory) {
-                var directoryReader = entry.createReader();
-                readDirectoryEntries(directoryReader);
-            }
-        };
 
         $scope.openDroppedFiles = function () {
             var dataTransfer = $scope.dataTransfer;
             /* FIXME for firefox use dataTransfer.mozGetDataAt(i). */
             if (typeof dataTransfer.items !== 'undefined') {
                 angular.forEach(dataTransfer.items, function (item) {
-                    var entry = null;
                     if (typeof item.webkitGetAsEntry === "function") {
-                        entry = item.webkitGetAsEntry();
-
-                        /* If it's a file open it directly. */
+                        var entry = item.webkitGetAsEntry();
                         if (entry.isFile) {
-                            openFile(entry, true);
-                            return;
+                            var file = new LocalFile(entry);
+                            workspaces.getActiveWorkspace().rootDirectory.addEntry(file);
+                            workspaces.getActiveWorkspace().setActiveFile(file);
+                        } else {
+                            var directory = new LocalDirectory(entry.name, entry);
+                            workspaces.getActiveWorkspace().addEntry(directory);
                         }
-
-                        readFileTree(entry);
                     }
                 });
             } else {
                 angular.forEach(dataTransfer.files, function (entry) {
-                    openFile(entry, true);
+                    var file = new LocalFile(entry);
+                    workspaces.getActiveWorkspace().rootDirectory.addEntry(file);
+                    workspaces.getActiveWorkspace().setActiveFile(file);
                 });
             }
         };

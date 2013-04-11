@@ -19,19 +19,26 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.services')
     
     /* Create a connector */
-    .factory('Connector', function ($resource, $log, RemoteFile) {
+    .factory('Connector', function ($resource, $q, RemoteFile) {
         
         var Connector = function(adress, port, workspace) {
-            var Files = $resource('http://' + adress + '\\:' + port + '/files');
-            var GetFiles = $resource('http://' + adress + '\\:' + port + '/files/:filename', {filename:'@filename'});
-            
-            var files = Files.get(function() {
-                angular.forEach(files.data, function(filename) {
-                    var file = new RemoteFile(filename, GetFiles);
-                    workspace.addFile(file);
-                });
-            });
+            this.Files = $resource('http://' + adress + '\\:' + port + '/connector/files');
+            this.GetFiles = $resource('http://' + adress + '\\:' + port + '/connector/files/:filename', {filename:'@filename'});
         };
         
+        Connector.prototype.getEntries = function () {
+            var _this = this;
+            var defered = $q.defer();
+            var files = this.Files.get(function() {
+                var entries = [];
+                angular.forEach(files.data, function(filename) {
+                    var file = new RemoteFile(filename, _this.GetFiles);
+                    entries.push(file);
+                });
+                defered.resolve(entries)
+            });
+            return defered.promise;
+        }
+         
         return Connector;
     });
