@@ -34,8 +34,7 @@ angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters
     /* TODO This is hard-coded for now, maybe requesting this from the
      * server would be better. */
     var blob = new Blob(["###glark.io###\nWelcome to _glark.io_ the drag'n'collaborate editor.\nJust drag some files here and start editing."], {type: "text"});
-    blob.name = "welcome.md";
-    var welcomeFile = new LocalFile(blob);
+    var welcomeFile = new LocalFile("welcome.md", blob);
     
     /* Add it to the default workspace and give it the focus. */
     workspace.addEntry(welcomeFile);

@@ -21,25 +21,25 @@ angular.module('glark.services')
     /* Create a glark.services.File object from a html5 File or Blob object. */
     .factory('LocalFile', function ($rootScope, $q) {
         
-        var LocalFile = function (entry) {
+        /* Create a local file from a Blob or a 
+         * FileEntry object */
+        var LocalFile = function (name, entry) {
             this.isDirectory = false;
             this.isFile = true;
             
-            /* If the entry is directly a real blob,
-             * it could not have a name... */
-            this.name = entry.name;
+            this.name = name;
             this.basename = '/';
-            
             this.blob = null;
             
-            /* Retreive blob from entry. */
             var _this = this;
-            if (typeof entry.file === 'function') {
-                entry.file(function (blob) {
-                    _this.blob = blob;
+            if(entry.file !== undefined) {
+                /* entry is a FileEntry object. */
+                 entry.file(function (file) {
+                    _this.blob = file;
                 });
             } else {
-                _this.blob = entry;   
+                /* entry is a Blob object. */
+                this.blob = entry;
             }
         };
         

@@ -26,10 +26,10 @@ angular.module('glark.controllers')
         };
         $scope.getActiveWorkspace = getActiveWorkspace;
 
-        $scope.toggleCollapsed = function (entry) {
-            entry.collapsed = !entry.collapsed;
-            if(!entry.collapsed) {
-                entry.updateChildren();
+        $scope.toggleCollapsed = function (directory) {
+            directory.collapsed = !directory.collapsed;
+            if(!directory.collapsed) {
+                directory.updateChildren();
             }
         };
     });

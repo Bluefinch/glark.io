@@ -30,7 +30,7 @@ angular.module('glark.services')
                 for (var i = 0; i < entries.length; ++i) {
                     var entry = entries[i];
                     if (entry.isFile) {
-                        children.push(new LocalFile(entry));
+                        children.push(new LocalFile(entry.name, entry));
                     } else if (entry.isDirectory) {
                         children.push(new LocalDirectory(entry.name, entry));
                     }

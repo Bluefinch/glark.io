@@ -29,12 +29,12 @@ angular.module('glark.controllers')
                     if (typeof item.webkitGetAsEntry === "function") {
                         var entry = item.webkitGetAsEntry();
                         if (entry.isFile) {
-                            var file = new LocalFile(entry);
-                            workspaces.getActiveWorkspace().rootDirectory.addEntry(file);
-                            workspaces.getActiveWorkspace().setActiveFile(file);
+                            var localFile = new LocalFile(entry.name, entry);
+                            workspaces.getActiveWorkspace().rootDirectory.addEntry(localFile);
+                            workspaces.getActiveWorkspace().setActiveFile(localFile);
                         } else {
-                            var directory = new LocalDirectory(entry.name, entry);
-                            workspaces.getActiveWorkspace().addEntry(directory);
+                            var localDirectory = new LocalDirectory(entry.name, entry);
+                            workspaces.getActiveWorkspace().addEntry(localDirectory);
                         }
                     }
                 });
