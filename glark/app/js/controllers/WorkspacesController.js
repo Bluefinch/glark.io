@@ -22,27 +22,25 @@ angular.module('glark.controllers')
         $scope.workspaces = workspaces;
         
         $scope.addLocalWorkspace = function() {
-            var workspace = new Workspace('Local');
-            workspaces.addWorkspace(workspace);
+            var workspace = workspaces.createLocalWorkspace('Local');
+            workspaces.setActiveWorkspace(workspace);
         };
         
         $scope.addRemoteWorkspace = function() {
             /* TODO : temporar UI... */
-            var result = $window.prompt("adress:port","");
+            var result = $window.prompt("adress:port","localhost:3000");
             var split = result.split(':');
             var adress = split[0];
             var port = split[1];
             
             var connector = new Connector(adress, port, workspace);
-            var directory = new RemoteDirectory('root', connector);
-            var workspace = new Workspace('Remote', directory);
             
-            workspaces.addWorkspace(workspace);
+            var workspace = workspaces.createRemoteWorkspace('Local',connector);
+            workspaces.setActiveWorkspace(workspace);
         };
         
         $scope.setActiveWorkspace = function(workspace) {
             workspaces.setActiveWorkspace(workspace);
-            workspace.rootDirectory.updateChildren();
         };
     });
 

@@ -28,22 +28,22 @@ angular.module('glark.services')
             /* Private member active file. */
             this.activeFile = null;    
             
-            /* A glark.services.*Directory object. */
+            /* A services.filesystem.*Directory object. */
             this.rootDirectory = rootDirectory;
             rootDirectory.collapsed = false;
             
-            /* Open files of the workspace. A collection of glark.services.File object,
-             * extended with File.session. */
+            /* Open files of the workspace. A collection of glark.services.File,
+             * object, extended with a session attribute. */
             this.openFiles = [];
         };
         
-        /* @param entry is a glark.services.*File object or
-         * a glark.services.*Directory object. */
+        /* @param entry is a services.filesystem.*File or
+         * a services.filesystem.*Directory object. */
         Workspace.prototype.addEntry = function (entry) {
             this.rootDirectory.addEntry(entry);
         };
         
-        /* @param file is a glark.services.*File object. */
+        /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.openFile = function (file) {
             if (this.openFiles.indexOf(file) == -1) {
                 this.openFiles.push(file);
@@ -58,13 +58,13 @@ angular.module('glark.services')
             }
         };
         
-        /* @param file is a glark.services.File object. */
+        /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.addAndOpenFile = function (file) {
             this.addEntry(file);
             this.openFile(file);
         };
         
-        /* @param entry is a glark.services.*File object or
+        /* @param entry is a services.filesystem.*File object or
          * a glark.services.*Directory object. */
         Workspace.prototype.removeEntry = function (entry) {
             /* Remove from open files */
@@ -80,7 +80,7 @@ angular.module('glark.services')
             return false;
         };
         
-        /* @param file is a glark.services.*File object. */
+        /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.closeFile = function (file) {
             if(file == this.activeFile) {
                 this.activeFile = null;
@@ -95,19 +95,19 @@ angular.module('glark.services')
             return false;
         };
 
-        /* @return the active glark.services.File file. */
+        /* @return the active services.filesystem.*File file. */
         Workspace.prototype.getActiveFile = function () {
             return this.activeFile;
         };
 
-        /* @param file is a glark.services.File object. */
+        /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.setActiveFile = function (file) {
             this.openFile(file);
             this.activeFile = file;
             editor.setSession(file.session);
         };
 
-        /* @param file is a glark.services.File object. */
+        /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.isActiveFile = function (file) {
             return file == this.activeFile;
         };

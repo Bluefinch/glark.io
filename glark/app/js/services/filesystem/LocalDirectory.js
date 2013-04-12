@@ -20,6 +20,8 @@ angular.module('glark.services')
 
     .factory('LocalDirectory', function ($rootScope, LocalFile, $q) {
         
+        /* Read the directoryEntry and create a list of
+         * services.filesystem.*Local objects. */
         var createEntries = function (directoryEntry) {
             var defered = $q.defer();
             var directoryReader = directoryEntry.createReader();
@@ -40,7 +42,7 @@ angular.module('glark.services')
                 $rootScope.$apply();
             });
             return defered.promise;
-        }
+        };
         
         var LocalDirectory = function (name, directoryEntry) {
             this.isDirectory = true;
@@ -52,6 +54,10 @@ angular.module('glark.services')
             this.collapsed = true;
             this.children = [];
             
+            /* If the directoryEntry is not undefined, we
+             * read the content and we fill the children
+             * collection with the services.filesystem.*Local 
+             * objects. */
             var _this = this;
             if(directoryEntry !== undefined) {
                 var promise = createEntries(directoryEntry);
@@ -60,13 +66,18 @@ angular.module('glark.services')
                 });
             }
         };
-                
+        
+        /* Update the children list. */
         LocalDirectory.prototype.updateChildren = function() {
+            /* For LocalDirectory the children list is 
+             * maintened up to date. */
             var defered = $q.defer();
             defered.resolve();
             return defered.promise;
-        }
+        };
         
+        /* @param entry is a services.filestystem.Local* 
+         * object. */
         LocalDirectory.prototype.addEntry = function (entry) {
             entry.basename = this.basename + this.name + '/';
             this.children.push(entry);

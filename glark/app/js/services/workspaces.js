@@ -18,7 +18,7 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('workspaces', function ($rootScope, $q, editor, Workspace, LocalDirectory) {
+    .factory('workspaces', function ($rootScope, $q, editor, Workspace, LocalDirectory, RemoteDirectory) {
         var workspaces = {};
         
         workspaces.workspaces = [];
@@ -36,6 +36,14 @@ angular.module('glark.services')
         workspaces.createLocalWorkspace = function(name) {
             var rootDirectory = new LocalDirectory(name);
             var workspace = new Workspace(name, rootDirectory);
+            this.addWorkspace(workspace);
+            return workspace;
+        };
+        
+        workspaces.createRemoteWorkspace = function(name, connector) {
+            var rootDirectory = new RemoteDirectory(name, connector);
+            var workspace = new Workspace(name, rootDirectory);
+            this.addWorkspace(workspace);
             return workspace;
         };
         
@@ -44,6 +52,10 @@ angular.module('glark.services')
             this.addWorkspace(workspace);
             activeWorkspace = workspace;
             
+            /* Update workspace content. */
+            workspace.rootDirectory.updateChildren();
+            
+            /* Set the new active file if needed. */
             var activeFile = workspace.getActiveFile();
             if(activeFile !== null){
                 editor.setSession(activeFile.session);

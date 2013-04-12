@@ -25,6 +25,8 @@ angular.module('glark.services')
             this.isDirectory = false;
             this.isFile = true;
             
+            /* If the entry is directly a real blob,
+             * it could not have a name... */
             this.name = entry.name;
             this.basename = '/';
             
@@ -41,6 +43,7 @@ angular.module('glark.services')
             }
         };
         
+        /* Returns the content of the maintened blob. */
         LocalFile.prototype.getContent = function () {
             var defered = $q.defer();
             var reader = new FileReader();

@@ -21,7 +21,6 @@ angular.module('glark.services')
     .factory('LayoutComponent', function () {
         var LayoutComponent = function (name, $element, options) {
             var settings = {
-                parent: null,
                 defaultWidth: null,
                 defaultHeight: null,
                 maxWidth: null,
@@ -44,50 +43,35 @@ angular.module('glark.services')
             this.name = name;
             this.$el = $element;
         };
-        
-        LayoutComponent.prototype.propertyValue = function(name) {
-            if(this.options[name] !== undefined) {
-                return this.options[name];
-            } else if(this.options.parent !== undefined) {
-                return this.options.parent.propertyValue(name);
-            } else {
-                return null;
-            }
-        };
-        
+            
         LayoutComponent.prototype.setWidth = function (width) {
-            var setWidth = this.propertyValue('setWidth');
-            if(setWidth === null) return;
+            var options = this.options;
             
-            var minWidth = this.propertyValue('minWidth');
-            var maxWidth = this.propertyValue('maxWidth');
-            if(minWidth !== null && width < minWidth) return;
-            if(maxWidth !== null && width > maxWidth) return;
+            if(options.setWidth === null) return;
+            if(options.minWidth !== null && width < options.minWidth) return;
+            if(options.maxWidth !== null && width > options.maxWidth) return;
             
-            setWidth(width);
+            options.setWidth(width);
         };
         
         LayoutComponent.prototype.setHeight = function (height) {
-            var setHeight = this.propertyValue('setHeight');
-            if(setHeight === null) return;
+            var options = this.options;
             
-            var minHeight = this.propertyValue('minHeight');
-            var maxHeight = this.propertyValue('maxHeight');
-            if(minHeight !== null && height < minHeight) return;
-            if(maxHeight !== null && height > maxHeight) return;
+            if(options.setHeight === null) return;
+            if(options.minHeight !== null && height < options.minHeight) return;
+            if(options.maxHeight !== null && height > options.maxHeight) return;
             
-            setHeight(height);
+            options.setHeight(height);
         };
         
-        LayoutComponent.prototype.resetSize = function (height) {
-            var defaultWidth = this.propertyValue('defaultWidth');
-            if(defaultWidth !== null) {
-                this.setWidth(defaultWidth);
-            }
+        LayoutComponent.prototype.resetSize = function () {
+            var options = this.options;
             
-            var defaultHeight = this.propertyValue('defaultHeight');
-            if(defaultHeight !== null) {
-                this.setHeight(defaultHeight);
+            if(options.defaultWidth !== null) {
+                this.setWidth(options.defaultWidth);
+            }
+            if(options.defaultHeight !== null) {
+                this.setHeight(options.defaultHeight);
             }
         };
         
@@ -97,17 +81,20 @@ angular.module('glark.services')
     /* Helper providing services to manage the layout . */
     .factory('layout', function (LayoutComponent) {
         var layout = {};
-        var components = {};
+        
+        /* List of registered components. */
+        layout.components = {};
         
         /* Register a new component. */
         layout.registerComponent = function (name, selector, options) {
             var $component = angular.element(selector);
             var component = new LayoutComponent(name, $component, options);
-            components[name] = component;
+            this.components[name] = component;
         };
 
         /* Reset the layout. */
         layout.resetLayout = function () {
+            var components = this.components;
             angular.forEach(components, function (component, name) {
                 component.resetSize();
             });
@@ -115,24 +102,24 @@ angular.module('glark.services')
         
         /* @param name is the component name. */
         layout.getWidth = function (name) {
-            return components[name].$el.width();
+            return this.components[name].$el.width();
         };
         
         /* @param name is the component name. */
         layout.getHeight = function (name) {
-            return components[name].$el.height();
+            return this.components[name].$el.height();
         };
         
         /* @param name is the component name. 
          * @param width is in pixel. */
         layout.setWidth = function (name, width) {
-            components[name].setWidth(width);
+            this.components[name].setWidth(width);
         };
         
         /* @param name is the component name. 
          * @param height is in pixel. */
         layout.setHeight = function (name, height) {
-            components[name].setHeight(height);
+            this.components[name].setHeight(height);
         };
         
         /* Register default components. */
@@ -140,8 +127,8 @@ angular.module('glark.services')
             defaultWidth: 150,
             minWidth: 50,
             setWidth: function (width) {
-                components['left-panel'].$el.css('width', width + 'px');
-                components['center-panel'].$el.css('left', width + 'px');
+                layout.components['left-panel'].$el.css('width', width + 'px');
+                layout.components['center-panel'].$el.css('left', width + 'px');
             }
         });
         
@@ -149,8 +136,8 @@ angular.module('glark.services')
             defaultHeight: 150,
             minHeight: 50,
             setHeight: function (height) {
-                components['left-panel-top'].$el.css('height', height + 'px');
-                components['left-panel-bottom'].$el.css('top', height + 'px');
+                layout.components['left-panel-top'].$el.css('height', height + 'px');
+                layout.components['left-panel-bottom'].$el.css('top', height + 'px');
             }
         });
         
