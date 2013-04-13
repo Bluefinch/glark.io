@@ -18,24 +18,48 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('RemoteDirectory', function (RemoteFile, $q) {
+    .factory('RemoteDirectory', function (RemoteFile, $q, $http) {
         
-        var RemoteDirectory = function (name, connector) {
+        var RemoteDirectory = function (name, params, basename) {
             this.isDirectory = true;
             this.isFile = false;
             
             this.name = name;
-            this.connector = connector;
+            this.basename = '/';
+            this.root = true;
+            
+            if(basename !== undefined) {
+                this.basename = basename;
+            }
             
             this.collapsed = true;
             this.children = [];
+
+            this.params = params;
+            this.baseurl =  'http://' + params.adress + ':' + params.port + '/connector';
+            this.baseurl += this.basename + this.name; 
         };
         
         RemoteDirectory.prototype.updateChildren = function() {
+            /* Reset children list. */
+            this.children = [];
+            
+            /* Then update it. */
             var _this = this;
-            var promise = this.connector.getEntries();
-            promise.then(function (entries) {
-                _this.children = entries;
+            $http.get(this.baseurl).success(function (response) {
+                angular.forEach(response.data, function(entry) {
+                    if(entry.type == 'file') {
+                        var file = new RemoteFile(entry.name, _this.params);
+                        file.basename = _this.basename + _this.name + '/';
+                        _this.children.push(file);
+                    } 
+                    else if(entry.type == 'dir') {
+                        var basename = _this.basename + _this.name + '/';
+                        var directory = new RemoteDirectory(entry.name, _this.params, basename);
+                        _this.children.push(directory);
+                    }
+                });
+                
             });
         };
         

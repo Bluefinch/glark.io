@@ -40,8 +40,8 @@ angular.module('glark.services')
             return workspace;
         };
         
-        workspaces.createRemoteWorkspace = function(name, connector) {
-            var rootDirectory = new RemoteDirectory(name, connector);
+        workspaces.createRemoteWorkspace = function(name, params) {
+            var rootDirectory = new RemoteDirectory('files', params);
             var workspace = new Workspace(name, rootDirectory);
             this.addWorkspace(workspace);
             return workspace;
