@@ -20,7 +20,7 @@ angular.module('glark.services')
 
     .factory('workspaces', function ($rootScope, $q, editor, Workspace, LocalDirectory, RemoteDirectory) {
         var workspaces = {};
-        
+            
         workspaces.workspaces = [];
         
         var activeWorkspace = null;

@@ -27,6 +27,7 @@ angular.module('glark.services')
             
             this.name = name;
             this.basename = '/';
+            this.changed = false;
             
             this.params = params;
             this.baseurl =  'http://' + params.adress + ':' + params.port + '/connector/files/';

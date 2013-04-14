@@ -29,29 +29,35 @@ angular.module('glark.services')
             
             this.name = name;
             this.basename = '/';
-            this.blob = null;
+            this.changed = false;
             
-            var _this = this;
+            var defered = $q.defer();
             if(entry.file !== undefined) {
                 /* entry is a FileEntry object. */
                  entry.file(function (file) {
-                    _this.blob = file;
+                    defered.resolve(file);
+                    $rootScope.$digest();
                 });
             } else {
                 /* entry is a Blob object. */
-                this.blob = entry;
+                defered.resolve(entry);
             }
+            
+            /* Blob property is a promise. */
+            this.blob = defered.promise;
         };
         
         /* Returns the content of the maintened blob. */
         LocalFile.prototype.getContent = function () {
             var defered = $q.defer();
-            var reader = new FileReader();
-            reader.onload = function (event) {
-                defered.resolve(event.target.result);
-                $rootScope.$apply();
-            };
-            reader.readAsText(this.blob);
+            this.blob.then(function (blob) {
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    defered.resolve(event.target.result);
+                    $rootScope.$digest();
+                };
+                reader.readAsText(blob);
+            });
             return defered.promise;
         };
         

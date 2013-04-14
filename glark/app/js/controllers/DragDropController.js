@@ -19,7 +19,7 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.controllers')
 
     .controller('DragDropController', function ($scope, workspaces, LocalDirectory, LocalFile) {
-        $scope.droppedFile = null;
+        $scope.dataTransfer = null;
 
         $scope.openDroppedFiles = function () {
             var dataTransfer = $scope.dataTransfer;
@@ -30,7 +30,7 @@ angular.module('glark.controllers')
                         var entry = item.webkitGetAsEntry();
                         if (entry.isFile) {
                             var localFile = new LocalFile(entry.name, entry);
-                            workspaces.getActiveWorkspace().rootDirectory.addEntry(localFile);
+                            workspaces.getActiveWorkspace().addEntry(localFile);
                             workspaces.getActiveWorkspace().setActiveFile(localFile);
                         } else {
                             var localDirectory = new LocalDirectory(entry.name, entry);
@@ -41,7 +41,7 @@ angular.module('glark.controllers')
             } else {
                 angular.forEach(dataTransfer.files, function (entry) {
                     var file = new LocalFile(entry);
-                    workspaces.getActiveWorkspace().rootDirectory.addEntry(file);
+                    workspaces.getActiveWorkspace().addEntry(file);
                     workspaces.getActiveWorkspace().setActiveFile(file);
                 });
             }
