@@ -36,6 +36,12 @@ angular.module('glark.controllers')
                 port: split[1]
             };
             
+            var result = $window.prompt("username:password", "toto:pipo");
+            var split = result.split(':');
+
+            params.username = split[0];
+            params.password = split[1];
+
             var workspace = workspaces.createRemoteWorkspace('Remote', params);
             workspaces.setActiveWorkspace(workspace);
         };

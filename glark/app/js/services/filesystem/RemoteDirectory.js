@@ -18,7 +18,7 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('RemoteDirectory', function (RemoteFile, $q, $http) {
+    .factory('RemoteDirectory', function (RemoteFile, base64, $q, $http) {
         
         var RemoteDirectory = function (name, params, basename) {
             this.isDirectory = true;
@@ -28,7 +28,7 @@ angular.module('glark.services')
             this.basename = '/';
             this.root = true;
             
-            if(basename !== undefined) {
+            if (basename !== undefined) {
                 this.basename = basename;
             }
             
@@ -37,23 +37,29 @@ angular.module('glark.services')
 
             this.params = params;
             this.baseurl =  'http://' + params.adress + ':' + params.port + '/connector';
-            this.baseurl += this.basename + this.name; 
+            this.baseurl += this.basename + this.name;
+
+            this.authenticationHeader = 'Basic ' +
+                base64.encode(params.username + ':' + params.password);
         };
         
-        RemoteDirectory.prototype.updateChildren = function() {
+        RemoteDirectory.prototype.updateChildren = function () {
+            /* Set the headers for authentication. */
+            $http.headers.Authorization = this.authenticationHeader;
+
             /* Reset children list. */
             this.children = [];
             
             /* Then update it. */
             var _this = this;
             $http.get(this.baseurl).success(function (response) {
-                angular.forEach(response.data, function(entry) {
-                    if(entry.type == 'file') {
+                angular.forEach(response.data, function (entry) {
+                    if (entry.type == 'file') {
                         var file = new RemoteFile(entry.name, _this.params);
                         file.basename = _this.basename + _this.name + '/';
                         _this.children.push(file);
-                    } 
-                    else if(entry.type == 'dir') {
+                    }
+                    else if (entry.type == 'dir') {
                         var basename = _this.basename + _this.name + '/';
                         var directory = new RemoteDirectory(entry.name, _this.params, basename);
                         _this.children.push(directory);
