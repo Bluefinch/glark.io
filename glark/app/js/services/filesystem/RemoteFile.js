@@ -21,7 +21,10 @@ angular.module('glark.services')
     /* Create a glark.services.File object from a html5 File or Blob object. */
     .factory('RemoteFile', function (base64, $q, $http) {
         
-        var RemoteFile = function (name, params) {
+        /* Create a remote file from his name and
+         * params, where params contains information
+         * to connect the Rest API. */
+        var RemoteFile = function (name, params, basename) {
             this.isDirectory = false;
             this.isFile = true;
             
@@ -29,8 +32,14 @@ angular.module('glark.services')
             this.basename = '/';
             this.changed = false;
             
+            if (basename !== undefined) {
+                this.basename = basename;
+            }
+
             this.params = params;
-            this.baseurl =  'http://' + params.adress + ':' + params.port + '/connector/files/';
+
+            this.baseurl =  'http://' + params.adress + ':' + params.port + '/connector';
+            this.baseurl += this.basename + this.name;
 
             this.authenticationHeader = 'Basic ' +
                 base64.encode(params.username + ':' + params.password);
@@ -38,7 +47,7 @@ angular.module('glark.services')
         
         RemoteFile.prototype.getContent = function () {
             var defered = $q.defer();
-            $http.get(this.baseurl + this.name, {headers: {'Authorization': this.authenticationHeader}})
+            $http.get(this.baseurl, {headers: {'Authorization': this.authenticationHeader}})
                 .success(function (response) {
                     defered.resolve(response.data.content);
                 })
@@ -48,6 +57,11 @@ angular.module('glark.services')
                 console.log(response);
             });
             return defered.promise;
+        };
+        
+        /* Sets the content of the remote file. */
+        RemoteFile.prototype.setContent = function (content) {
+            /* TODO */
         };
         
         return RemoteFile;

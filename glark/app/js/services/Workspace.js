@@ -49,6 +49,7 @@ angular.module('glark.services')
             if(entry.isFile) {
                 this.closeFile(entry);
             }
+            this.rootDirectory.removeEntry(entry);
         };
         
         /* @param file is a services.filesystem.*File object. */
