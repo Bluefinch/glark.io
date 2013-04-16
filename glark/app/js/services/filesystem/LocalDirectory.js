@@ -26,13 +26,13 @@ angular.module('glark.services')
             var defered = $q.defer();
             var directoryReader = directoryEntry.createReader();
             directoryReader.readEntries(function (entries) {
-                var children = [];
+                var children = {};
                 for (var i = 0; i < entries.length; ++i) {
                     var entry = entries[i];
                     if (entry.isFile) {
-                        children.push(new LocalFile(entry.name, entry));
+                        children[entry.name] = new LocalFile(entry.name, entry);
                     } else if (entry.isDirectory) {
-                        children.push(new LocalDirectory(entry.name, entry));
+                        children[entry.name] = new LocalDirectory(entry.name, entry);
                     }
                 }
                 defered.resolve(children);
@@ -52,7 +52,7 @@ angular.module('glark.services')
             this.basename = '/';
             
             this.collapsed = true;
-            this.children = [];
+            this.children = {};
             
             /* If the directoryEntry is not undefined, we
              * read the content and we fill the children
@@ -80,7 +80,7 @@ angular.module('glark.services')
          * object. */
         LocalDirectory.prototype.addEntry = function (entry) {
             entry.basename = this.basename + this.name + '/';
-            this.children.push(entry);
+            this.children[entry.name] = entry;
         };
         
         return LocalDirectory;

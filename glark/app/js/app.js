@@ -25,7 +25,6 @@ angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters
 
 .run(function (LocalFile, workspaces, layout) {
     
-        
     /* Create the default local workspace */
     var workspace = workspaces.createLocalWorkspace('Default');
     workspaces.setActiveWorkspace(workspace);

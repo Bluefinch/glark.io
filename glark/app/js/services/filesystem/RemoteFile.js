@@ -21,7 +21,10 @@ angular.module('glark.services')
     /* Create a glark.services.File object from a html5 File or Blob object. */
     .factory('RemoteFile', function ($q, $http) {
         
-        var RemoteFile = function (name, params) {
+        /* Create a remote file from his name and 
+         * params, where params contains information
+         * to connect the Rest API. */
+        var RemoteFile = function (name, params, basename) {
             this.isDirectory = false;
             this.isFile = true;
             
@@ -29,16 +32,27 @@ angular.module('glark.services')
             this.basename = '/';
             this.changed = false;
             
+            if(basename !== undefined) {
+                this.basename = basename;
+            }
+
             this.params = params;
-            this.baseurl =  'http://' + params.adress + ':' + params.port + '/connector/files/';
+            this.baseurl =  'http://' + params.adress + ':' + params.port + '/connector';
+            this.baseurl += this.basename + this.name; 
         };
         
+        /* Gets the content of the remote file. */
         RemoteFile.prototype.getContent = function() {
             var defered = $q.defer();
-            $http.get(this.baseurl + this.name).success(function (response) {
+            $http.get(this.baseurl).success(function (response) {
                 defered.resolve(response.data.content);
             });
             return defered.promise;
+        };
+        
+        /* Sets the content of the remote file. */
+        RemoteFile.prototype.setContent = function(content) {
+            /* TODO */
         };
         
         return RemoteFile;
