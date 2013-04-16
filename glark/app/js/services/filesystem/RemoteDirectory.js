@@ -44,28 +44,30 @@ angular.module('glark.services')
         };
         
         RemoteDirectory.prototype.updateChildren = function () {
-            /* Set the headers for authentication. */
-            $http.headers.Authorization = this.authenticationHeader;
-
             /* Reset children list. */
             this.children = [];
             
             /* Then update it. */
             var _this = this;
-            $http.get(this.baseurl).success(function (response) {
-                angular.forEach(response.data, function (entry) {
-                    if (entry.type == 'file') {
-                        var file = new RemoteFile(entry.name, _this.params);
-                        file.basename = _this.basename + _this.name + '/';
-                        _this.children.push(file);
-                    }
-                    else if (entry.type == 'dir') {
-                        var basename = _this.basename + _this.name + '/';
-                        var directory = new RemoteDirectory(entry.name, _this.params, basename);
-                        _this.children.push(directory);
-                    }
-                });
-                
+            $http.get(this.baseurl, {headers: {'Authorization': this.authenticationHeader}})
+                .success(function (response) {
+                    angular.forEach(response.data, function (entry) {
+                        if (entry.type == 'file') {
+                            var file = new RemoteFile(entry.name, _this.params);
+                            file.basename = _this.basename + _this.name + '/';
+                            _this.children.push(file);
+                        }
+                        else if (entry.type == 'dir') {
+                            var basename = _this.basename + _this.name + '/';
+                            var directory = new RemoteDirectory(entry.name, _this.params, basename);
+                            _this.children.push(directory);
+                        }
+                    });
+                })
+            .error(function (response, status) {
+                console.log('Error in $http get. Unable to update children of remote directory.');
+                console.log(status);
+                console.log(response);
             });
         };
         

@@ -95,6 +95,14 @@ describe('The services:', function () {
             expect(fileTree.rootNode.children.tata.children.tete.children.toto.file.name).toBe('toto');
             expect(fileTree.rootNode.children.tata.children.tete.children.toto.file.basename).toBe('/tata/tete/');
         });
+    });
 
+    describe('The base64 encoder/decoder', function () {
+        it('should be able to encode a string in base 64',
+            angular.mock.inject(function (base64) {
+                var toEncode = 'username:password';
+                var encoded = base64.encode(toEncode);
+                expect(encoded).toBe('dXNlcm5hbWU6cGFzc3dvcmQ=');
+            }));
     });
 });
