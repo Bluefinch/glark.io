@@ -23,6 +23,7 @@ angular.module('glark.controllers')
         var getActiveWorkspace = function () {
             return workspaces.getActiveWorkspace();
         };
+
         $scope.getActiveWorkspace = getActiveWorkspace;
         
         $scope.isActiveFile = function (file) {

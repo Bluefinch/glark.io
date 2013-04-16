@@ -20,8 +20,9 @@ angular.module('glark.services')
 
     .factory('editor', function ($rootScope, EditSession, ace) {
         ace.setTheme("ace/theme/twilight");
+        // ace.setTheme("ace/theme/ambiance");
         
-        ace.on('change', function() {
+        ace.on('change', function () {
             $rootScope.$broadcast('editor.change');
         });
 
@@ -61,7 +62,7 @@ angular.module('glark.services')
             },
 
             previewFile: function (file) {
-                if(file.session !== undefined) {
+                if (file.session !== undefined) {
                     this.setSession(file.session);
                 }
             }

@@ -18,15 +18,15 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('Workspace', function ($rootScope, editor, EditSession) {
+    .factory('Workspace', function ($rootScope, editor, EditSession, extensionFilter, filetypes) {
         /* Main model of the glark.io application. Contains among other all the
          * data describing the files of the workspace, the open ones and the active
          * one. */
-        var Workspace = function(name, rootDirectory) {
+        var Workspace = function (name, rootDirectory) {
             this.name = name;
             
             /* Private member active file. */
-            this.activeFile = null;    
+            this.activeFile = null;
             
             /* A services.filesystem.*Directory object. */
             this.rootDirectory = rootDirectory;
@@ -46,7 +46,7 @@ angular.module('glark.services')
         /* @param entry is a services.filesystem.*File object or
          * a glark.services.*Directory object. */
         Workspace.prototype.removeEntry = function (entry) {
-            if(entry.isFile) {
+            if (entry.isFile) {
                 this.closeFile(entry);
             }
             this.rootDirectory.removeEntry(entry);
@@ -58,13 +58,18 @@ angular.module('glark.services')
                 this.openFiles.push(file);
                 /* Create session for file. */
                 file.session = new EditSession('');
-                file.session.setMode("ace/mode/javascript");
+
+                /* Set the correct mode. */
+                var aceMode = filetypes.getAceModeFromExtension(extensionFilter(file.name));
+                file.session.setMode(aceMode);
+                // file.session.setMode("ace/mode/javascript");
+
                 /* Fill content. */
                 var promise = file.getContent();
                 promise.then(function (content) {
                     file.session.setValue(content, -1);
                     /* Attach change event when filled. */
-                    file.onchange = function() {
+                    file.onchange = function () {
                         file.changed = true;
                         $rootScope.$digest();
                     };
@@ -75,7 +80,7 @@ angular.module('glark.services')
 
         /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.closeFile = function (file) {
-            if(file == this.activeFile) {
+            if (file == this.activeFile) {
                 this.activeFile = null;
             }
             var idx = this.openFiles.indexOf(file);
