@@ -23,9 +23,30 @@ angular.module('glark.services', ['ngResource']);
 
 angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters', 'glark.services'])
 
-.run(function (LocalFile, workspaces, layout) {
+.run(function ($rootScope, LocalFile, workspaces, layout) {
     
-    /* Create the default local workspace */
+    /* Helper function to broadcast events. */
+    var applyEvent = function(eventName, event) {
+        event.preventDefault();
+        $rootScope.$apply(function() {
+            $rootScope.$broadcast(eventName);
+        });
+    };
+    
+    /* Bind keys with events. */
+    document.addEventListener('keydown', function(event) {
+
+        if (!event.metaKey && !event.ctrlKey) {
+            return;
+        }
+        
+        switch (event.keyCode) {
+            case 83 : // s 
+                return applyEvent('save', event);
+        }
+    });
+    
+    /* Create the default local workspace. */
     var workspace = workspaces.createLocalWorkspace('Default');
     workspaces.setActiveWorkspace(workspace);
 

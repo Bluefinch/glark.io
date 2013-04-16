@@ -45,6 +45,7 @@ angular.module('glark.services')
                 base64.encode(params.username + ':' + params.password);
         };
         
+        /* Get the content of the remote file. */
         RemoteFile.prototype.getContent = function () {
             var defered = $q.defer();
             $http.get(this.baseurl, {headers: {'Authorization': this.authenticationHeader}})
@@ -59,9 +60,11 @@ angular.module('glark.services')
             return defered.promise;
         };
         
-        /* Sets the content of the remote file. */
+        /* Set the content of the remote file. */
         RemoteFile.prototype.setContent = function (content) {
-            /* TODO */
+            var defered = $q.defer();
+            defered.resolve();
+            return defered.promise;
         };
         
         return RemoteFile;

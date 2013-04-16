@@ -37,7 +37,7 @@
     <div id="center-panel" class="panel">
         <div id="editor-wrapper">
             <div ng-include="'./partials/tabs.html'"></div>
-            <div ng-controller="DragDropController" ng-model="dataTransfer" drop-zone="openDroppedFiles()">
+            <div ng-controller="EditorController" ng-model="dataTransfer" drop-zone="openDroppedFiles()">
                 <div id="editor" ng-non-bindable></div>
             </div>
         </div>
@@ -104,7 +104,7 @@
     <script src="js/services/filesystem/RemoteDirectory.js"></script>
     <script src="js/services/filesystem/RemoteFile.js"></script>
     <!-- Controllers -->
-    <script src="js/controllers/DragDropController.js"></script>
+    <script src="js/controllers/EditorController.js"></script>
     <script src="js/controllers/WorkspaceController.js"></script>
     <script src="js/controllers/WorkspacesController.js"></script>
     <script src="js/controllers/TabController.js"></script>
