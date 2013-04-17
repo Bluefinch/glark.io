@@ -63,7 +63,7 @@ angular.module('glark.services')
         /* Set the content of the remote file. */
         RemoteFile.prototype.setContent = function (content) {
             var defered = $q.defer();
-            $http.put(this.baseurl, {'path': this.basename + this.name, 'content': content},
+            $http.put(this.baseurl, {'content': content},
                     {headers: {'Authorization': this.authenticationHeader}})
                 .success(function (response) {
                     defered.resolve(response.data.content);
