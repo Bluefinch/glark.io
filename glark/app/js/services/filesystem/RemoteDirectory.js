@@ -69,6 +69,10 @@ angular.module('glark.services')
                 });
         };
         
+        RemoteDirectory.prototype.getChildCount = function () {
+            return Object.keys(this.children).length;
+        };
+        
         return RemoteDirectory;
     });
 

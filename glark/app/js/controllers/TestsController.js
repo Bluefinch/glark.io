@@ -21,11 +21,9 @@ angular.module('glark.controllers')
     .controller('TestsController', function ($scope, LocalFile, workspaces) {
         
         $scope.initializeTests = function () {
-            var fileEntry = new Blob(["toto"], {type: "text"});
-            fileEntry.name = "toto";
-            fileEntry.fullPath = "titi/tutu/toto";
-            var totoFile = new LocalFile(fileEntry);
-
+            var blob = new Blob(["toto"], {type: "text"});
+            var totoFile = new LocalFile("toto", blob);
+            
             workspaces.getActiveWorkspace().addEntry(totoFile);
         };
     });

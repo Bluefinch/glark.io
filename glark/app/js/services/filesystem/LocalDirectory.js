@@ -83,6 +83,10 @@ angular.module('glark.services')
             this.children[entry.name] = entry;
         };
         
+        LocalDirectory.prototype.getChildCount = function () {
+            return Object.keys(this.children).length;
+        };
+        
         return LocalDirectory;
     });
 
