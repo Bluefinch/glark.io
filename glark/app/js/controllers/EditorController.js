@@ -40,7 +40,7 @@ angular.module('glark.controllers')
                 });
             } else {
                 angular.forEach(dataTransfer.files, function (entry) {
-                    var file = new LocalFile(entry);
+                    var file = new LocalFile(entry.name, entry);
                     workspaces.getActiveWorkspace().addEntry(file);
                     workspaces.getActiveWorkspace().setActiveFile(file);
                 });
