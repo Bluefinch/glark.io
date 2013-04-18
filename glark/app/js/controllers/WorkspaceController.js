@@ -21,10 +21,9 @@ angular.module('glark.controllers')
     .controller('WorkspaceController', function ($scope, workspaces, editor) {
         $scope.editor = editor;
         
-        var getActiveWorkspace = function () {
-            return workspaces.getActiveWorkspace();
+        $scope.isActiveWorkspace = function (workspace) {
+            return workspaces.getActiveWorkspace() === workspace;
         };
-        $scope.getActiveWorkspace = getActiveWorkspace;
 
         $scope.toggleCollapsed = function (directory) {
             directory.collapsed = !directory.collapsed;

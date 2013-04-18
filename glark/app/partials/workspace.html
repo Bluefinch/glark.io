@@ -22,14 +22,14 @@
            <div ng-include="'directory_node_template'"></div>
         </div>
         <div ng-switch-when="false">
-            <a title="{{entry.name}}" ng-click="editor.previewFile(entry)" ng-dblclick="getActiveWorkspace().setActiveFile(entry)">{{entry.name}}</a>
+            <a title="{{entry.name}}" ng-click="editor.previewFile(entry)" ng-dblclick="workspace.setActiveFile(entry)">{{entry.name}}</a>
         </div>
     </div>
 </script>
 
-<div ng-controller="WorkspaceController">
-    <ul class="filetree">
-        <li ng-repeat="entry in getActiveWorkspace().rootDirectory.children" ng-include="'filetree_node_template'"></li>
+<div class="filetree" ng-controller="WorkspaceController">
+    <ul ng-show="isActiveWorkspace(workspace)">
+        <li ng-repeat="entry in workspace.rootDirectory.children" ng-include="'filetree_node_template'"></li>
     </ul>
 </div>
 

@@ -48,7 +48,8 @@ angular.module('glark.services')
         /* Get the content of the remote file. */
         RemoteFile.prototype.getContent = function () {
             var defered = $q.defer();
-            $http.get(this.baseurl, {headers: {'Authorization': this.authenticationHeader}})
+            $http.get(this.baseurl, 
+                    {headers: {'Authorization': this.authenticationHeader}})
                 .success(function (response) {
                     defered.resolve(response.data.content);
                 })

@@ -132,17 +132,6 @@ angular.module('glark.services')
             }
         });
         
-        layout.registerComponent('left-panel-top', '#left-panel-top', {
-            defaultHeight: 150,
-            minHeight: 50,
-            setHeight: function (height) {
-                layout.components['left-panel-top'].$el.css('height', height + 'px');
-                layout.components['left-panel-bottom'].$el.css('top', height + 'px');
-            }
-        });
-        
-        layout.registerComponent('left-panel-bottom', '#left-panel-bottom');
-        
         layout.registerComponent('center-panel', '#center-panel');
             
         /* Reset the layout at the first access. */

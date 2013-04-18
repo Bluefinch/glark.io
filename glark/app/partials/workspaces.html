@@ -2,14 +2,18 @@
 *   Partial for workspaces view
 * -->
     
-<div ng-controller="WorkspacesController">
+<div id="workspace" ng-controller="WorkspacesController">
     <div>Add: 
         <a ng-click="addLocalWorkspace()">local</a>
          | 
         <a ng-click="addRemoteWorkspace()">remote</a>
     </div>
     <ul id="workspaces" ng-repeat="workspace in workspaces.workspaces">
-        <li ng-click="setActiveWorkspace(workspace)">{{workspace.name}}</li>
+        <li>
+            <a title="{{workspace.name}}" ng-click="setActiveWorkspace(workspace)">{{workspace.name}}</a>
+            <div ng-include="'./partials/workspace.html'"></div>
+        </li>
+        
     </ul>
 </div>
 
