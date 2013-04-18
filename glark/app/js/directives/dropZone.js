@@ -27,6 +27,10 @@ angular.module('glark.directives')
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
+                element.bind('dragover', function (e) {
+                    e.preventDefault();
+                });
+
                 element.bind('drop', function (e) {
                     e.preventDefault();
 
