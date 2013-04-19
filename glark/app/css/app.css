@@ -20,9 +20,6 @@ a {
     bottom: 0;
     right: 0;
     width: 12px;
-    
-    background: #474747;
-    box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .9);
 }
 
 .h-bottom-slider {
@@ -52,12 +49,11 @@ a {
     top: 0;
     bottom: 0;
     left: 0;
-    width: 150px;
+    width: 200px;
     
     font-size: 12px;
     color: #999;
     background: #2D2D2D;
-    box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .9);
     overflow: hidden;
 }
 

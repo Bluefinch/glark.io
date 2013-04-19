@@ -21,7 +21,7 @@
 #tab-list li {
     margin-top: 7px;
     height: 60px;
-    width: 200px;
+    width: 150px;
     position: relative;
     float: left;
     border-top-right-radius: 20px 60px;
@@ -43,7 +43,7 @@
 #tab-list li a.label {
     display: block;
     float: left;
-    width: 140px;
+    width: 119px;
     line-height: 25px;
     padding-top: 1px;
     color: #757575;

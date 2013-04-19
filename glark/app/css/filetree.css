@@ -1,8 +1,16 @@
 
-#filetree {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+/* .filetree { */
+    /* position: absolute; */
+    /* top: 0; */
+    /* bottom: 0; */
+    /* left: 0; */
+    /* right: 0; */
+/* } */
+
+.filetree ul {
+    padding-left: 1.2em;
+}
+
+.filetree li {
+    list-style-type: none;
 }
