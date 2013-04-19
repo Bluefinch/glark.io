@@ -19,8 +19,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.services')
 
     .factory('editor', function ($rootScope, EditSession, ace) {
-        ace.setTheme("ace/theme/twilight");
-        // ace.setTheme("ace/theme/ambiance");
+        // ace.setTheme("ace/theme/twilight");
+        ace.setTheme("ace/theme/tomorrow_night_eighties");
 
         return {
             focus: function () {
