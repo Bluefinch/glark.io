@@ -57,6 +57,16 @@ a {
     overflow: hidden;
 }
 
+#left-panel .shadow {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -20px;
+    width: 20px;
+    
+    box-shadow: 2px 0 10px 0 rgb(0, 0, 0);
+}
+
 #center-panel {
     /* Component managed by the
      * layout service. */
