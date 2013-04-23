@@ -21,6 +21,13 @@ angular.module('glark.controllers')
     .controller('WorkspacesController', function ($window, $scope, workspaces, Workspace, RemoteDirectory) {
         $scope.workspaces = workspaces;
         
+        /* The entries of the workspaces dropdown menu. They all directly map
+         * to a function with the same name. */
+        $scope.dropdownEntries = [
+            "New local workspace",
+            "New connected workspace"
+        ];
+
         $scope.addLocalWorkspace = function() {
             var workspace = workspaces.createLocalWorkspace('Local');
             workspaces.setActiveWorkspace(workspace);

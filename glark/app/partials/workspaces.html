@@ -18,13 +18,18 @@
     *   Workspaces
     **************************-->
     
-    <div id="workspaces">
+    <div id="workspaces" class="dropdown-toggle">
         <ul ng-repeat="workspace in workspaces.workspaces">
             <li>
                 <a title="{{workspace.name}}" ng-click="setActiveWorkspace(workspace)">{{workspace.name}}</a>
                 <div ng-include="'./partials/workspace.html'"></div>
             </li>
         </ul>
+        <ul class="dropdown-menu">
+            <li ng-repeat="entry in dropdownEntries">
+                <a>{{entry}}</a>
+           </li> 
+       </ul>
     </div>
     
 </div>

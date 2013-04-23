@@ -21,7 +21,7 @@ angular.module('glark.directives', []);
 angular.module('glark.filters', []);
 angular.module('glark.services', ['ngResource']);
 
-angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters', 'glark.services'])
+angular.module('glark', ['ui.bootstrap', 'glark.controllers', 'glark.directives', 'glark.filters', 'glark.services'])
 
 .run(function ($rootScope, LocalFile, workspaces, layout) {
     
