@@ -1,0 +1,22 @@
+
+#workspaces-wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#workspaces {
+    padding-top: 10px;
+}
+
+#workspaces li {
+    list-style-type: none;
+}
+
+#workspaces ul {
+    margin-left: 1.2em;
+    padding-left: 0;
+}
+
