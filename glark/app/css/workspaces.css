@@ -5,6 +5,19 @@
     bottom: 0;
     left: 0;
     right: 0;
+    
+    background-color: rgb(43, 38, 46);
+}
+
+#toolbar {
+    height: 15px;
+    width: 100%;
+    padding: 10px 15px;
+    
+        
+    background: rgb(52, 71, 61);
+    color: rgb(79, 143, 116);
+    text-shadow: .1em 0.1em rgba(43, 43, 43, 0.7);
 }
 
 #workspaces {
