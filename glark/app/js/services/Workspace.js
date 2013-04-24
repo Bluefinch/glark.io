@@ -24,14 +24,14 @@ angular.module('glark.services')
          * one. */
         var Workspace = function (name, rootDirectory) {
             this.name = name;
-            
+
             /* Private member active file. */
             this.activeFile = null;
-            
+
             /* A services.filesystem.*Directory object. */
             this.rootDirectory = rootDirectory;
             rootDirectory.collapsed = false;
-            
+
             /* Open files of the workspace. A collection of glark.services.File,
              * object, extended with a session attribute. */
             this.openFiles = [];
@@ -51,7 +51,7 @@ angular.module('glark.services')
             }
             this.rootDirectory.removeEntry(entry);
         };
-        
+
         /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.openFile = function (file) {
             if (this.openFiles.indexOf(file) == -1) {
@@ -95,7 +95,7 @@ angular.module('glark.services')
             }
             return false;
         };
-        
+
         /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.addAndOpenFile = function (file) {
             this.addEntry(file);

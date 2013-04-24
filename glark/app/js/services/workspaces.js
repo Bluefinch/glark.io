@@ -20,11 +20,11 @@ angular.module('glark.services')
 
     .factory('workspaces', function ($rootScope, $q, editor, Workspace, LocalDirectory, RemoteDirectory) {
         var workspaces = {};
-            
+
         workspaces.workspaces = [];
-        
+
         var activeWorkspace = null;
-    
+
         /* @param workspace is a glark.services.Workspace object. */
         workspaces.addWorkspace = function(workspace) {
             if (this.workspaces.indexOf(workspace) == -1) {
@@ -32,42 +32,44 @@ angular.module('glark.services')
                 workspace.rootDirectory.updateChildren();
             }
         };
-        
+
         workspaces.createLocalWorkspace = function(name) {
             var rootDirectory = new LocalDirectory(name);
             var workspace = new Workspace(name, rootDirectory);
             this.addWorkspace(workspace);
             return workspace;
         };
-        
+
         workspaces.createRemoteWorkspace = function(name, params) {
             var rootDirectory = new RemoteDirectory('files', params);
             var workspace = new Workspace(name, rootDirectory);
             this.addWorkspace(workspace);
             return workspace;
         };
-        
+
         /* @param workspace is a glark.services.Workspace object. */
         workspaces.setActiveWorkspace = function(workspace) {
             this.addWorkspace(workspace);
             activeWorkspace = workspace;
-            
+
             /* Update workspace content. */
             workspace.rootDirectory.updateChildren();
-            
+
             /* Set the new active file if needed. */
             var activeFile = workspace.getActiveFile();
             if(activeFile !== null){
                 editor.setSession(activeFile.session);
-            } 
+            }
             else {
                 editor.clearSession();
             }
+
+            return activeWorkspace;
         };
-        
+
         workspaces.getActiveWorkspace = function() {
             return activeWorkspace;
         };
-        
+
         return workspaces;
     });

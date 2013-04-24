@@ -33,8 +33,11 @@ angular.module('glark.controllers')
                             workspaces.getActiveWorkspace().addEntry(localFile);
                             workspaces.getActiveWorkspace().setActiveFile(localFile);
                         } else {
+                            /* A directory was dropped, create and active a new
+                             * Workspace. */
                             var localDirectory = new LocalDirectory(entry.name, entry);
-                            workspaces.getActiveWorkspace().addEntry(localDirectory);
+                            var newWorkspace = workspaces.createLocalWorkspace(localDirectory.name);
+                            workspaces.setActiveWorkspace(newWorkspace).addEntry(localDirectory);
                         }
                     }
                 });
@@ -46,7 +49,7 @@ angular.module('glark.controllers')
                 });
             }
         };
-        
+
         $scope.$on('save', function() {
             var workspace = workspaces.getActiveWorkspace();
             if(workspace !== null) {
