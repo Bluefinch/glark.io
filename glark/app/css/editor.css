@@ -25,10 +25,10 @@
     left: 0;
     right: 0;
     
-    border-left: solid 40px rgb(39, 39, 39);
+    border-left: solid 40px rgba(39, 39, 39, 0.3);
     
     font-size: 12px;
     color: #999;
-    background: #303030;
+    background: rgb(55, 74, 88);;
     overflow: hidden;
 }
