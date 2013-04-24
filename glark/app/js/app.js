@@ -47,7 +47,7 @@ angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters
     });
     
     /* Create the default local workspace. */
-    var workspace = workspaces.createLocalWorkspace('Default');
+    var workspace = workspaces.createLocalWorkspace('Workspace');
     workspaces.setActiveWorkspace(workspace);
 
     /* Open a file to display tutorial and info to the user. */
