@@ -33,8 +33,12 @@ angular.module('glark.services')
             }
         };
 
-        workspaces.createLocalWorkspace = function(name) {
-            var rootDirectory = new LocalDirectory(name);
+        /* Create a new local workspace with the given name. A LocalDirectory
+         * could be specified as rootDirectory. */
+        workspaces.createLocalWorkspace = function(name, rootDirectory) {
+            if(rootDirectory === undefined) {
+                rootDirectory = new LocalDirectory(name);
+            }
             var workspace = new Workspace(name, rootDirectory);
             this.addWorkspace(workspace);
             return workspace;

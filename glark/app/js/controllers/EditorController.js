@@ -33,11 +33,16 @@ angular.module('glark.controllers')
                             workspaces.getActiveWorkspace().addEntry(localFile);
                             workspaces.getActiveWorkspace().setActiveFile(localFile);
                         } else {
-                            /* A directory was dropped, create and active a new
-                             * Workspace. */
-                            var localDirectory = new LocalDirectory(entry.name, entry);
-                            var newWorkspace = workspaces.createLocalWorkspace(localDirectory.name);
-                            workspaces.setActiveWorkspace(newWorkspace).addEntry(localDirectory);
+                            if(dataTransfer.items.length == 1) {
+                                /* One directory was dropped, create and active a new
+                                 * Workspace. */
+                                var localDirectory = new LocalDirectory(entry.name, entry);
+                                var newWorkspace = workspaces.createLocalWorkspace(localDirectory.name, localDirectory);
+                                workspaces.setActiveWorkspace(newWorkspace);
+                            } else {
+                                var localDirectory = new LocalDirectory(entry.name, entry);
+                                workspaces.getActiveWorkspace().addEntry(localDirectory);
+                            }
                         }
                     }
                 });
