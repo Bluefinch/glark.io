@@ -28,12 +28,12 @@ angular.module('glark.controllers')
             "New connected workspace"
         ];
 
-        $scope.addLocalWorkspace = function() {
+        $scope.addLocalWorkspace = function () {
             var workspace = workspaces.createLocalWorkspace('Local');
             workspaces.setActiveWorkspace(workspace);
         };
         
-        $scope.addRemoteWorkspace = function() {
+        $scope.addRemoteWorkspace = function () {
             /* TODO : temporar UI... */
             var result = $window.prompt("adress:port","localhost:3000");
             var split = result.split(':');
@@ -53,8 +53,13 @@ angular.module('glark.controllers')
             workspaces.setActiveWorkspace(workspace);
         };
         
-        $scope.setActiveWorkspace = function(workspace) {
+        $scope.setActiveWorkspace = function (workspace) {
             workspaces.setActiveWorkspace(workspace);
+        };
+
+        $scope.connectWorkspace = function (workspace) {
+            workspaces.setActiveWorkspace(workspace);
+            workspace.connected = !workspace.connected;
         };
     });
 

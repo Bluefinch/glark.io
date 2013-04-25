@@ -35,6 +35,11 @@ angular.module('glark.services')
             /* Open files of the workspace. A collection of glark.services.File,
              * object, extended with a session attribute. */
             this.openFiles = [];
+
+            this.connected = false;
+            if (typeof rootDirectory === 'RemoteDirectory') {
+                this.connected = true;
+            }
         };
 
         /* @param entry is a services.filesystem.*File or

@@ -36,3 +36,6 @@
     padding-left: 0;
 }
 
+#workspaces .connected {
+    color: yellow;
+}
