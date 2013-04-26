@@ -6,21 +6,30 @@
     left: 0;
     right: 0;
     
-    background-color: rgb(43, 38, 46);
+    background: rgb(43, 38, 46);
 }
 
 #toolbar {
     height: 35px;
     width: 100%;
-    padding: 0 15px;
     
     background: rgb(52, 71, 61);
 }
 
+#toolbar .group {
+    width: 70px;
+    margin: 0 auto;
+    padding: 4px 0;
+    text-align: center;
+    
+}
+
 #toolbar a {
-    font-size: 32px;
-    text-shadow: 1px 1px rgba(43, 43, 43, 0.7);
-    color: rgb(79, 143, 116);
+    padding: 0 5px;
+    font-size: 28px;
+    text-shadow: 0 0 4px rgba(43, 43, 43, 0.7);
+    text-decoration: none;
+    color: rgb(87, 133, 114);
 }
 
 #workspaces {

@@ -9,8 +9,10 @@
     **************************-->
 
     <div id="toolbar">
-        <a ng-click="addLocalWorkspace()">+</a>
-        <a ng-click="addRemoteWorkspace()">+</a>
+        <div class="group">
+            <a title="Add Workspace" class="icon-plus" ng-click="addLocalWorkspace()"></a>
+            <a title="Add Connector" class="icon-plus" ng-click="addRemoteWorkspace()"></a>
+        </div>
     </div>
     
     <!--**********************
