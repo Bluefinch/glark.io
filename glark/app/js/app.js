@@ -45,6 +45,8 @@ angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters
                 return applyEvent('save', event);
         }
     });
+
+    $("[rel='tooltip']").tooltip();
     
     /* Create the default local workspace. */
     var workspace = workspaces.createLocalWorkspace('Workspace');

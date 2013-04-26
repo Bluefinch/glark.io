@@ -9,9 +9,15 @@
     **************************-->
 
     <div id="toolbar">
-        <div class="group">
-            <a title="Add Workspace" class="icon-plus" ng-click="addLocalWorkspace()"></a>
-            <a title="Add Connector" class="icon-plus" ng-click="addRemoteWorkspace()"></a>
+        <div class="group btn-group">
+            <button tooltip="{'title': 'Add Workspace', 'placement': 'bottom'}" class="btn btn-mini" ng-click="addLocalWorkspace()">
+                <i class="icon-plus"></i>
+                <i class="icon-folder-close"></i>
+            </button>
+            <button tooltip="{'title': 'Add Connector', 'placement': 'bottom'}" class="btn btn-mini" ng-click="addRemoteWorkspace()">
+                <i class="icon-plus"></i>
+                <i class="icon-bolt"></i>
+            </button>
         </div>
     </div>
     
