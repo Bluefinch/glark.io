@@ -18,9 +18,11 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.controllers')
 
-    .controller('WorkspacesController', function ($window, $scope, workspaces, Workspace, RemoteDirectory) {
+    .controller('WorkspacesController', function ($window, $scope, $modal,
+                workspaces, Workspace, RemoteDirectory) {
+
         $scope.workspaces = workspaces;
-        
+
         /* The entries of the workspaces dropdown menu. They all directly map
          * to a function with the same name. */
         $scope.dropdownEntries = [
@@ -32,31 +34,34 @@ angular.module('glark.controllers')
             var workspace = workspaces.createLocalWorkspace('Local');
             workspaces.setActiveWorkspace(workspace);
         };
-        
+
         $scope.addRemoteWorkspace = function () {
-            /* TODO : temporar UI... */
-            $('#addConnectorModal').modal().on('shown', function () {
-                $('.modal-backdrop').insertAfter($(this));
+            var modal = $modal({
+                template: 'partials/addConnectorModal.html',
+                show: true,
+                backdrop: 'static',
+                scope: $scope
             });
-            $('#addConnectorModal').modal('show');
+
+            /* TODO : temporar UI... */
             // var result = $window.prompt("adress:port","localhost:3000");
             // var split = result.split(':');
-            // 
+            //
             // var params = {
                 // adress: split[0],
                 // port: split[1]
             // };
-            // 
+            //
             // var result = $window.prompt("username:password", "toto:pipo");
             // var split = result.split(':');
-// 
+//
             // params.username = split[0];
             // params.password = split[1];
-// 
+//
             // var workspace = workspaces.createRemoteWorkspace('Remote', params);
             // workspaces.setActiveWorkspace(workspace);
         };
-        
+
         $scope.setActiveWorkspace = function (workspace) {
             workspaces.setActiveWorkspace(workspace);
         };
