@@ -35,6 +35,9 @@ angular.module('glark.controllers')
         
         $scope.addRemoteWorkspace = function () {
             /* TODO : temporar UI... */
+            $('#addConnectorModal').modal().on('shown', function () {
+                $('.modal-backdrop').insertAfter($(this));
+            });
             $('#addConnectorModal').modal('show');
             // var result = $window.prompt("adress:port","localhost:3000");
             // var split = result.split(':');
