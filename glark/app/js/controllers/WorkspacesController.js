@@ -42,24 +42,13 @@ angular.module('glark.controllers')
                 backdrop: 'static',
                 scope: $scope
             });
+        };
 
-            /* TODO : temporar UI... */
-            // var result = $window.prompt("adress:port","localhost:3000");
-            // var split = result.split(':');
-            //
-            // var params = {
-                // adress: split[0],
-                // port: split[1]
-            // };
-            //
-            // var result = $window.prompt("username:password", "toto:pipo");
-            // var split = result.split(':');
-//
-            // params.username = split[0];
-            // params.password = split[1];
-//
-            // var workspace = workspaces.createRemoteWorkspace('Remote', params);
-            // workspaces.setActiveWorkspace(workspace);
+        $scope.saveConnectorParameters = function (params, callback) {
+            var workspace = workspaces.createRemoteWorkspace('Remote', params);
+            workspaces.setActiveWorkspace(workspace);
+
+            callback();
         };
 
         $scope.setActiveWorkspace = function (workspace) {

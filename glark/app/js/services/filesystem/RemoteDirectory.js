@@ -35,7 +35,7 @@ angular.module('glark.services')
             this.children = {};
 
             this.params = params;
-            this.baseurl =  'http://' + params.adress + ':' + params.port + '/connector';
+            this.baseurl =  'http://' + params.hostname + ':' + params.port + '/connector';
             this.baseurl += this.basename + this.name;
 
             this.authenticationHeader = 'Basic ' +
