@@ -39,14 +39,16 @@ angular.module('glark.services')
             if(rootDirectory === undefined) {
                 rootDirectory = new LocalDirectory(name);
             }
-            var workspace = new Workspace(name, rootDirectory);
+            var isConnected = false;
+            var workspace = new Workspace(name, rootDirectory, isConnected);
             this.addWorkspace(workspace);
             return workspace;
         };
 
         workspaces.createRemoteWorkspace = function(name, params) {
             var rootDirectory = new RemoteDirectory('files', params);
-            var workspace = new Workspace(name, rootDirectory);
+            var isConnected = true;
+            var workspace = new Workspace(name, rootDirectory, isConnected);
             this.addWorkspace(workspace);
             return workspace;
         };

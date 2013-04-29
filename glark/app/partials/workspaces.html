@@ -31,7 +31,7 @@
                 <a title="{{workspace.name}}" ng-click="setActiveWorkspace(workspace)" right-click="$parent.openDropdown = !$parent.openDropdown">
                     {{workspace.name}}
                 </a>
-                <i class="icon-bolt" ng-class="{connected: workspace.connected}" ng-click="connectWorkspace(workspace)"></i>
+                <i ng-show="workspace.isConnected" class="icon-bolt connected" tooltip="{'title': workspace.rootDirectory.hostname + ':' + workspace.rootDirectory.port, 'placement': 'right'}"></i>
                 <div ng-include="'./partials/workspace.html'"></div>
             </li>
         </ul>

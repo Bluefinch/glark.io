@@ -54,10 +54,5 @@ angular.module('glark.controllers')
         $scope.setActiveWorkspace = function (workspace) {
             workspaces.setActiveWorkspace(workspace);
         };
-
-        $scope.connectWorkspace = function (workspace) {
-            workspaces.setActiveWorkspace(workspace);
-            workspace.connected = !workspace.connected;
-        };
     });
 
