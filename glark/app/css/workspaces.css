@@ -17,18 +17,26 @@
 }
 
 #toolbar .group {
-    width: 70px;
+    width: 100px;
     margin: 0 auto;
-    padding: 4px 0;
+    padding: 6px 0;
     text-align: center;
 }
 
 #toolbar a {
-    padding: 0 5px;
-    font-size: 28px;
+    padding: 0;
+    font-size: 20px;
     text-shadow: 0 0 4px rgba(43, 43, 43, 0.7);
     text-decoration: none;
     color: rgb(87, 133, 114);
+}
+
+#toolbar a:first-child {
+    padding-right: 20px;
+}
+
+#toolbar a:hover {
+    color: rgb(131, 180, 160);
 }
 
 #workspaces {
