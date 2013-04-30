@@ -27,5 +27,5 @@ angular.module('glark.filters')
                 pos = pos2;
             }
             return input.substring(0, pos + 1);
-        }
+        };
     });

@@ -21,5 +21,5 @@ angular.module('glark.filters')
     .filter('filename', function() {
         return function(input) {
             return input.replace(/^.*[\\\/]/, '');
-        }
+        };
     });

@@ -10,7 +10,7 @@
     <div ng-switch on="entry.collapsed">
         <div ng-switch-when="false">
             <ul>
-                <li ng-repeat="entry in entry.children" ng-include="'filetree_node_template'"></li>
+                <li ng-repeat="entry in entry.children | foldersFirst" ng-include="'filetree_node_template'"></li>
             </ul>
         </div>
     </div>
@@ -29,7 +29,7 @@
 
 <div class="filetree" ng-controller="WorkspaceController">
     <ul ng-show="isActiveWorkspace(workspace)">
-        <li ng-repeat="entry in workspace.rootDirectory.children" ng-include="'filetree_node_template'"></li>
+        <li ng-repeat="entry in workspace.rootDirectory.children | foldersFirst" ng-include="'filetree_node_template'"></li>
     </ul>
 </div>
 
