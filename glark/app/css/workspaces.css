@@ -11,7 +11,7 @@
     height: 35px;
     width: 100%;
     
-    background: rgb(52, 71, 61);
+    background: rgb(52, 71, 61); 
 }
 
 #toolbar .group {
@@ -26,7 +26,7 @@
     font-size: 20px;
     text-shadow: 0 0 4px rgba(43, 43, 43, 0.7);
     text-decoration: none;
-    color: rgb(87, 133, 114);
+    color: rgb(87, 133, 114); 
 }
 
 #toolbar a:first-child {

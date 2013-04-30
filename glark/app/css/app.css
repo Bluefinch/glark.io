@@ -6,6 +6,20 @@ html, body {
     
     background: rgb(43, 38, 46);
     color: #fff;
+
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+
+    /* background-color: #1a1a1a;  */
+    /* color: #fff; */
+
+    /* background: #2e3338; //#3c434a; */
+    background: linear-gradient(0deg, #262a2e, #2e3338); 
+
     font: normal 13px 'Ubuntu', sans-serif;
     overflow: hidden;
 }
@@ -61,6 +75,12 @@ a:focus {
     left: 0;
     width: 200px;
     
+<<<<<<< Updated upstream
+=======
+    font-size: 12px;
+    /* color: #999; */
+    /* background: #2D2D2D; */
+>>>>>>> Stashed changes
     overflow: hidden;
 }
 
