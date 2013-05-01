@@ -20,8 +20,9 @@ angular.module('glark.services')
 
     .factory('editor', function ($rootScope, EditSession, ace) {
         // ace.setTheme("ace/theme/twilight");
-        ace.setTheme("ace/theme/tomorrow_night_eighties");
-        //ace.setTheme("ace/theme/solarized_dark");
+        // ace.setTheme("ace/theme/tomorrow_night_eighties");
+        // ace.setTheme("ace/theme/solarized_dark");
+        ace.setTheme("ace/theme/glarkio");
 
         return {
             focus: function () {

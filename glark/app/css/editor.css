@@ -25,8 +25,8 @@
     left: 0;
     right: 0;
     
-    border-left: solid 40px rgba(0, 0, 0, 0.3);
-    background: rgb(60, 75, 90);
+    /* border-left: solid 40px rgba(0, 0, 0, 0.3); */
+    /* background: rgb(60, 75, 90); */
     
     font-size: 12px;
     overflow: hidden;
