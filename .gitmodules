@@ -1,3 +1,0 @@
-[submodule "glark/app/lib/ace"]
-	path = glark/app/lib/ace
-	url = https://github.com/ajaxorg/ace-builds.git
