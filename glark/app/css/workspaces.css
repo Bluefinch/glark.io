@@ -1,0 +1,55 @@
+
+#workspaces-wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#toolbar {
+    height: 35px;
+    width: 100%;
+    
+    background: rgb(52, 71, 61); 
+}
+
+#toolbar .group {
+    width: 100px;
+    margin: 0 auto;
+    padding: 6px 0;
+    text-align: center;
+}
+
+#toolbar a {
+    padding: 0;
+    font-size: 20px;
+    text-shadow: 0 0 4px rgba(43, 43, 43, 0.7);
+    text-decoration: none;
+    color: rgb(87, 133, 114); 
+}
+
+#toolbar a:first-child {
+    padding-right: 20px;
+}
+
+#toolbar a:hover {
+    color: rgb(131, 180, 160);
+}
+
+#workspaces {
+    padding-top: 10px;
+}
+
+#workspaces li {
+    list-style-type: none;
+}
+
+#workspaces ul {
+    margin-left: 1.2em;
+    padding-left: 0;
+}
+
+#workspaces .connected {
+    color: yellow;
+}

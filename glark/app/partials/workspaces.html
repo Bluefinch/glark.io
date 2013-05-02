@@ -2,18 +2,71 @@
 *   Partial for workspaces view
 * -->
     
-<div id="workspace" ng-controller="WorkspacesController">
-    <div>Add: 
-        <a ng-click="addLocalWorkspace()">local</a>
-         | 
-        <a ng-click="addRemoteWorkspace()">remote</a>
-    </div>
-    <ul id="workspaces" ng-repeat="workspace in workspaces.workspaces">
-        <li>
-            <a title="{{workspace.name}}" ng-click="setActiveWorkspace(workspace)">{{workspace.name}}</a>
-            <div ng-include="'./partials/workspace.html'"></div>
-        </li>
+<div id="workspaces-wrapper" ng-controller="WorkspacesController">
+
+    <!--**********************
+    *   Filetree templates
+    **************************-->
+    
+    <script type="text/ng-template" id="directory_node_template">
+        <a title="{{entry.name}}" ng-click="toggleCollapsed(entry)" drop-zone="openDroppedFiles($event, entry)">
+            <i ng-class="{'icon-angle-right': entry.collapsed, 'icon-angle-down': !entry.collapsed}"></i>
+            {{entry.name}}
+        </a>
+        <div ng-switch on="entry.collapsed">
+            <div ng-switch-when="false">
+                <ul>
+                    <li ng-repeat="entry in entry.children | foldersFirst" ng-include="'filetree_node_template'"></li>
+                </ul>
+            </div>
+        </div>
+    </script>
         
-    </ul>
+    <script type="text/ng-template" id="filetree_node_template">
+        <div ng-switch on="entry.isDirectory">
+            <div ng-switch-when="true">
+               <div ng-include="'directory_node_template'"></div>
+            </div>
+            <div ng-switch-when="false">
+                <a title="{{entry.name}}" ng-click="editor.previewFile(entry)" ng-dblclick="workspace.setActiveFile(entry)">{{entry.name}}</a>
+            </div>
+        </div>
+    </script>
+
+    <!--**********************
+    *   Toolbar
+    **************************-->
+
+    <div id="toolbar">
+        <div class="group">
+            <a tooltip="{'title': 'Add Workspace', 'placement': 'bottom'}" ng-click="addLocalWorkspace()">
+                <i class="icon-plus"></i>
+                <i class="icon-folder-close"></i>
+            </a>
+            <a tooltip="{'title': 'Add Connector', 'placement': 'bottom'}" ng-click="addRemoteWorkspace()">
+                <i class="icon-plus"></i>
+                <i class="icon-bolt"></i>
+            </a>
+        </div>
+    </div>
+    
+    <!--**********************
+    *   Workspaces
+    **************************-->
+    
+    <div id="workspaces" class="dropdown" ng-class="{open: openDropdown}">
+        <ul ng-repeat="workspace in workspaces.workspaces">
+            <li>
+                <a title="{{workspace.name}}" ng-click="setActiveWorkspace(workspace)"  drop-zone="openDroppedFiles($event, workspace.rootDirectory)">{{workspace.name}}</a>
+                <i ng-show="workspace.isConnected" class="icon-bolt connected" tooltip="{'title': workspace.rootDirectory.hostname + ':' + workspace.rootDirectory.port, 'placement': 'right'}"></i>
+                <div ng-show="isActiveWorkspace(workspace)">
+                    <ul>
+                        <li ng-repeat="entry in workspace.rootDirectory.children | foldersFirst" ng-include="'filetree_node_template'"></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+    
 </div>
 

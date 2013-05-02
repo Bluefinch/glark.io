@@ -25,19 +25,9 @@
     left: 0;
     right: 0;
     
+    border-left: solid 40px rgba(0, 0, 0, 0.3);
+    background: rgb(60, 75, 90);
+    
     font-size: 12px;
-    color: #999;
-    background: #303030;
-    box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .9);
     overflow: hidden;
-}
-
-#editor-tabs .bar {
-    position: absolute;
-    height: 10px;
-    width: 100%;
-    z-index: 2;
-
-    background: #202020;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .9);
 }

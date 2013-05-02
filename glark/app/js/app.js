@@ -21,7 +21,8 @@ angular.module('glark.directives', []);
 angular.module('glark.filters', []);
 angular.module('glark.services', ['ngResource']);
 
-angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters', 'glark.services'])
+angular.module('glark', ['glark.controllers', 'glark.directives',
+        'glark.filters', 'glark.services', '$strap.directives'])
 
 .run(function ($rootScope, LocalFile, workspaces, layout) {
     
@@ -45,9 +46,9 @@ angular.module('glark', ['glark.controllers', 'glark.directives', 'glark.filters
                 return applyEvent('save', event);
         }
     });
-    
+
     /* Create the default local workspace. */
-    var workspace = workspaces.createLocalWorkspace('Default');
+    var workspace = workspaces.createLocalWorkspace('Workspace');
     workspaces.setActiveWorkspace(workspace);
 
     /* Open a file to display tutorial and info to the user. */

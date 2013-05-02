@@ -5,8 +5,8 @@
 <div id="editor-tabs" ng-controller="TabController">
     <ul id="tab-list" ng-cloak>
         <li class="tab-item active-{{isActiveFile(file)}} changed-{{file.changed}}" ng-repeat="file in getActiveWorkspace().openFiles" ng-click="setActiveFile(file)">
-            <a class="label" title="path">{{file.name | basename}}<span class="file-name">{{file.name | filename}}</span></a>
-            <a class="close" ng-click="closeFile(file)">x</a>
+            <a class="tab-title" title="path">{{file.name | basename}}<span class="file-name">{{file.name | filename}}</span></a>
+            <a class="tab-close" ng-click="closeFile(file)">x</a>
         </li>
     </ul>
     <!--
@@ -15,5 +15,4 @@
     </div>
     <ul id="tab-dropdown-list"></ul>
     -->
-    <div class="bar"></div>
 </div>

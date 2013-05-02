@@ -1,0 +1,35 @@
+<!--**********************
+*   Dialogs
+**************************-->
+
+<div class="modal-header">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" type="button" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Connector settings</h3>
+    </div>
+    <div class="modal-body" ng-init="params.hostname='localhost'; params.port=3000; params.username='toto'; params.password='pipo'">
+        <form class="form-inline form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="inputHostname">Hostname and port</label>
+                <div class="controls">
+                    <input class="input-small" type="text" id="inputHostname" placeholder="{{params.hostname}}" autofocus="autofocus" ng-model="params.hostname">
+                    <span> : </span>
+                    <input class="input-small" type="text" id="inputPort" placeholder="{{params.port}}" ng-model="params.port">
+                </div> 
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputUsername">Username and password</label>
+                <div class="controls">
+                    <input class="input-small" type="text" id="inputUsername" placeholder="{{params.username}}" ng-model="params.username">
+                    <span> : </span>
+                    <input class="input-small" type="text" id="inputPassword" placeholder="{{params.password}}" ng-model="params.password">
+                </div> 
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" type="button" aria-hidden="true">Close</button>
+        <button class="btn btn-primary" data-dismiss="modal" type="submit" ng-click="saveConnectorParameters(params, dismiss)">Save changes</button>
+    </div>
+</div>
+

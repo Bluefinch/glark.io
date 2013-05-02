@@ -22,19 +22,21 @@ angular.module('glark.services')
         /* Main model of the glark.io application. Contains among other all the
          * data describing the files of the workspace, the open ones and the active
          * one. */
-        var Workspace = function (name, rootDirectory) {
+        var Workspace = function (name, rootDirectory, isConnected) {
             this.name = name;
-            
+
             /* Private member active file. */
             this.activeFile = null;
-            
+
             /* A services.filesystem.*Directory object. */
             this.rootDirectory = rootDirectory;
             rootDirectory.collapsed = false;
-            
+
             /* Open files of the workspace. A collection of glark.services.File,
              * object, extended with a session attribute. */
             this.openFiles = [];
+
+            this.isConnected = isConnected;
         };
 
         /* @param entry is a services.filesystem.*File or
@@ -51,7 +53,7 @@ angular.module('glark.services')
             }
             this.rootDirectory.removeEntry(entry);
         };
-        
+
         /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.openFile = function (file) {
             if (this.openFiles.indexOf(file) == -1) {
@@ -95,7 +97,7 @@ angular.module('glark.services')
             }
             return false;
         };
-        
+
         /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.addAndOpenFile = function (file) {
             this.addEntry(file);

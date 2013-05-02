@@ -124,7 +124,7 @@ angular.module('glark.services')
         
         /* Register default components. */
         layout.registerComponent('left-panel', '#left-panel', {
-            defaultWidth: 150,
+            defaultWidth: 200,
             minWidth: 50,
             setWidth: function (width) {
                 layout.components['left-panel'].$el.css('width', width + 'px');
