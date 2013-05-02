@@ -52,7 +52,6 @@ angular.module('glark.services')
             
             /* Then update it. */
             var _this = this;
-
             $http.get(this.baseurl, {headers: {'Authorization': this.authenticationHeader}})
                 .success(function (response) {
                     angular.forEach(response.data, function (entry) {
@@ -71,6 +70,28 @@ angular.module('glark.services')
                     console.log(status);
                     console.log(response);
                 });
+        };
+        
+        /* @param entry is a services.filestystem.Local* 
+         * object. */
+        RemoteDirectory.prototype.addEntry = function (entry) {
+            if(entry.isFile) {
+                var _this = this;
+                var promise = entry.getContent();
+                promise.then(function (content) {
+                    $http.put(_this.baseurl + '/' + entry.name, {'content': content},
+                            {headers: {'Authorization': _this.authenticationHeader}})
+                        .success(function (response) {
+                            entry.basename = _this.basename + _this.name + '/';
+                            _this.children[entry.name] = entry;
+                        })
+                        .error(function (response, status) {
+                            console.log('Error in $http put. Unable to set content of remote file.');
+                            console.log(status);
+                            console.log(response);
+                        });
+                });
+            }
         };
         
         RemoteDirectory.prototype.getChildCount = function () {

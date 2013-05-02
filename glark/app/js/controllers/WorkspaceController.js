@@ -56,9 +56,6 @@ angular.module('glark.controllers')
             var entries = filesystem.getEntriesFromDataTransfer(dataTransfer);
             angular.forEach(entries, function (entry) {
                 directory.addEntry(entry);
-                if(entry.isFile) {
-                    directory.setActiveFile(entry);
-                }
             });
         };
         
