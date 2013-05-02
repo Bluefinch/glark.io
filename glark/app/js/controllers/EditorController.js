@@ -18,39 +18,23 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.controllers')
 
-    .controller('EditorController', function ($scope, workspaces, LocalDirectory, LocalFile) {
-        $scope.dataTransfer = null;
+    .controller('EditorController', function ($scope, workspaces, filesystem) {
 
-        $scope.openDroppedFiles = function () {
-            var dataTransfer = $scope.dataTransfer;
-            /* FIXME for firefox use dataTransfer.mozGetDataAt(i). */
-            if (typeof dataTransfer.items !== 'undefined') {
-                angular.forEach(dataTransfer.items, function (item) {
-                    if (typeof item.webkitGetAsEntry === "function") {
-                        var entry = item.webkitGetAsEntry();
-                        if (entry.isFile) {
-                            var localFile = new LocalFile(entry.name, entry);
-                            workspaces.getActiveWorkspace().addEntry(localFile);
-                            workspaces.getActiveWorkspace().setActiveFile(localFile);
-                        } else {
-                            if(dataTransfer.items.length == 1) {
-                                /* One directory was dropped, create and active a new
-                                 * Workspace. */
-                                var localDirectory = new LocalDirectory(entry.name, entry);
-                                var newWorkspace = workspaces.createLocalWorkspace(localDirectory.name, localDirectory);
-                                workspaces.setActiveWorkspace(newWorkspace);
-                            } else {
-                                var localDirectory = new LocalDirectory(entry.name, entry);
-                                workspaces.getActiveWorkspace().addEntry(localDirectory);
-                            }
-                        }
-                    }
-                });
+        $scope.openDroppedFiles = function (event) {
+            var dataTransfer = event.originalEvent.dataTransfer;
+            var entries = filesystem.getEntriesFromDataTransfer(dataTransfer);
+
+            if(entries.length == 1 && entries[0].isDirectory) {
+                /* If only one directory was dropped, create and active a new
+                 * Workspace. */
+                var newWorkspace = workspaces.createLocalWorkspace(entries[0].name, entries[0]);
+                workspaces.setActiveWorkspace(newWorkspace);
             } else {
-                angular.forEach(dataTransfer.files, function (entry) {
-                    var file = new LocalFile(entry.name, entry);
-                    workspaces.getActiveWorkspace().addEntry(file);
-                    workspaces.getActiveWorkspace().setActiveFile(file);
+                angular.forEach(entries, function (entry) {
+                    workspaces.getActiveWorkspace().addEntry(entry);
+                    if(entry.isFile) {
+                        workspaces.getActiveWorkspace().setActiveFile(entry);
+                    }
                 });
             }
         };

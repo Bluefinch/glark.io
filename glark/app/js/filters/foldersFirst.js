@@ -39,7 +39,6 @@ angular.module('glark.filters')
                 if(entry1.isDirectory && entry2.isDirectory) {
                     return entry1.name.toLowerCase() > entry2.name.toLowerCase();
                 }
-                
             });
             
             return result;
