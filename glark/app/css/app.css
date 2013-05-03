@@ -13,9 +13,10 @@ html, body {
     -o-user-select: none;
     user-select: none;
 
-    /* background-color: #2c3e50;   */
+    /* background-color: #2c3e50;    */
     /* background-color: #282828;   */
-    background-color: #383838;   
+    /* background-color: #383838;    */
+    background-color: #242424;     
     /* background: linear-gradient(0deg, #262a2e, #2e3338);  */
 
     /* font: normal 13px 'Ubuntu', sans-serif; */
