@@ -23,22 +23,19 @@ angular.module('glark.directives')
      * Exemple:
      * <div ng-model="myDroppedFile" drop-zone="onDrop()"></div>
      */
-    .directive('dropZone', function () {
+    .directive('dropZone', function ($parse) {
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
-                element.bind('dragover', function (e) {
-                    e.preventDefault();
+                element.bind('dragover', function (event) {
+                    event.preventDefault();
                 });
-
-                element.bind('drop', function (e) {
-                    e.preventDefault();
-
-                    var dataTransfer = e.originalEvent.dataTransfer;
-                    var model = attrs.ngModel;
-                    scope[model] = dataTransfer;
-                    scope.$apply(attrs.dropZone);
-
+                element.bind('drop', function (event) {
+                    event.preventDefault();
+                    var fn = $parse(attrs.dropZone);
+                    scope.$apply(function() {
+                        fn(scope, {$event:event});
+                    });
                     return false;
                 });
             }
