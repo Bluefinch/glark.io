@@ -24,7 +24,7 @@ angular.module('glark.services', ['ngResource']);
 angular.module('glark', ['glark.controllers', 'glark.directives',
         'glark.filters', 'glark.services', '$strap.directives'])
 
-.run(function ($rootScope, LocalFile, workspaces, layout) {
+.run(function ($rootScope, LocalFile, workspaces, layout, editor) {
     
     /* Helper function to broadcast events. */
     var applyEvent = function(eventName, event) {

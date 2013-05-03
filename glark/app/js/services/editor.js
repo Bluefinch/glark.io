@@ -22,8 +22,8 @@ angular.module('glark.services')
         // ace.setTheme("ace/theme/twilight");
         // ace.setTheme("ace/theme/tomorrow_night_eighties");
         // ace.setTheme("ace/theme/solarized_dark");
-        ace.setTheme("ace/theme/glarkio_blue");
-        // ace.setTheme("ace/theme/glarkio_black");
+        // ace.setTheme("ace/theme/glarkio_blue");
+        ace.setTheme("ace/theme/glarkio_black");
 
         return {
             focus: function () {
@@ -64,6 +64,10 @@ angular.module('glark.services')
                 if (file.session !== undefined) {
                     this.setSession(file.session);
                 }
+            },
+
+            getBackgroundColor: function () {
+                return angular.element('.ace_scroller').css('background-color');
             }
         };
     });
