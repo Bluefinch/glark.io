@@ -22,7 +22,8 @@ angular.module('glark.services')
         // ace.setTheme("ace/theme/twilight");
         // ace.setTheme("ace/theme/tomorrow_night_eighties");
         // ace.setTheme("ace/theme/solarized_dark");
-        ace.setTheme("ace/theme/glarkio");
+        ace.setTheme("ace/theme/glarkio_blue");
+        // ace.setTheme("ace/theme/glarkio_black");
 
         return {
             focus: function () {
