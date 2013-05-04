@@ -23,11 +23,11 @@ angular.module('glark.directives')
         return function (scope, element, attrs) {
             element.bind('contextmenu', function (event) {
                 event.preventDefault();
-                var fn = $parse(attrs['rightClick']);
+                var fn = $parse(attrs.rightClick);
                 scope.$apply(function () {
                     fn(scope, {$event: event});
                 });
             });
-        }
+        };
     });
 

@@ -82,11 +82,11 @@ angular.module('glark.services')
 
         /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.closeFile = function (file) {
-            if (file == this.activeFile) {
+            if (file === this.activeFile) {
                 this.activeFile = null;
             }
             var idx = this.openFiles.indexOf(file);
-            if (idx != -1) {
+            if (idx !== -1) {
                 this.openFiles.splice(idx, 1);
                 /* Reset file. */
                 file.changed = false;
@@ -118,7 +118,7 @@ angular.module('glark.services')
 
         /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.isActiveFile = function (file) {
-            return file == this.activeFile;
+            return file === this.activeFile;
         };
 
         return Workspace;

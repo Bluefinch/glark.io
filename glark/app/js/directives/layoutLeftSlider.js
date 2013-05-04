@@ -17,29 +17,29 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 'use strict';
 
 angular.module('glark.directives')
-    
+
     .directive('layoutLeftSlider', function (layout) {
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
                 var component = attrs.layoutLeftSlider;
-                
+
                 element.css('cursor', 'w-resize');
                 element.mousedown(function (e) {
                     e.preventDefault();
-                    
+
                     var initialWidth = layout.getWidth(component);
                     var initialPageX = e.pageX;
-                    
-                    var onmousemove = function(event) {
+
+                    var onmousemove = function (event) {
                         var deltaX = initialPageX - event.pageX;
                         var newWidth = initialWidth - deltaX;
                         layout.setWidth(component, newWidth);
                     };
-                    
+
                     var $html = angular.element('html');
                     $html.mousemove(onmousemove);
-                    $html.mouseup(function() {
+                    $html.mouseup(function () {
                         $html.unbind('mousemove', onmousemove);
                     });
                 });

@@ -19,7 +19,7 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.controllers')
 
     .controller('TabController', function ($scope, workspaces, editor) {
-        
+
         $scope.editor = editor;
 
         var getActiveWorkspace = function () {
@@ -27,7 +27,7 @@ angular.module('glark.controllers')
         };
 
         $scope.getActiveWorkspace = getActiveWorkspace;
-        
+
         $scope.isActiveFile = function (file) {
             return getActiveWorkspace().isActiveFile(file);
         };
