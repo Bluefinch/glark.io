@@ -16,11 +16,48 @@ html, body {
     /* background-color: #2c3e50;    */
     /* background-color: #282828;   */
     /* background-color: #383838;    */
-    background-color: #242424;     
+    /* background-color: #242424;     */
+    background-color: rgb(32, 47, 60);
     /* background: linear-gradient(0deg, #262a2e, #2e3338);  */
 
     /* font: normal 13px 'Ubuntu', sans-serif; */
     overflow: hidden;
+}
+
+/* webkit scrollbar */
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track-piece {
+    background-color: #333;
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+    height: 5px;
+    background-color: #666;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:vertical:hover {
+    background-color: #999;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+    width: 5px;
+    background-color: #666;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:horizontal:hover {
+    background-color: #999;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: #2D2D2D;
 }
 
 /* -------------------- */
@@ -84,7 +121,7 @@ a:focus {
     top: 0;
     bottom: 0;
     left: 0;
-    width: 200px;
+    width: 150px;
     
     font-size: 12px;
     overflow: hidden;

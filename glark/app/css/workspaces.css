@@ -21,12 +21,12 @@
 
 #toolbar a {
     padding: 0;
-    font-size: 20px;
+    font-size: 15px;
     text-decoration: none; 
 }
 
 #toolbar a:first-child {
-    padding-right: 20px;
+    padding-right: 10px;
 }
 
 #toolbar a:hover {
@@ -39,6 +39,10 @@
 
 #workspaces li {
     list-style-type: none;
+}
+
+#workspaces li a {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 #workspaces ul {

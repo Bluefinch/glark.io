@@ -2,20 +2,21 @@
 
 #editor-wrapper {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    top: 35px;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
 }
 
 #editor { 
     position: absolute;
-    top: 35px;
+    top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     
     color: #fff;
+    box-shadow: 0 0 15px -1px rgba(0, 0, 0, 0.7);
 }
 
 #editor-tabs {

@@ -124,7 +124,7 @@ angular.module('glark.services')
         
         /* Register default components. */
         layout.registerComponent('left-panel', '#left-panel', {
-            defaultWidth: 200,
+            defaultWidth: 150,
             minWidth: 50,
             setWidth: function (width) {
                 layout.components['left-panel'].$el.css('width', width + 'px');
@@ -135,7 +135,7 @@ angular.module('glark.services')
         layout.registerComponent('center-panel', '#center-panel');
             
         /* Reset the layout at the first access. */
-        layout.resetLayout();
+        //layout.resetLayout();
         
         return layout;
     });
