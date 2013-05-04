@@ -81,6 +81,14 @@ module.exports = function (grunt) {
             }
         },
 
+        targethtml: {
+            dist: {
+                files: {
+                    'glark/app/dist/index.html': 'glark/app/index.html'
+                }
+            }
+        },
+
         watch: {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint']
@@ -91,8 +99,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-targethtml');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'cssmin']);
+    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'cssmin', 'targethtml']);
 
 };
