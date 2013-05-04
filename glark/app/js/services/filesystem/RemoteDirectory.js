@@ -67,8 +67,6 @@ angular.module('glark.services')
                 })
                 .error(function (response, status) {
                     console.log('Error in $http get. Unable to update children of remote directory.');
-                    console.log(status);
-                    console.log(response);
                 });
         };
         

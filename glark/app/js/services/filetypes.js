@@ -19,25 +19,62 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.services')
 
     .factory('filetypes', function () {
+        
+        // https://github.com/ajaxorg/ace/blob/master/demo/kitchen-sink/demo.js#L68
+        var aceModes = {
+            coffee:     ["CoffeeScript" , "coffee"],
+            coldfusion: ["ColdFusion"   , "cfm"],
+            csharp:     ["C#"           , "cs"],
+            css:        ["CSS"          , "css"],
+            diff:       ["Diff"         , "diff|patch"],
+            golang:     ["Go"           , "go"],
+            groovy:     ["Groovy"       , "groovy"],
+            haxe:       ["haXe"         , "hx"],
+            html:       ["HTML"         , "htm|html|xhtml"],
+            c_cpp:      ["C/C++"        , "c|cc|cpp|cxx|h|hh|hpp"],
+            clojure:    ["Clojure"      , "clj"],
+            java:       ["Java"         , "java"],
+            javascript: ["JavaScript"   , "js"],
+            json:       ["JSON"         , "json"],
+            latex:      ["LaTeX"        , "latex|tex|ltx|bib"],
+            less:       ["LESS"         , "less"],
+            liquid:     ["Liquid"       , "liquid"],
+            lua:        ["Lua"          , "lua"],
+            markdown:   ["Markdown"     , "md|markdown"],
+            ocaml:      ["OCaml"        , "ml|mli"],
+            perl:       ["Perl"         , "pl|pm"],
+            pgsql:      ["pgSQL"        , "pgsql"],
+            php:        ["PHP"          , "php|phtml"],
+            powershell: ["Powershell"   , "ps1"],
+            python:     ["Python"       , "py"],
+            ruby:       ["Ruby"         , "ru|gemspec|rake|rb"],
+            scad:       ["OpenSCAD"     , "scad"],
+            scala:      ["Scala"        , "scala"],
+            scss:       ["SCSS"         , "scss|sass"],
+            sh:         ["SH"           , "sh|bash|bat"],
+            sql:        ["SQL"          , "sql"],
+            svg:        ["SVG"          , "svg"],
+            text:       ["Text"         , "txt"],
+            textile:    ["Textile"      , "textile"],
+            xml:        ["XML"          , "xml|rdf|rss|wsdl|xslt|atom|mathml|mml|xul|xbl"],
+            xquery:     ["XQuery"       , "xq"],
+            yaml:       ["YAML"         , "yaml"]
+        };
+        
+        var ext2mode = {};
+        angular.forEach(aceModes, function (value, mode) {
+            var extensions = value[1].split('|');
+            angular.forEach(extensions, function (extension) {
+                ext2mode[extension] = mode;
+            });
+        });
+        
         return {
             getAceModeFromExtension: function (extension) {
-                var mode = null;
-                switch (extension) {
-                case 'js':
-                    mode = 'ace/mode/javascript';
-                    break;
-                case 'md':
-                    mode = 'ace/mode/markdown';
-                    break;
-                case 'py':
-                    mode = 'ace/mode/python';
-                    break;
-                default:
-                    mode = 'ace/mode/text';
-                    break;
+                if(ext2mode[extension] !== undefined) {
+                    return 'ace/mode/' + ext2mode[extension];
                 }
-
-                return mode;
+                return 'ace/mode/text';
             }
         };
     });
