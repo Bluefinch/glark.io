@@ -32,9 +32,11 @@
     **************************-->
 
     <div id="center-panel" class="panel">
-        <div ng-include="'./partials/tabs.html'"></div>
-        <div ng-controller="EditorController" drop-zone="openDroppedFiles($event)">
-            <div id="editor" ng-non-bindable></div>
+        <div id="editor-wrapper">
+            <div ng-include="'./partials/tabs.html'"></div>
+            <div ng-controller="EditorController" drop-zone="openDroppedFiles($event)">
+                <div id="editor" ng-non-bindable></div>
+            </div>
         </div>
     </div>
     
