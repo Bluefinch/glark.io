@@ -1,12 +1,22 @@
 {
-    "name": "glark.io", 
-    "version": "0.0.1",
-    "description": "Drag and Collaborate editor.", 
-    "author": "Glark <staff@glark.io>", 
-    "private": true, 
-    "dependencies": {
-        "express": "3.0.x",
-        "socket.io": "0.9.10"
-    }, 
-    "engine": "node >= 0.8.3"
+  "name": "glark.io",
+  "version": "0.0.1",
+  "description": "Drag and Collaborate editor.",
+  "author": "Glark <staff@glark.io>",
+  "private": true,
+  "dependencies": {
+    "express": "3.0.x",
+    "socket.io": "0.9.10"
+  },
+  "engine": "node >= 0.8.3",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.4.3",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-cssmin": "~0.6.0",
+    "grunt-contrib-watch": "~0.4.0",
+    "grunt-targethtml": "~0.2.2",
+    "grunt-contrib-copy": "~0.4.1"
+  }
 }

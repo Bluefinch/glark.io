@@ -18,7 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('Workspace', function ($rootScope, editor, EditSession, extensionFilter, filetypes) {
+    .factory('Workspace', ['$rootScope', 'editor', 'EditSession', 'extensionFilter', 'filetypes',
+            function ($rootScope, editor, EditSession, extensionFilter, filetypes) {
         /* Main model of the glark.io application. Contains among other all the
          * data describing the files of the workspace, the open ones and the active
          * one. */
@@ -56,7 +57,7 @@ angular.module('glark.services')
 
         /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.openFile = function (file) {
-            if (this.openFiles.indexOf(file) == -1) {
+            if (this.openFiles.indexOf(file) === -1) {
                 this.openFiles.push(file);
                 /* Create session for file. */
                 file.session = new EditSession('');
@@ -82,11 +83,11 @@ angular.module('glark.services')
 
         /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.closeFile = function (file) {
-            if (file == this.activeFile) {
+            if (file === this.activeFile) {
                 this.activeFile = null;
             }
             var idx = this.openFiles.indexOf(file);
-            if (idx != -1) {
+            if (idx !== -1) {
                 this.openFiles.splice(idx, 1);
                 /* Reset file. */
                 file.changed = false;
@@ -118,8 +119,8 @@ angular.module('glark.services')
 
         /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.isActiveFile = function (file) {
-            return file == this.activeFile;
+            return file === this.activeFile;
         };
 
         return Workspace;
-    });
+    }]);

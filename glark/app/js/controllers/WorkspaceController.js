@@ -18,17 +18,19 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.controllers')
 
-    .controller('WorkspacesController', function ($scope, $modal, editor, workspaces, filesystem) {
+    .controller('WorkspacesController', ['$scope', '$modal', 'editor', 'workspaces', 'filesystem',
+            function ($scope, $modal, editor, workspaces, filesystem) {
         $scope.workspaces = workspaces;
         $scope.editor = editor;
-        
+
         $scope.addLocalWorkspace = function () {
             var workspace = workspaces.createLocalWorkspace('Local');
             workspaces.setActiveWorkspace(workspace);
         };
 
         $scope.addRemoteWorkspace = function () {
-            var modal = $modal({
+            /* Open a modal using the $modal service. */
+            $modal({
                 template: 'partials/addConnectorModal.html',
                 show: true,
                 backdrop: 'static',
@@ -46,11 +48,11 @@ angular.module('glark.controllers')
         $scope.setActiveWorkspace = function (workspace) {
             workspaces.setActiveWorkspace(workspace);
         };
-        
+
         $scope.isActiveWorkspace = function (workspace) {
             return workspaces.getActiveWorkspace() === workspace;
         };
-        
+
         $scope.openDroppedFiles = function (event, directory) {
             var dataTransfer = event.originalEvent.dataTransfer;
             var entries = filesystem.getEntriesFromDataTransfer(dataTransfer);
@@ -58,12 +60,12 @@ angular.module('glark.controllers')
                 directory.addEntry(entry);
             });
         };
-        
+
         $scope.toggleCollapsed = function (directory) {
             directory.collapsed = !directory.collapsed;
-            if(!directory.collapsed) {
+            if (!directory.collapsed) {
                 directory.updateChildren();
             }
         };
-    });
+    }]);
 

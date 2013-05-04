@@ -18,13 +18,14 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.controllers')
 
-    .controller('EditorController', function ($scope, workspaces, filesystem) {
+    .controller('EditorController', ['$scope', 'workspaces', 'filesystem',
+            function ($scope, workspaces, filesystem) {
 
         $scope.openDroppedFiles = function (event) {
             var dataTransfer = event.originalEvent.dataTransfer;
             var entries = filesystem.getEntriesFromDataTransfer(dataTransfer);
 
-            if(entries.length == 1 && entries[0].isDirectory) {
+            if (entries.length === 1 && entries[0].isDirectory) {
                 /* If only one directory was dropped, create and active a new
                  * Workspace. */
                 var newWorkspace = workspaces.createLocalWorkspace(entries[0].name, entries[0]);
@@ -32,18 +33,18 @@ angular.module('glark.controllers')
             } else {
                 angular.forEach(entries, function (entry) {
                     workspaces.getActiveWorkspace().addEntry(entry);
-                    if(entry.isFile) {
+                    if (entry.isFile) {
                         workspaces.getActiveWorkspace().setActiveFile(entry);
                     }
                 });
             }
         };
 
-        $scope.$on('save', function() {
+        $scope.$on('save', function () {
             var workspace = workspaces.getActiveWorkspace();
-            if(workspace !== null) {
+            if (workspace !== null) {
                 var file = workspace.getActiveFile();
-                if(file !== null) {
+                if (file !== null) {
                     var content = file.session.getValue();
                     var promise = file.setContent(content);
                     promise.then(function () {
@@ -53,4 +54,4 @@ angular.module('glark.controllers')
             }
         });
 
-    });
+    }]);

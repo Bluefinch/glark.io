@@ -18,8 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('LocalDirectory', function ($rootScope, LocalFile, $q) {
-        
+    .factory('LocalDirectory', ['$rootScope', 'LocalFile', '$q', function ($rootScope, LocalFile, $q) {
+
         /* Read the directoryEntry and create a list of
          * services.filesystem.*Local objects. */
         var createEntries = function (directoryEntry) {
@@ -43,50 +43,50 @@ angular.module('glark.services')
             });
             return defered.promise;
         };
-        
+
         var LocalDirectory = function (name, directoryEntry) {
             this.isDirectory = true;
             this.isFile = false;
-            
+
             this.name = name;
             this.basename = '/';
-            
+
             this.collapsed = true;
             this.children = {};
-            
+
             /* If the directoryEntry is not undefined, we
              * read the content and we fill the children
-             * collection with the services.filesystem.*Local 
+             * collection with the services.filesystem.*Local
              * objects. */
             var _this = this;
-            if(directoryEntry !== undefined) {
+            if (directoryEntry !== undefined) {
                 var promise = createEntries(directoryEntry);
                 promise.then(function (children) {
                     _this.children = children;
                 });
             }
         };
-        
+
         /* Update the children list. */
-        LocalDirectory.prototype.updateChildren = function() {
-            /* For LocalDirectory the children list is 
+        LocalDirectory.prototype.updateChildren = function () {
+            /* For LocalDirectory the children list is
              * maintened up to date. */
             var defered = $q.defer();
             defered.resolve();
             return defered.promise;
         };
-        
-        /* @param entry is a services.filestystem.Local* 
+
+        /* @param entry is a services.filestystem.Local*
          * object. */
         LocalDirectory.prototype.addEntry = function (entry) {
             entry.basename = this.basename + this.name + '/';
             this.children[entry.name] = entry;
         };
-        
+
         LocalDirectory.prototype.getChildCount = function () {
             return Object.keys(this.children).length;
         };
-        
+
         return LocalDirectory;
-    });
+    }]);
 

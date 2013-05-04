@@ -18,19 +18,20 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('RemoteDirectory', function (RemoteFile, base64, $q, $http) {
-        
+    .factory('RemoteDirectory', ['RemoteFile', 'base64', '$q', '$http',
+            function (RemoteFile, base64, $q, $http) {
+
         var RemoteDirectory = function (name, params, basename) {
             this.isDirectory = true;
             this.isFile = false;
-            
+
             this.name = name;
             this.basename = '/';
-            
+
             if (basename !== undefined) {
                 this.basename = basename;
             }
-            
+
             this.collapsed = true;
             this.children = {};
 
@@ -45,35 +46,35 @@ angular.module('glark.services')
             this.authenticationHeader = 'Basic ' +
                 base64.encode(params.username + ':' + params.password);
         };
-        
+
         RemoteDirectory.prototype.updateChildren = function () {
             /* Reset children list. */
             this.children = {};
-            
+
             /* Then update it. */
             var _this = this;
             $http.get(this.baseurl, {headers: {'Authorization': this.authenticationHeader}})
                 .success(function (response) {
                     angular.forEach(response.data, function (entry) {
                         var basename = _this.basename + _this.name + '/';
-                        if (entry.type == 'file') {
+                        if (entry.type === 'file') {
                             var file = new RemoteFile(entry.name, _this.params, basename);
                             _this.children[entry.name] = file;
-                        } else if (entry.type == 'dir') {
+                        } else if (entry.type === 'dir') {
                             var directory = new RemoteDirectory(entry.name, _this.params, basename);
                             _this.children[entry.name] = directory;
                         }
                     });
                 })
-                .error(function (response, status) {
+                .error(function (/* response, status */) {
                     console.log('Error in $http get. Unable to update children of remote directory.');
                 });
         };
-        
-        /* @param entry is a services.filestystem.Local* 
+
+        /* @param entry is a services.filestystem.Local*
          * object. */
         RemoteDirectory.prototype.addEntry = function (entry) {
-            if(entry.isFile) {
+            if (entry.isFile) {
                 var _this = this;
                 entry.getContent().then(function (content) {
                     var basename = _this.basename + _this.name + '/';
@@ -84,11 +85,11 @@ angular.module('glark.services')
                 });
             }
         };
-        
+
         RemoteDirectory.prototype.getChildCount = function () {
             return Object.keys(this.children).length;
         };
-        
+
         return RemoteDirectory;
-    });
+    }]);
 

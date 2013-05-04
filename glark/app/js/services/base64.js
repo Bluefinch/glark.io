@@ -22,11 +22,11 @@ angular.module('glark.services')
     .factory('base64', function () {
         return {
             encode: function (str) {
-                return window.btoa(unescape(encodeURIComponent(str)));
+                return window.btoa(window.unescape(encodeURIComponent(str)));
             },
 
             decode: function (str) {
-                return decodeURIComponent(escape(window.atob(str)));
+                return decodeURIComponent(window.escape(window.atob(str)));
             }
         };
     });

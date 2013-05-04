@@ -35,12 +35,25 @@ app.use(express.logger('dev'));
 
 // Serve static files.
 app.use(express.compress());
-app.use(express.favicon(path.join(config.server.distFolder, 'img/favicon.ico')));
-app.use(express['static'](config.server.distFolder));
+
+var staticFolder = '';
+app.configure('development', function () {
+    staticFolder = config.server.devFolder;
+});
+
+app.configure('production', function () {
+    staticFolder = config.server.distFolder;
+});
+
+console.log('Using static folder: ' + staticFolder);
+
+app.use(express.favicon(path.join(staticFolder, 'img/favicon.ico')));
+app.use(express['static'](staticFolder));
 
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 
+// Error handler.
 app.configure('development', function () {
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });

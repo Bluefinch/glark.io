@@ -24,26 +24,26 @@ angular.module('glark.services', ['ngResource']);
 angular.module('glark', ['glark.controllers', 'glark.directives',
         'glark.filters', 'glark.services', '$strap.directives'])
 
-.run(function ($rootScope, LocalFile, workspaces, layout, editor) {
-    
+.run(['$rootScope', 'LocalFile', 'workspaces', function ($rootScope, LocalFile, workspaces) {
+
     /* Helper function to broadcast events. */
-    var applyEvent = function(eventName, event) {
+    var applyEvent = function (eventName, event) {
         event.preventDefault();
-        $rootScope.$apply(function() {
+        $rootScope.$apply(function () {
             $rootScope.$broadcast(eventName);
         });
     };
-    
+
     /* Bind keys with events. */
-    document.addEventListener('keydown', function(event) {
+    document.addEventListener('keydown', function (event) {
 
         if (!event.metaKey && !event.ctrlKey) {
             return;
         }
-        
+
         switch (event.keyCode) {
-            case 83 : // s 
-                return applyEvent('save', event);
+        case 83 : // s
+            return applyEvent('save', event);
         }
     });
 
@@ -56,8 +56,8 @@ angular.module('glark', ['glark.controllers', 'glark.directives',
      * server would be better. */
     var blob = new Blob(["###glark.io###\nWelcome to _glark.io_ the drag'n'collaborate editor.\nJust drag some files here and start editing."], {type: "text"});
     var welcomeFile = new LocalFile("welcome.md", blob);
-    
+
     /* Add it to the default workspace and give it the focus. */
     workspace.addEntry(welcomeFile);
     workspace.setActiveFile(welcomeFile);
-});
+}]);

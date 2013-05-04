@@ -3,7 +3,6 @@
 /* jasmine specs for filters go here */
 
 describe('The filters:', function () {
-    debugger;
     var fullPath, filename, basename;
 
     beforeEach(function () {

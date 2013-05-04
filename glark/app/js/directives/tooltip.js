@@ -26,7 +26,7 @@ angular.module('glark.directives')
                 $(element).attr('rel', 'tooltip');
                 $(element).attr('title', options.text).tooltip(options);
             }
-        }
+        };
     });
 
 

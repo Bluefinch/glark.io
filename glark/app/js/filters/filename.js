@@ -18,8 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.filters')
 
-    .filter('filename', function() {
-        return function(input) {
+    .filter('filename', function () {
+        return function (input) {
             return input.replace(/^.*[\\\/]/, '');
         };
     });
