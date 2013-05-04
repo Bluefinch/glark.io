@@ -45,20 +45,39 @@ module.exports = function (grunt) {
                 /* Separator between each concatenated file. */
                 separator: ';'
             },
-            dist: {
+            js: {
                 src: ['glark/app/js/**/*.js'],
                 dest: 'glark/app/dist/<%= pkg.name %>.js'
+            },
+            css: {
+                src: ['glark/app/css/**/*.css'],
+                dest: 'glark/app/dist/<%= pkg.name %>.css'
             }
         },
 
         uglify: {
             options: {
+                report: 'min',
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
             },
             dist: {
                 files: {
-                    'glark/app/dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+                    'glark/app/dist/<%= pkg.name %>.min.js': ['<%= concat.js.dest %>']
                 }
+            }
+        },
+
+        cssmin: {
+            options: {
+                report: 'min',
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+            },
+            minify: {
+                expand: true,
+                cwd: 'glark/app/dist/',
+                src: ['*.css', '!*.min.css'],
+                dest: 'glark/app/dist/',
+                ext: '.io.min.css' /* Watch out this bug in ext, had to add io here. */
             }
         },
 
@@ -71,8 +90,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
+    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'cssmin']);
 
 };
