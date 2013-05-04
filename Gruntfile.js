@@ -47,11 +47,11 @@ module.exports = function (grunt) {
             },
             js: {
                 src: ['glark/app/js/**/*.js'],
-                dest: 'glark/app/dist/<%= pkg.name %>.js'
+                dest: 'glark/app/dist/js/<%= pkg.name %>.js'
             },
             css: {
                 src: ['glark/app/css/**/*.css'],
-                dest: 'glark/app/dist/<%= pkg.name %>.css'
+                dest: 'glark/app/dist/css/<%= pkg.name %>.css'
             }
         },
 
@@ -62,7 +62,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
-                    'glark/app/dist/<%= pkg.name %>.min.js': ['<%= concat.js.dest %>']
+                    'glark/app/dist/js/<%= pkg.name %>.min.js': ['<%= concat.js.dest %>']
                 }
             }
         },
@@ -76,16 +76,30 @@ module.exports = function (grunt) {
                 expand: true,
                 cwd: 'glark/app/dist/',
                 src: ['*.css', '!*.min.css'],
-                dest: 'glark/app/dist/',
+                dest: 'glark/app/dist/css/',
                 ext: '.io.min.css' /* Watch out this bug in ext, had to add io here. */
             }
         },
 
+        /* Generate the release html. */
         targethtml: {
             dist: {
                 files: {
                     'glark/app/dist/index.html': 'glark/app/index.html'
                 }
+            }
+        },
+
+        /* Copy the necessary files in the dist folder. */
+        copy: {
+            main: {
+                files: [
+                    {expand: true, cwd: 'glark/app/', src: ['css/lib/**'], dest: 'glark/app/dist/' },
+                    {expand: true, cwd: 'glark/app/', src: ['fonts/**'], dest: 'glark/app/dist/' },
+                    {expand: true, cwd: 'glark/app/', src: ['img/**'], dest: 'glark/app/dist/' },
+                    {expand: true, cwd: 'glark/app/', src: ['lib/**'], dest: 'glark/app/dist/' },
+                    {expand: true, cwd: 'glark/app/', src: ['partial/**'], dest: 'glark/app/dist/' }
+                ]
             }
         },
 
@@ -100,8 +114,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-targethtml');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'cssmin', 'targethtml']);
+    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'cssmin', 'targethtml', 'copy']);
 
 };
