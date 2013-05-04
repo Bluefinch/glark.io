@@ -18,7 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.controllers')
 
-    .controller('EditorController', function ($scope, workspaces, filesystem) {
+    .controller('EditorController', ['$scope', 'workspaces', 'filesystem',
+            function ($scope, workspaces, filesystem) {
 
         $scope.openDroppedFiles = function (event) {
             var dataTransfer = event.originalEvent.dataTransfer;
@@ -53,4 +54,4 @@ angular.module('glark.controllers')
             }
         });
 
-    });
+    }]);

@@ -24,7 +24,7 @@ angular.module('glark.services', ['ngResource']);
 angular.module('glark', ['glark.controllers', 'glark.directives',
         'glark.filters', 'glark.services', '$strap.directives'])
 
-.run(function ($rootScope, LocalFile, workspaces) {
+.run(['$rootScope', 'LocalFile', 'workspaces', function ($rootScope, LocalFile, workspaces) {
 
     /* Helper function to broadcast events. */
     var applyEvent = function (eventName, event) {
@@ -60,4 +60,4 @@ angular.module('glark', ['glark.controllers', 'glark.directives',
     /* Add it to the default workspace and give it the focus. */
     workspace.addEntry(welcomeFile);
     workspace.setActiveFile(welcomeFile);
-});
+}]);

@@ -23,7 +23,7 @@ angular.module('glark.directives')
      * Exemple:
      * <div ng-model="myDroppedFile" drop-zone="onDrop()"></div>
      */
-    .directive('dropZone', function ($parse) {
+    .directive('dropZone', ['$parse', function ($parse) {
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
@@ -40,4 +40,4 @@ angular.module('glark.directives')
                 });
             }
         };
-    });
+    }]);

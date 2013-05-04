@@ -79,7 +79,7 @@ angular.module('glark.services')
     })
 
     /* Helper providing services to manage the layout . */
-    .factory('layout', function (LayoutComponent) {
+    .factory('layout', ['LayoutComponent', function (LayoutComponent) {
         var layout = {};
 
         /* List of registered components. */
@@ -138,4 +138,4 @@ angular.module('glark.services')
         //layout.resetLayout();
 
         return layout;
-    });
+    }]);

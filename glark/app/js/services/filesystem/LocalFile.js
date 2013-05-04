@@ -19,7 +19,7 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.services')
 
     /* Create a glark.services.File object from a html5 File or Blob object. */
-    .factory('LocalFile', function ($rootScope, $q) {
+    .factory('LocalFile', ['$rootScope', '$q', function ($rootScope, $q) {
 
         /* Create a local file from a Blob or a
          * FileEntry object */
@@ -73,4 +73,4 @@ angular.module('glark.services')
         };
 
         return LocalFile;
-    });
+    }]);

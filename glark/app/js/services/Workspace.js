@@ -18,7 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('Workspace', function ($rootScope, editor, EditSession, extensionFilter, filetypes) {
+    .factory('Workspace', ['$rootScope', 'editor', 'EditSession', 'extensionFilter', 'filetypes',
+            function ($rootScope, editor, EditSession, extensionFilter, filetypes) {
         /* Main model of the glark.io application. Contains among other all the
          * data describing the files of the workspace, the open ones and the active
          * one. */
@@ -122,4 +123,4 @@ angular.module('glark.services')
         };
 
         return Workspace;
-    });
+    }]);

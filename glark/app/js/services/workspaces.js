@@ -18,7 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('workspaces', function ($rootScope, $q, editor, Workspace, LocalDirectory, RemoteDirectory) {
+    .factory('workspaces', ['$rootScope', '$q', 'editor', 'Workspace', 'LocalDirectory', 'RemoteDirectory',
+            function ($rootScope, $q, editor, Workspace, LocalDirectory, RemoteDirectory) {
         var workspaces = {};
 
         workspaces.workspaces = [];
@@ -78,4 +79,4 @@ angular.module('glark.services')
         };
 
         return workspaces;
-    });
+    }]);

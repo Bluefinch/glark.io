@@ -19,7 +19,7 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.services')
 
     /* Create a glark.services.File object from a html5 File or Blob object. */
-    .factory('RemoteFile', function (base64, $q, $http) {
+    .factory('RemoteFile', ['base64', '$q', '$http', function (base64, $q, $http) {
 
         /* Create a remote file from his name and
          * params, where params contains information
@@ -91,4 +91,4 @@ angular.module('glark.services')
         };
 
         return RemoteFile;
-    });
+    }]);

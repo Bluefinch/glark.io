@@ -18,7 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('RemoteDirectory', function (RemoteFile, base64, $q, $http) {
+    .factory('RemoteDirectory', ['RemoteFile', 'base64', '$q', '$http',
+            function (RemoteFile, base64, $q, $http) {
 
         var RemoteDirectory = function (name, params, basename) {
             this.isDirectory = true;
@@ -90,5 +91,5 @@ angular.module('glark.services')
         };
 
         return RemoteDirectory;
-    });
+    }]);
 

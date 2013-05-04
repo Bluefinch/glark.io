@@ -18,7 +18,7 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('LocalDirectory', function ($rootScope, LocalFile, $q) {
+    .factory('LocalDirectory', ['$rootScope', 'LocalFile', '$q', function ($rootScope, LocalFile, $q) {
 
         /* Read the directoryEntry and create a list of
          * services.filesystem.*Local objects. */
@@ -88,5 +88,5 @@ angular.module('glark.services')
         };
 
         return LocalDirectory;
-    });
+    }]);
 
