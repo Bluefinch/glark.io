@@ -1,19 +1,11 @@
 /* editor css stylesheet */
 
-#editor-wrapper {
+#editor {
     position: absolute;
     top: 35px;
     bottom: 10px;
-    left: 10px;
-    right: 10px;
-}
-
-#editor { 
-    position: absolute;
-    top: 0;
-    bottom: 0;
     left: 0;
-    right: 0;
+    right: 10px;
     
     color: #fff;
     box-shadow: 0 0 15px -1px rgba(0, 0, 0, 0.7);
@@ -25,10 +17,7 @@
     height: 35px;
     left: 0;
     right: 0;
-    
-    /* border-left: solid 40px rgba(0, 0, 0, 0.3); */
-    /* background: rgb(60, 75, 90); */
-    
+        
     font-size: 12px;
     overflow: hidden;
 }

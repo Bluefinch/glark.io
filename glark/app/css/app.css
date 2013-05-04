@@ -18,6 +18,7 @@ html, body {
     /* background-color: #383838;    */
     /* background-color: #242424;     */
     background-color: rgb(32, 47, 60);
+    background-color: rgb(78, 163, 0);
     /* background: linear-gradient(0deg, #262a2e, #2e3338);  */
 
     /* font: normal 13px 'Ubuntu', sans-serif; */
@@ -122,19 +123,6 @@ a:focus {
     bottom: 0;
     left: 0;
     width: 150px;
-    
-    font-size: 12px;
-    overflow: hidden;
-}
-
-#left-panel .shadow {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: -20px;
-    width: 20px;
-    
-    /* box-shadow: 2px 0 10px 0 rgb(0, 0, 0); */
 }
 
 #center-panel {
@@ -145,8 +133,6 @@ a:focus {
     bottom: 0;
     left: 150px;
     right: 0;
-    
-    overflow: hidden;
 }
 
 /* Clear Fix took from HTML 5 Boilerplate. */
