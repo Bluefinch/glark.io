@@ -26,8 +26,8 @@ angular.module('glark.services')
         var activeWorkspace = null;
 
         /* @param workspace is a glark.services.Workspace object. */
-        workspaces.addWorkspace = function(workspace) {
-            if (this.workspaces.indexOf(workspace) == -1) {
+        workspaces.addWorkspace = function (workspace) {
+            if (this.workspaces.indexOf(workspace) === -1) {
                 this.workspaces.push(workspace);
                 workspace.rootDirectory.updateChildren();
             }
@@ -35,8 +35,8 @@ angular.module('glark.services')
 
         /* Create a new local workspace with the given name. A LocalDirectory
          * could be specified as rootDirectory. */
-        workspaces.createLocalWorkspace = function(name, rootDirectory) {
-            if(rootDirectory === undefined) {
+        workspaces.createLocalWorkspace = function (name, rootDirectory) {
+            if (rootDirectory === undefined) {
                 rootDirectory = new LocalDirectory(name);
             }
             var isConnected = false;
@@ -45,7 +45,7 @@ angular.module('glark.services')
             return workspace;
         };
 
-        workspaces.createRemoteWorkspace = function(name, params) {
+        workspaces.createRemoteWorkspace = function (name, params) {
             var rootDirectory = new RemoteDirectory('files', params);
             var isConnected = true;
             var workspace = new Workspace(name, rootDirectory, isConnected);
@@ -54,7 +54,7 @@ angular.module('glark.services')
         };
 
         /* @param workspace is a glark.services.Workspace object. */
-        workspaces.setActiveWorkspace = function(workspace) {
+        workspaces.setActiveWorkspace = function (workspace) {
             this.addWorkspace(workspace);
             activeWorkspace = workspace;
 
@@ -63,7 +63,7 @@ angular.module('glark.services')
 
             /* Set the new active file if needed. */
             var activeFile = workspace.getActiveFile();
-            if(activeFile !== null){
+            if (activeFile !== null) {
                 editor.setSession(activeFile.session);
             }
             else {
@@ -73,7 +73,7 @@ angular.module('glark.services')
             return activeWorkspace;
         };
 
-        workspaces.getActiveWorkspace = function() {
+        workspaces.getActiveWorkspace = function () {
             return activeWorkspace;
         };
 

@@ -17,12 +17,12 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 'use strict';
 
 angular.module('glark.services')
-    
+
     /* Create a glark.services.File object from a html5 File or Blob object. */
     .factory('filesystem', function (LocalFile, LocalDirectory) {
         var filesystem = {};
-        
-        filesystem.getEntriesFromDataTransfer = function(dataTransfer) {
+
+        filesystem.getEntriesFromDataTransfer = function (dataTransfer) {
             var entries = [];
             /* FIXME for firefox use dataTransfer.mozGetDataAt(i). */
             if (typeof dataTransfer.items !== 'undefined') {
@@ -46,6 +46,6 @@ angular.module('glark.services')
             }
             return entries;
         };
-        
+
         return filesystem;
     });

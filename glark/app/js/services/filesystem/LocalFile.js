@@ -17,24 +17,24 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 'use strict';
 
 angular.module('glark.services')
-    
+
     /* Create a glark.services.File object from a html5 File or Blob object. */
     .factory('LocalFile', function ($rootScope, $q) {
-        
-        /* Create a local file from a Blob or a 
+
+        /* Create a local file from a Blob or a
          * FileEntry object */
         var LocalFile = function (name, entry) {
             this.isDirectory = false;
             this.isFile = true;
-            
+
             this.name = name;
             this.basename = '/';
             this.changed = false;
-            
+
             var defered = $q.defer();
-            if(entry.file !== undefined) {
+            if (entry.file !== undefined) {
                 /* entry is a FileEntry object. */
-                 entry.file(function (file) {
+                entry.file(function (file) {
                     defered.resolve(file);
                     $rootScope.$digest();
                 });
@@ -42,11 +42,11 @@ angular.module('glark.services')
                 /* entry is a Blob object. */
                 defered.resolve(entry);
             }
-            
+
             /* Blob property is a promise. */
             this.blob = defered.promise;
         };
-        
+
         /* Get the content of the maintened blob. */
         LocalFile.prototype.getContent = function () {
             var defered = $q.defer();
@@ -60,7 +60,7 @@ angular.module('glark.services')
             });
             return defered.promise;
         };
-        
+
         /* Set the content of the maintened blob. */
         LocalFile.prototype.setContent = function (content) {
             var defered = $q.defer();
@@ -71,6 +71,6 @@ angular.module('glark.services')
             /* Set content should return a promise. */
             return defered.promise;
         };
-        
+
         return LocalFile;
     });

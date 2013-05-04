@@ -56,7 +56,7 @@ angular.module('glark.services')
 
         /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.openFile = function (file) {
-            if (this.openFiles.indexOf(file) == -1) {
+            if (this.openFiles.indexOf(file) === -1) {
                 this.openFiles.push(file);
                 /* Create session for file. */
                 file.session = new EditSession('');

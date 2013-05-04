@@ -17,21 +17,21 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 'use strict';
 
 angular.module('glark.services')
-    
+
     /* Create a glark.services.File object from a html5 File or Blob object. */
     .factory('RemoteFile', function (base64, $q, $http) {
-        
+
         /* Create a remote file from his name and
          * params, where params contains information
          * to connect the Rest API. */
         var RemoteFile = function (name, params, basename) {
             this.isDirectory = false;
             this.isFile = true;
-            
+
             this.name = name;
             this.basename = '/';
             this.changed = false;
-            
+
             if (basename !== undefined) {
                 this.basename = basename;
             }
@@ -44,11 +44,11 @@ angular.module('glark.services')
             this.authenticationHeader = 'Basic ' +
                 base64.encode(params.username + ':' + params.password);
         };
-        
+
         /* Get the content of the remote file. */
         RemoteFile.prototype.getContent = function () {
             var defered = $q.defer();
-            $http.get(this.baseurl, 
+            $http.get(this.baseurl,
                     {headers: {'Authorization': this.authenticationHeader}})
                 .success(function (response) {
                     defered.resolve(response.data.content);
@@ -59,7 +59,7 @@ angular.module('glark.services')
                 });
             return defered.promise;
         };
-        
+
         /* Set the content of the remote file. */
         RemoteFile.prototype.setContent = function (content) {
             var defered = $q.defer();
@@ -74,7 +74,7 @@ angular.module('glark.services')
                 });
             return defered.promise;
         };
-        
+
         /* Create file on remote. */
         RemoteFile.prototype.create = function (content) {
             var defered = $q.defer();
@@ -89,6 +89,6 @@ angular.module('glark.services')
                 });
             return defered.promise;
         };
-        
+
         return RemoteFile;
     });
