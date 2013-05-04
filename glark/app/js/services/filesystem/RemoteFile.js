@@ -53,11 +53,10 @@ angular.module('glark.services')
                 .success(function (response) {
                     defered.resolve(response.data.content);
                 })
-            .error(function (response, status) {
-                console.log('Error in $http get. Unable to get content of remote file.');
-                console.log(status);
-                console.log(response);
-            });
+                .error(function (response, status) {
+                    console.log('Error in $http get. Unable to get content of remote file.');
+                    defered.reject(response, status);
+                });
             return defered.promise;
         };
         
@@ -69,11 +68,25 @@ angular.module('glark.services')
                 .success(function (response) {
                     defered.resolve(response.data.content);
                 })
-            .error(function (response, status) {
-                console.log('Error in $http put. Unable to set content of remote file.');
-                console.log(status);
-                console.log(response);
-            });
+                .error(function (response, status) {
+                    console.log('Error in $http put. Unable to set content of remote file.');
+                    defered.reject(response, status);
+                });
+            return defered.promise;
+        };
+        
+        /* Create file on remote. */
+        RemoteFile.prototype.create = function (content) {
+            var defered = $q.defer();
+            $http.post(this.baseurl, {'content': content},
+                    {headers: {'Authorization': this.authenticationHeader}})
+                .success(function (response) {
+                    defered.resolve(response.data.content);
+                })
+                .error(function (response, status) {
+                    console.log('Error in $http put. Unable to create remote file.');
+                    defered.reject(response, status);
+                });
             return defered.promise;
         };
         

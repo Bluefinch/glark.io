@@ -77,19 +77,12 @@ angular.module('glark.services')
         RemoteDirectory.prototype.addEntry = function (entry) {
             if(entry.isFile) {
                 var _this = this;
-                var promise = entry.getContent();
-                promise.then(function (content) {
-                    $http.put(_this.baseurl + '/' + entry.name, {'content': content},
-                            {headers: {'Authorization': _this.authenticationHeader}})
-                        .success(function (response) {
-                            entry.basename = _this.basename + _this.name + '/';
-                            _this.children[entry.name] = entry;
-                        })
-                        .error(function (response, status) {
-                            console.log('Error in $http put. Unable to set content of remote file.');
-                            console.log(status);
-                            console.log(response);
-                        });
+                entry.getContent().then(function (content) {
+                    var basename = _this.basename + _this.name + '/';
+                    var file = new RemoteFile(entry.name, _this.params, basename);
+                    file.create(content).then(function () {
+                        _this.children[file.name] = file;
+                    });
                 });
             }
         };
