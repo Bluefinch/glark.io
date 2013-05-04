@@ -25,10 +25,19 @@ module.exports = function (grunt) {
                 devel: true,
                 globals: {
                     angular: false,
-                    ace: false
+                    ace: false,
+                    /* Angular test variables. */
+                    browser: false,
+                    element: false,
+                    /* Jasmine variables. */
+                    jasmine: false,
+                    it: false,
+                    describe: false,
+                    expect: false,
+                    beforeEach: false
                 }
             },
-            all: ['Gruntfile.js', 'glark/app/js/**/*.js']
+            files: ['Gruntfile.js', 'glark/app/js/**/*.js', 'glark/test/unit/**/*.js', 'glark/test/e2e/**/*.js']
         },
 
         concat: {
@@ -42,6 +51,17 @@ module.exports = function (grunt) {
             }
         },
 
+        uglify: {
+            options: {
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+            },
+            dist: {
+                files: {
+                    'glark/app/dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+                }
+            }
+        },
+
         watch: {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint']
@@ -50,7 +70,9 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['jshint', 'concat']);
+    grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
 
 };
