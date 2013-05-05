@@ -9,35 +9,24 @@
     font-size: 12px;
 }
 
-#toolbar {
-    height: 35px;
-    width: 100%;
-}
+/* toolbar */
 
-#toolbar .group {
-    width: 100px;
-    margin: 0 auto;
-    padding: 6px 0;
-    text-align: center;
+#toolbar {
+    padding: 1px 4px;
 }
 
 #toolbar a {
-    padding: 0;
-    font-size: 15px;
-    text-decoration: none; 
-}
-
-#toolbar a:first-child {
-    padding-right: 10px;
+    font-size: 18px;
+    color: #000;
+    opacity: 0.6;
+    text-shadow: 0 0 1px #000;
 }
 
 #toolbar a:hover {
-    color: rgb(131, 180, 160);
+    opacity: 1;
 }
 
-#workspaces {
-    padding-top: 10px;
-}
+/* workspaces */
 
 #workspaces li {
     list-style-type: none;
