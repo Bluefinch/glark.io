@@ -52,7 +52,7 @@
             <li>
                 <a title="{{workspace.name}}" ng-click="setActiveWorkspace(workspace)"  drop-zone="openDroppedFiles($event, workspace.rootDirectory)">{{workspace.name}}</a>
                 <i ng-show="workspace.isConnected" class="icon-bolt connected" tooltip="{'title': workspace.rootDirectory.hostname + ':' + workspace.rootDirectory.port, 'placement': 'right'}"></i>
-                <div ng-show="isActiveWorkspace(workspace)">
+                <div class="filetree" ng-show="isActiveWorkspace(workspace)">
                     <ul>
                         <li ng-repeat="entry in workspace.rootDirectory.children | foldersFirst" ng-include="'filetree_node_template'"></li>
                     </ul>

@@ -37,6 +37,18 @@
     color: #fff;
 }
 
+.filetree li a {
+    position: relative;
+    display: block;
+}
+
+.filetree li a i {
+    display: block;
+    position: absolute;
+    margin-top: 0.2em;
+    margin-left: -1.2em;
+}
+
 #workspaces li a:hover {
     color: #2ecc71;
 }
