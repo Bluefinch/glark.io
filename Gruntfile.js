@@ -74,7 +74,7 @@ module.exports = function (grunt) {
             },
             minify: {
                 expand: true,
-                cwd: 'glark/app/dist/',
+                cwd: 'glark/app/dist/css/',
                 src: ['*.css', '!*.min.css'],
                 dest: 'glark/app/dist/css/',
                 ext: '.io.min.css' /* Watch out this bug in ext, had to add io here. */
