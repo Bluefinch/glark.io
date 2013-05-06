@@ -102,7 +102,7 @@ a:focus {
     top: 0;
     bottom: 0;
     right: 0;
-    width: 12px;
+    width: 8px;
 }
 
 .h-bottom-slider {
@@ -110,10 +110,7 @@ a:focus {
     right: 0;
     left: 0;
     bottom: 0;
-    height: 12px;
-    
-    /* box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .9); */
-    overflow: hidden;
+    height: 8px;
 }
 
 .panel .inner-panel {

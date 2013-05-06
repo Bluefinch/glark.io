@@ -49,7 +49,7 @@
     
     <div id="workspaces" class="dropdown" ng-class="{open: openDropdown}">
         <ul ng-repeat="workspace in workspaces.workspaces">
-            <li>
+            <li class="workspace">
                 <a title="{{workspace.name}}" ng-click="setActiveWorkspace(workspace)"  drop-zone="openDroppedFiles($event, workspace.rootDirectory)">{{workspace.name}}</a>
                 <i ng-show="workspace.isConnected" class="icon-bolt connected" tooltip="{'title': workspace.rootDirectory.hostname + ':' + workspace.rootDirectory.port, 'placement': 'right'}"></i>
                 <div class="filetree" ng-show="isActiveWorkspace(workspace)">
