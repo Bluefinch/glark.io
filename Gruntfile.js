@@ -47,11 +47,11 @@ module.exports = function (grunt) {
             },
             js: {
                 src: ['glark/app/js/**/*.js'],
-                dest: 'glark/app/dist/js/<%= pkg.name %>.js'
+                dest: 'glark/dist/js/<%= pkg.name %>.js'
             },
             css: {
                 src: ['glark/app/css/**/*.css'],
-                dest: 'glark/app/dist/css/<%= pkg.name %>.css'
+                dest: 'glark/dist/css/<%= pkg.name %>.css'
             }
         },
 
@@ -62,7 +62,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
-                    'glark/app/dist/js/<%= pkg.name %>.min.js': ['<%= concat.js.dest %>']
+                    'glark/dist/js/<%= pkg.name %>.min.js': ['<%= concat.js.dest %>']
                 }
             }
         },
@@ -74,9 +74,9 @@ module.exports = function (grunt) {
             },
             minify: {
                 expand: true,
-                cwd: 'glark/app/dist/css/',
+                cwd: 'glark/dist/css/',
                 src: ['*.css', '!*.min.css'],
-                dest: 'glark/app/dist/css/',
+                dest: 'glark/dist/css/',
                 ext: '.io.min.css' /* Watch out this bug in ext, had to add io here. */
             }
         },
@@ -85,7 +85,7 @@ module.exports = function (grunt) {
         targethtml: {
             dist: {
                 files: {
-                    'glark/app/dist/index.html': 'glark/app/index.html'
+                    'glark/dist/index.html': 'glark/app/index.html'
                 }
             }
         },
@@ -94,11 +94,11 @@ module.exports = function (grunt) {
         copy: {
             main: {
                 files: [
-                    {expand: true, cwd: 'glark/app/', src: ['css/lib/**'], dest: 'glark/app/dist/' },
-                    {expand: true, cwd: 'glark/app/', src: ['fonts/**'], dest: 'glark/app/dist/' },
-                    {expand: true, cwd: 'glark/app/', src: ['img/**'], dest: 'glark/app/dist/' },
-                    {expand: true, cwd: 'glark/app/', src: ['lib/**'], dest: 'glark/app/dist/' },
-                    {expand: true, cwd: 'glark/app/', src: ['partial/**'], dest: 'glark/app/dist/' }
+                    {expand: true, cwd: 'glark/app/', src: ['css/lib/**'], dest: 'glark/dist/' },
+                    {expand: true, cwd: 'glark/app/', src: ['fonts/**'], dest: 'glark/dist/' },
+                    {expand: true, cwd: 'glark/app/', src: ['img/**'], dest: 'glark/dist/' },
+                    {expand: true, cwd: 'glark/app/', src: ['lib/**'], dest: 'glark/dist/' },
+                    {expand: true, cwd: 'glark/app/', src: ['partial/**'], dest: 'glark/dist/' }
                 ]
             }
         },

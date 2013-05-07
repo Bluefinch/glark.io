@@ -47,7 +47,7 @@ app.configure('production', function () {
 
 console.log('Using static folder: ' + staticFolder);
 
-app.use(express.favicon(path.join(staticFolder, 'img/favicon.ico')));
+app.use(express.favicon(path.join(staticFolder, 'favicon.ico')));
 app.use(express['static'](staticFolder));
 
 app.use(express.bodyParser());
