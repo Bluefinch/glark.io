@@ -7,7 +7,7 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   - npm install --quiet -g testacular@0.6.x
   - npm install --quiet
-  - sudo npm install -g --quiet grunt-cli
+  - sudo npm install -g grunt-cli
   - cd cabble
   - node server.js &
   - sleep 3 # give server some time to start
