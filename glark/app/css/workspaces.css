@@ -28,6 +28,12 @@
 
 /* workspaces */
 
+#workspaces ul {
+    line-height: 1em;
+    margin: 0 1.2em;
+    padding-left: 0;
+}
+
 #workspaces li {
     list-style-type: none;
 }
@@ -41,9 +47,21 @@
     color: #2ecc71;
 }
 
-#workspaces ul {
-    margin-left: 1.2em;
-    padding-left: 0;
+#workspaces li.workspace {
+    margin-top: 0.5em;
+}
+
+
+.filetree li a {
+    position: relative;
+    display: block;
+}
+
+.filetree li a i {
+    display: block;
+    position: absolute;
+    margin-top: 0.1em;
+    margin-left: -1.2em;
 }
 
 #workspaces .connected {
