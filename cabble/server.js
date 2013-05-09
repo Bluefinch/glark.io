@@ -88,10 +88,11 @@ server.listen(app.get('port'), function () {
 
 io.sockets.on('connection', function (socket) {
     console.log('Websocket connection.');
-    socket.emit('ping', function (data) {
-        console.log(data);
-    });
 
-    socket.emit('workspace', {wksp: 'toto'});
+    /* Use this event to proxy some data to all the sockets connected in your
+     * room. */
+    socket.on('proxy', function (data) {
+        socket.broadcast.emit('proxy', data);
+    });
 });
 
