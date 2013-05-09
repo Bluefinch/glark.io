@@ -65,7 +65,6 @@ angular.module('glark.services')
                 /* Set the correct mode. */
                 var aceMode = filetypes.getAceModeFromExtension(extensionFilter(file.name));
                 file.session.setMode(aceMode);
-                // file.session.setMode("ace/mode/javascript");
 
                 /* Fill content. */
                 var promise = file.getContent();

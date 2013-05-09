@@ -71,7 +71,7 @@ angular.module('glark.services')
                 });
         };
 
-        /* @param entry is a services.filestystem.Local*
+        /* @param entry is a services.filesystem.Local*
          * object. */
         RemoteDirectory.prototype.addEntry = function (entry) {
             if (entry.isFile) {
