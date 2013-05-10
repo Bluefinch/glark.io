@@ -30,7 +30,8 @@ angular.module('glark.services')
         socket.emit = function (eventName, data) {
             /* The 'proxy' event is used to proxy some data to all the other socket
              * connected to our room. */
-            socket.socket.emit('proxy', {'eventName': eventName, 'data': JSON.stringify(data, null)});
+            console.log({'eventName': eventName, 'data': JSON.stringify(data)});
+            socket.socket.emit('proxy', {'eventName': eventName, 'data': JSON.stringify(data)});
         };
 
         socket.on = function (eventName, callback) {

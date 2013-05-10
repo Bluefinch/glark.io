@@ -26,9 +26,9 @@ angular.module('glark.services')
 
         var activeWorkspace = null;
 
-        socket.on('changeActiveWorkspace', function (event, activeWorkspaceName) {
+        socket.on('changeActiveWorkspace', function (event, newActiveWorkspace) {
             console.log('from changeActiveWorkspace:');
-            console.log(activeWorkspaceName);
+            console.log(newActiveWorkspace);
         });
 
         /* @param workspace is a glark.services.Workspace object. */
@@ -75,8 +75,7 @@ angular.module('glark.services')
             else {
                 editor.clearSession();
             }
-
-            socket.emit('changeActiveWorkspace', activeWorkspace.name);
+            socket.emit('changeActiveWorkspace', activeWorkspace);
 
             return activeWorkspace;
         };
