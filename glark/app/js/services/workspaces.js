@@ -18,13 +18,21 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('workspaces', ['$q', 'editor', 'Workspace', 'LocalDirectory', 'RemoteDirectory', 'socket',
-            function ($q, editor, Workspace, LocalDirectory, RemoteDirectory, socket) {
+    .factory('workspaces', ['$serviceScope', '$q', 'editor', 'Workspace',
+            'LocalDirectory', 'RemoteDirectory', 'socket', 'shareables',
+            function ($serviceScope, $q, editor, Workspace, LocalDirectory,
+                RemoteDirectory, socket, shareables) {
+
         var workspaces = {};
 
         workspaces.workspaces = [];
 
+        var $scope = $serviceScope();
+
         var activeWorkspace = null;
+        $scope.workspaces = workspaces;
+
+        shareables.$attach($scope, 'workspaces');
 
         socket.on('changeActiveWorkspace', function (event, newActiveWorkspace) {
             console.log('from changeActiveWorkspace:');

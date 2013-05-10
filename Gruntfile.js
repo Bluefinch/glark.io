@@ -26,6 +26,7 @@ module.exports = function (grunt) {
                 globals: {
                     angular: false,
                     ace: false,
+                    io: false,
                     /* Angular test variables. */
                     browser: false,
                     element: false,
