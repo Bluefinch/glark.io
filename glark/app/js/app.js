@@ -19,7 +19,7 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.controllers', []);
 angular.module('glark.directives', []);
 angular.module('glark.filters', []);
-angular.module('glark.services', ['ngResource', 'serviceUtilities']);
+angular.module('glark.services', ['ngResource']);
 
 angular.module('glark', ['glark.controllers', 'glark.directives',
         'glark.filters', 'glark.services', '$strap.directives'])

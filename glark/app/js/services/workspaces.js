@@ -18,32 +18,27 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('workspaces', ['$serviceScope', '$q', 'editor', 'Workspace',
-            'LocalDirectory', 'RemoteDirectory', 'socket', 'shareables',
-            function ($serviceScope, $q, editor, Workspace, LocalDirectory,
-                RemoteDirectory, socket, shareables) {
+    .factory('workspaces', ['$rootScope', '$q', 'editor', 'Workspace', 'LocalDirectory', 'RemoteDirectory',
+            function ($rootScope, $q, editor, Workspace, LocalDirectory, RemoteDirectory) {
 
         var workspaces = {};
 
         workspaces.workspaces = [];
 
-        var $scope = $serviceScope();
-
         var activeWorkspace = null;
-        $scope.workspaces = workspaces;
 
-        shareables.$attach($scope, 'workspaces');
-
-        socket.on('changeActiveWorkspace', function (event, newActiveWorkspace) {
-            console.log('from changeActiveWorkspace:');
-            console.log(newActiveWorkspace);
-        });
+        // socket.on('changeActiveWorkspace', function (event, newActiveWorkspace) {
+            // console.log('from changeActiveWorkspace:');
+            // console.log(newActiveWorkspace);
+        // });
 
         /* @param workspace is a glark.services.Workspace object. */
         workspaces.addWorkspace = function (workspace) {
             if (this.workspaces.indexOf(workspace) === -1) {
                 this.workspaces.push(workspace);
                 workspace.rootDirectory.updateChildren();
+
+                $rootScope.$broadcast('workspaces.addWorkspace', workspace);
             }
         };
 
@@ -79,11 +74,13 @@ angular.module('glark.services')
             var activeFile = workspace.getActiveFile();
             if (activeFile !== null) {
                 editor.setSession(activeFile.session);
-            }
-            else {
+            } else {
                 editor.clearSession();
             }
-            socket.emit('changeActiveWorkspace', activeWorkspace);
+
+            $rootScope.$broadcast('workspaces.setActiveWorkspace', workspace);
+
+            // socket.emit('changeActiveWorkspace', activeWorkspace);
 
             return activeWorkspace;
         };
