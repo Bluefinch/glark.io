@@ -27,7 +27,7 @@ module.exports = {
         return crypto.randomBytes(4).toString('hex');
     },
 
-    registerUser: function (req, res, next) {
+    registerUser: function (req) {
         if (typeof this.hashes[req.params.hash] === 'undefined') {
             console.log('Registering user for hash: ' + req.params.hash);
 

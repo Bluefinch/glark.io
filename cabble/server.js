@@ -70,7 +70,7 @@ app.configure('production', function () {
 //  Route the requests.
 // -----------------------------------
 
-app.get('/', function (req, res, next) {
+app.get('/', function (req, res) {
     /* User is hitting root url, this is a new connection hence redirect
      * him toward a new hash. */
     console.log('Request with no hash.');
@@ -79,11 +79,11 @@ app.get('/', function (req, res, next) {
     res.redirect('/' + req.params.hash);
 });
 
-app.get('/:hash', function (req, res, next) {
+app.get('/:hash', function (req, res) {
     console.log('Request with hash: ' + req.params.hash);
     console.log(cabble);
 
-    cabble.registerUser(req, res, next);
+    cabble.registerUser(req, res);
 
     res.sendfile(path.join(app.get('staticFolder'), 'index.html'));
 });
