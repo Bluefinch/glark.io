@@ -1,4 +1,3 @@
-#!/usr/bin/node
 /* Copyright 2013 Florent Galland & Luc Verdier
 
 This file is part of glark.io.
