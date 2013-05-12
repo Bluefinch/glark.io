@@ -9,18 +9,18 @@
     <link rel="shortcut icon" type="favicon.ico">
     <link rel="icon" type="favicon.ico">
 
-    <link rel="stylesheet" href="css/lib/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/lib/flat-ui.css"/>
-    <link rel="stylesheet" href="css/lib/font-awesome.min.css"/>
+    <link rel="stylesheet" href="public/css/lib/bootstrap.min.css"/>
+    <link rel="stylesheet" href="public/css/lib/flat-ui.css"/>
+    <link rel="stylesheet" href="public/css/lib/font-awesome.min.css"/>
     <!--(if target dev)><!-->
-        <link rel="stylesheet" href="css/app.css"/>
-        <link rel="stylesheet" href="css/ace.css"/>
-        <link rel="stylesheet" href="css/editor.css"/>
-        <link rel="stylesheet" href="css/workspaces.css"/>
-        <link rel="stylesheet" href="css/tabs.css"/>
+        <link rel="stylesheet" href="public/css/app.css"/>
+        <link rel="stylesheet" href="public/css/ace.css"/>
+        <link rel="stylesheet" href="public/css/editor.css"/>
+        <link rel="stylesheet" href="public/css/workspaces.css"/>
+        <link rel="stylesheet" href="public/css/tabs.css"/>
     <!--<!(endif)-->
     <!--(if target dist)>
-        <link rel="stylesheet" href="css/glark.io.min.css"/>
+        <link rel="stylesheet" href="public/css/glark.io.min.css"/>
     <!(endif)-->
 </head>
 <body>
@@ -30,7 +30,7 @@
     **************************-->
 
     <div id="left-panel" class="panel">
-        <div class="inner-panel" ng-include="'./partials/workspaces.html'"></div>
+        <div class="inner-panel" ng-include="'public/partials/workspaces.html'"></div>
         <div class="v-right-slider" layout-left-slider="left-panel"></div>
     </div>
     
@@ -40,7 +40,7 @@
 
     <div id="center-panel" class="panel">
         <div id="editor-wrapper">
-            <div ng-include="'./partials/tabs.html'"></div>
+            <div ng-include="'public/partials/tabs.html'"></div>
             <div ng-controller="EditorController" drop-zone="openDroppedFiles($event)">
                 <div id="editor" ng-non-bindable></div>
             </div>
@@ -64,26 +64,26 @@
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript">
         if(typeof jQuery === 'undefined') {
-            document.write("<script src='lib/jquery.js' type='text/javascript'><\/script>");
+            document.write("<script src='public/lib/jquery.js' type='text/javascript'><\/script>");
         }
     </script>
     
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script>
     <script type="text/javascript">
         if(typeof angular === 'undefined') {
-            document.write("<script src='lib/angular/angular.js' type='text/javascript'><\/script>");
+            document.write("<script src='public/lib/angular/angular.js' type='text/javascript'><\/script>");
         }
     </script>
     
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular-resource.min.js"></script>
     <script type="text/javascript">
         if(typeof angular === 'undefined') {
-            document.write("<script src='lib/angular/angular-resource.js' type='text/javascript'><\/script>");
+            document.write("<script src='public/lib/angular/angular-resource.js' type='text/javascript'><\/script>");
         }
     </script>
 
     <!-- Include ace _after_ angular so that we intercept drag n drop events first. -->
-    <script src='lib/ace/src-min-noconflict/ace.js' type='text/javascript'></script>
+    <script src='public/lib/ace/src-min-noconflict/ace.js' type='text/javascript'></script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js"></script>
     <script type="text/javascript">
@@ -95,47 +95,47 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         if(typeof jQuery.modal === 'function') {
-            document.write("<script src='lib/bootstrap.min.js' type='text/javascript'><\/script>");
+            document.write("<script src='public/lib/bootstrap.min.js' type='text/javascript'><\/script>");
         }
     </script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/0.7.2/angular-strap.min.js"></script>
 
     <!--(if target dev)><!-->
-        <script src="js/app.js"></script>
+        <script src="public/js/app.js"></script>
         <!-- Services -->
-        <script src="js/services/ace.js"></script>
-        <script src="js/services/base64.js"></script>
-        <script src="js/services/editor.js"></script>
-        <script src="js/services/filetypes.js"></script>
-        <script src="js/services/layout.js"></script>
-        <script src="js/services/socket.js"></script>
-        <script src="js/services/workspaces.js"></script>
-        <script src="js/services/Workspace.js"></script>
-        <script src="js/services/filesystem/filesystem.js"></script>
-        <script src="js/services/filesystem/LocalDirectory.js"></script>
-        <script src="js/services/filesystem/LocalFile.js"></script>
-        <script src="js/services/filesystem/RemoteDirectory.js"></script>
-        <script src="js/services/filesystem/RemoteFile.js"></script>
+        <script src="public/js/services/ace.js"></script>
+        <script src="public/js/services/base64.js"></script>
+        <script src="public/js/services/editor.js"></script>
+        <script src="public/js/services/filetypes.js"></script>
+        <script src="public/js/services/layout.js"></script>
+        <script src="public/js/services/socket.js"></script>
+        <script src="public/js/services/workspaces.js"></script>
+        <script src="public/js/services/Workspace.js"></script>
+        <script src="public/js/services/filesystem/filesystem.js"></script>
+        <script src="public/js/services/filesystem/LocalDirectory.js"></script>
+        <script src="public/js/services/filesystem/LocalFile.js"></script>
+        <script src="public/js/services/filesystem/RemoteDirectory.js"></script>
+        <script src="public/js/services/filesystem/RemoteFile.js"></script>
         <!-- Controllers -->
-        <script src="js/controllers/EditorController.js"></script>
-        <script src="js/controllers/WorkspacesController.js"></script>
-        <script src="js/controllers/TabController.js"></script>
-        <script src="js/controllers/TestsController.js"></script>
+        <script src="public/js/controllers/EditorController.js"></script>
+        <script src="public/js/controllers/WorkspacesController.js"></script>
+        <script src="public/js/controllers/TabController.js"></script>
+        <script src="public/js/controllers/TestsController.js"></script>
         <!-- Filters -->
-        <script src="js/filters/basename.js"></script>
-        <script src="js/filters/extension.js"></script>
-        <script src="js/filters/filename.js"></script>
-        <script src="js/filters/foldersFirst.js"></script>
+        <script src="public/js/filters/basename.js"></script>
+        <script src="public/js/filters/extension.js"></script>
+        <script src="public/js/filters/filename.js"></script>
+        <script src="public/js/filters/foldersFirst.js"></script>
         <!-- Directives -->
-        <script src="js/directives/dropZone.js"></script>
-        <script src="js/directives/layoutLeftSlider.js"></script>
-        <script src="js/directives/layoutTopSlider.js"></script>
-        <script src="js/directives/rightClick.js"></script>
-        <script src="js/directives/tooltip.js"></script>
+        <script src="public/js/directives/dropZone.js"></script>
+        <script src="public/js/directives/layoutLeftSlider.js"></script>
+        <script src="public/js/directives/layoutTopSlider.js"></script>
+        <script src="public/js/directives/rightClick.js"></script>
+        <script src="public/js/directives/tooltip.js"></script>
     <!--<!(endif)-->
     <!--(if target dist)>
-        <script src="js/glark.io.min.js"></script>
+        <script src="public/js/glark.io.min.js"></script>
     <!(endif)-->
 
 </body>

@@ -15,7 +15,10 @@ GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
 along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
+/* jshint node: true */
+'use strict';
 
+var cabble = require('./cabble.js');
 var config = require('./config.js');
 var express = require('express');
 var http = require('http');
@@ -24,36 +27,37 @@ var socketio = require('socket.io');
 
 var app = express();
 
-// Make the title of the app available everywhere.
+/* Make the title of the app available everywhere. */
 app.set('title', 'glark.io');
 
-// Listen to the port given in the env var if it exists or the one given in config.
+/* Listen to the port given in the env var if it exists or the one given in config. */
 app.set('port', process.env.PORT || config.server.listenPort);
 
-// From now on, log everything.
+/* From now on, log everything. */
 app.use(express.logger('dev'));
 
-// Serve static files.
+/* Serve static files. */
 app.use(express.compress());
 
-var staticFolder = '';
 app.configure('development', function () {
-    staticFolder = config.server.devFolder;
+    app.set('staticFolder', config.server.devFolder);
 });
 
 app.configure('production', function () {
-    staticFolder = config.server.distFolder;
+    app.set('staticFolder', config.server.distFolder);
 });
 
-console.log('Using static folder: ' + staticFolder);
+console.log('Using static folder: ' + app.staticFolder);
 
-app.use(express.favicon(path.join(staticFolder, 'favicon.ico')));
-app.use(express['static'](staticFolder));
+app.use(express.favicon(path.join(app.get('staticFolder'), 'favicon.ico')));
+
+/* Mount the static folder at the /public url. */
+app.use('/public', express.static(app.get('staticFolder')));
 
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 
-// Error handler.
+/* Error handler. */
 app.configure('development', function () {
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
@@ -62,10 +66,27 @@ app.configure('production', function () {
     app.use(express.errorHandler());
 });
 
-
 // -----------------------------------
 //  Route the requests.
 // -----------------------------------
+
+app.get('/', function (req, res, next) {
+    /* User is hitting root url, this is a new connection hence redirect
+     * him toward a new hash. */
+    console.log('Request with no hash.');
+    req.params.hash = cabble.makeRandomHash();
+
+    res.redirect('/' + req.params.hash);
+});
+
+app.get('/:hash', function (req, res, next) {
+    console.log('Request with hash: ' + req.params.hash);
+    console.log(cabble);
+
+    cabble.registerUser(req, res, next);
+
+    res.sendfile(path.join(app.get('staticFolder'), 'index.html'));
+});
 
 /* Route everything that was not answered yet to the main page. */
 // FIXME disable this when implementing the invite collab feature.
@@ -81,7 +102,7 @@ app.all('*', function (req, res) {
 var server = http.createServer(app);
 var io = socketio.listen(server);
 // var io = socketio.listen(server, {log: false});
-    
+
 server.listen(app.get('port'), function () {
     console.log("Express server listening on port " + app.get('port'));
 });

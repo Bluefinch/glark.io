@@ -26,7 +26,7 @@ module.exports = function (grunt) {
                 globals: {
                     angular: false,
                     ace: false,
-                    io: false,
+                    io: true,
                     /* Angular test variables. */
                     browser: false,
                     element: false,
@@ -38,7 +38,13 @@ module.exports = function (grunt) {
                     beforeEach: false
                 }
             },
-            files: ['Gruntfile.js', 'glark/app/js/**/*.js', 'glark/test/unit/**/*.js', 'glark/test/e2e/**/*.js']
+            files: [
+                'Gruntfile.js',
+                'glark/app/js/**/*.js',
+                'cabble/**/*.js',
+                'glark/test/unit/**/*.js',
+                'glark/test/e2e/**/*.js'
+            ]
         },
 
         concat: {

@@ -1,3 +1,4 @@
+/* jshint node: true */
 var path = require('path');
 
 module.exports = {
