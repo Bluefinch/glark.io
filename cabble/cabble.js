@@ -20,17 +20,33 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 var crypto = require('crypto');
 
 module.exports = {
-    hashes: {},
+    sessions: {},
 
     makeRandomHash: function () {
         return crypto.randomBytes(4).toString('hex');
     },
 
-    registerUser: function (req) {
-        if (typeof this.hashes[req.params.hash] === 'undefined') {
-            console.log('Registering user for hash: ' + req.params.hash);
+    /* Start a new session, return its associated hash. */
+    startNewSession: function () {
+        var hash = this.makeRandomHash();
+        this.sessions[hash] = { creationTime: Date.now() };
+        return hash;
+    },
 
-            this.hashes[req.params.hash] = {};
+    isValidSessionHash: function (sessionHash) {
+        if (typeof this.sessions[sessionHash] === 'undefined') {
+            return false;
+        } else {
+            return true;
+        }
+    },
+
+    registerUser: function (sessionHash, next) {
+        if (typeof this.sessions[sessionHash] === 'undefined') {
+            next(new Error('Unable to register user for unknown session hash ' + sessionHash));
+        } else {
+            console.log('toto');
+            next();
         }
     }
 };

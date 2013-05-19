@@ -66,26 +66,31 @@ app.configure('production', function () {
     app.use(express.errorHandler());
 });
 
+
 // -----------------------------------
 //  Route the requests.
 // -----------------------------------
+
+app.get('/:hash', function (req, res, next) {
+    console.log('Request with hash: ' + req.params.hash);
+    console.log(cabble);
+
+    if (cabble.isValidSessionHash(req.params.hash)) {
+        res.sendfile(path.join(app.get('staticFolder'), 'index.html'));
+    } else {
+        next(new Error('Invalid session hash ' + req.params.hash));
+    }
+});
 
 app.get('/', function (req, res) {
     /* User is hitting root url, this is a new connection hence redirect
      * him toward a new hash. */
     console.log('Request with no hash.');
-    req.params.hash = cabble.makeRandomHash();
+    var sessionHash = cabble.startNewSession();
 
-    res.redirect('/' + req.params.hash);
-});
+    console.log('Session created: ' + sessionHash);
 
-app.get('/:hash', function (req, res) {
-    console.log('Request with hash: ' + req.params.hash);
-    console.log(cabble);
-
-    cabble.registerUser(req, res);
-
-    res.sendfile(path.join(app.get('staticFolder'), 'index.html'));
+    res.redirect('/' + sessionHash);
 });
 
 /* Route everything that was not answered yet to the main page. */
