@@ -20,12 +20,15 @@ angular.module('glark.services')
 
     /* The socket service allows to send and receive events to and from _all_
      * the other socket connected to our room. */
-    .factory('socket', ['$rootScope', function ($rootScope) {
+    .factory('socket', ['$rootScope', '$location', function ($rootScope, $location) {
 
         var socket = {};
 
-        /* Our connected socketio istance. */
+        /* Our connected socketio instance. */
         socket.socket = io.connect();
+
+        /* Register with our session hash. */
+        socket.socket.emit('register', $location.path());
 
         socket.emit = function (eventName, data) {
             /* The 'proxy' event is used to proxy some data to all the other socket
@@ -36,7 +39,7 @@ angular.module('glark.services')
 
         socket.on = function (eventName, callback) {
             $rootScope.$on(eventName, function (event, data) {
-                callback(event, data);
+                callback(data);
             });
         };
 

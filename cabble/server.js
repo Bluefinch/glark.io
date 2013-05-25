@@ -115,6 +115,10 @@ server.listen(app.get('port'), function () {
 io.sockets.on('connection', function (socket) {
     console.log('Websocket connection.');
 
+    socket.on('register', function (sessionHash) {
+        console.log('registering socket with for session ' + sessionHash);
+    });
+
     /* Use this event to proxy some data to all the sockets connected in your
      * room. */
     socket.on('proxy', function (data) {
