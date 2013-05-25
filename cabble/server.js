@@ -115,14 +115,20 @@ server.listen(app.get('port'), function () {
 io.sockets.on('connection', function (socket) {
     console.log('Websocket connection.');
 
+    var cabbleSession = null;
     socket.on('register', function (sessionHash) {
-        console.log('registering socket with for session ' + sessionHash);
+        cabbleSession = cabble.registerToSession(sessionHash, socket);
     });
 
     /* Use this event to proxy some data to all the sockets connected in your
      * room. */
     socket.on('proxy', function (data) {
-        socket.broadcast.emit('proxy', data);
+        for (var i = 0; i < cabbleSession.sockets.length; ++i) {
+            if (cabbleSession.sockets[i].id !== socket.id) {
+                cabbleSession.sockets[i].emit('proxy', data);
+            }
+        }
+        // socket.broadcast.emit('proxy', data);
     });
 });
 

@@ -25,11 +25,11 @@ angular.module('glark.services')
 
         /* Register local listeners. */
         $rootScope.$on('workspaces.setActiveWorkspace', function (workspace) {
-            // console.log(workspace);
+            console.log(workspace);
         });
 
         $rootScope.$on('workspaces.addWorkspace', function (workspace) {
-            // console.log(workspace);
+            console.log(workspace);
         });
 
         /* Register socket listeners. */

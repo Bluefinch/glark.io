@@ -29,7 +29,7 @@ module.exports = {
     /* Start a new session, return its associated hash. */
     startNewSession: function () {
         var hash = this.makeRandomHash();
-        this.sessions[hash] = { creationTime: Date.now() };
+        this.sessions[hash] = { creationTime: Date.now(), sockets: [] };
         return hash;
     },
 
@@ -41,12 +41,19 @@ module.exports = {
         }
     },
 
-    registerUser: function (sessionHash, next) {
-        if (typeof this.sessions[sessionHash] === 'undefined') {
-            next(new Error('Unable to register user for unknown session hash ' + sessionHash));
+    registerToSession: function (sessionHash, socket) {
+        console.log('Registering socket for session ' + sessionHash);
+        console.log('Socket id ' + socket.id);
+        if (!this.isValidSessionHash(sessionHash)) {
+            console.log('Invalid session hash ' + sessionHash +
+                '\nClosing socket connection.');
+            socket.disconnect();
+            return null;
         } else {
-            console.log('toto');
-            next();
+            var session = this.sessions[sessionHash];
+            session.sockets.push(socket);
+            console.log(this);
+            return session;
         }
     }
 };
