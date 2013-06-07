@@ -24,19 +24,19 @@ angular.module('glark.services')
 
         var socket = {};
 
-        /* Our connected socketio instance. */
-        socket.socket = io.connect();
+        /* Our connected socket.io instance. */
+        socket._socket = io.connect();
 
         /* Register with our session hash. */
         var splitted = $location.absUrl().split('/');
         socket.sessionHash = splitted[splitted.length - 1];
-        socket.socket.emit('register', socket.sessionHash);
+        socket._socket.emit('register', socket.sessionHash);
 
         socket.emit = function (eventName, data) {
             /* The 'proxy' event is used to proxy some data to all the other socket
              * connected to our room. */
             console.log({'eventName': eventName, 'data': JSON.stringify(data)});
-            socket.socket.emit('proxy', {'eventName': eventName, 'data': JSON.stringify(data)});
+            socket._socket.emit('proxy', {'eventName': eventName, 'data': JSON.stringify(data)});
         };
 
         socket.on = function (eventName, callback) {
@@ -47,11 +47,10 @@ angular.module('glark.services')
 
         /* The 'proxy' event is used to proxy some data to all the other socket
          * connected to our room. */
-        socket.socket.on('proxy', function (data) {
+        socket._socket.on('proxy', function (data) {
             $rootScope.$broadcast(data.eventName, JSON.parse(data.data));
         });
 
 
         return socket;
     }]);
-
