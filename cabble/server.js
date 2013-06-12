@@ -47,7 +47,7 @@ app.configure('production', function () {
     app.set('staticFolder', config.server.distFolder);
 });
 
-console.log('Using static folder: ' + app.staticFolder);
+console.log('Using static folder: ' + app.get('staticFolder'));
 
 app.use(express.favicon(path.join(app.get('staticFolder'), 'favicon.ico')));
 
@@ -106,6 +106,7 @@ app.all('*', function (req, res) {
 
 var server = http.createServer(app);
 var io = socketio.listen(server);
+io.set('transports', ['xhr-polling']);
 // var io = socketio.listen(server, {log: false});
 
 server.listen(app.get('port'), function () {
