@@ -10,4 +10,4 @@ The _glark_ directory will contain the client side code, an editor based on our 
 ##License###
 glark.io is distributed under the terms of the [Affero GPL license](http://www.gnu.org/licenses/why-affero-gpl.html).
 
-_Status:_ Pre-alpha state, not working.
+_Status:_ Alpha state, main editing features are here. The [glarkconnector](https://github.com/Bluefinch/glarkconnector) stuff works.
