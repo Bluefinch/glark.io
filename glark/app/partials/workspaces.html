@@ -1,13 +1,13 @@
 <!--
 *   Partial for workspaces view
 * -->
-    
+
 <div id="workspaces-wrapper" ng-controller="WorkspacesController">
 
     <!--**********************
     *   Filetree templates
     **************************-->
-    
+
     <script type="text/ng-template" id="directory_node_template">
         <a title="{{entry.name}}" ng-click="toggleCollapsed(entry)" drop-zone="openDroppedFiles($event, entry)">
             <i ng-class="{'icon-angle-right': entry.collapsed, 'icon-angle-down': !entry.collapsed}"></i>
@@ -21,14 +21,14 @@
             </div>
         </div>
     </script>
-        
+
     <script type="text/ng-template" id="filetree_node_template">
         <div ng-switch on="entry.isDirectory">
             <div ng-switch-when="true">
                <div ng-include="'directory_node_template'"></div>
             </div>
             <div ng-switch-when="false">
-                <a title="{{entry.name}}" ng-click="editor.previewFile(entry)" ng-dblclick="workspace.setActiveFile(entry)">{{entry.name}}</a>
+                <a title="{{entry.name}}" ng-click="workspace.setActiveFile(entry)">{{entry.name}}</a>
             </div>
         </div>
     </script>
@@ -42,11 +42,11 @@
             <i class="icon-cog"></i>
         </a>
     </div>
-    
+
     <!--**********************
     *   Workspaces
     **************************-->
-    
+
     <div id="workspaces" class="dropdown" ng-class="{open: openDropdown}">
         <ul ng-repeat="workspace in workspaces.workspaces">
             <li class="workspace">
@@ -60,6 +60,6 @@
             </li>
         </ul>
     </div>
-    
+
 </div>
 

@@ -23,22 +23,38 @@ angular.module('glark.services')
 
         var workspacesSharer = {};
 
+        // ---------
         /* Register local listeners. */
-        $rootScope.$on('workspaces.setActiveWorkspace', function (workspace) {
+        $rootScope.$on('workspaces.setActiveWorkspace', function (event, workspace) {
             console.log(workspace);
         });
 
-        $rootScope.$on('workspaces.addWorkspace', function (workspace) {
+        $rootScope.$on('workspaces.addWorkspace', function (event, workspace) {
             console.log(workspace);
         });
 
+        $rootScope.$on('Workspace.addEntry', function (event, entry) {
+            /* An entry was added to the current active workspace. */
+            console.log(entry);
+            socket.emit('Workspace.addEntry', entry);
+        });
+
+        // ---------
         /* Register socket listeners. */
         socket.on('workspacesChange', function (workspaces) {
             console.log(workspaces);
         });
 
+        socket.on('Workspace.addEntry', function (entry) {
+            console.log(entry);
+            /* FIXME temporarily remove listeners from here, and add them back
+             * afterwards rather than this ugly silent boolean. */
+            workspaces.getActiveWorkspace().addEntry(entry, true);
+        });
+
+        // ---------
         workspacesSharer.startSharing = function () {
-            console.log('sharing');
+            console.log('Start sharing workspaces');
             socket.emit('workspacesChange', workspaces);
         };
 

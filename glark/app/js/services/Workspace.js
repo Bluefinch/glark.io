@@ -41,9 +41,13 @@ angular.module('glark.services')
         };
 
         /* @param entry is a services.filesystem.*File or
-         * a services.filesystem.*Directory object. */
-        Workspace.prototype.addEntry = function (entry) {
+         * a services.filesystem.*Directory object.
+         * If silently is true, don't broadcast the addEntry event. */
+        Workspace.prototype.addEntry = function (entry, silently) {
             this.rootDirectory.addEntry(entry);
+            if (silently) {
+                $rootScope.$broadcast('Workspace.addEntry', entry);
+            }
         };
 
         /* @param entry is a services.filesystem.*File object or

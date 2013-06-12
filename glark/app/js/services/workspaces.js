@@ -27,11 +27,6 @@ angular.module('glark.services')
 
         var activeWorkspace = null;
 
-        // socket.on('changeActiveWorkspace', function (event, newActiveWorkspace) {
-            // console.log('from changeActiveWorkspace:');
-            // console.log(newActiveWorkspace);
-        // });
-
         /* @param workspace is a glark.services.Workspace object. */
         workspaces.addWorkspace = function (workspace) {
             if (this.workspaces.indexOf(workspace) === -1) {
@@ -79,8 +74,6 @@ angular.module('glark.services')
             }
 
             $rootScope.$broadcast('workspaces.setActiveWorkspace', workspace);
-
-            // socket.emit('changeActiveWorkspace', activeWorkspace);
 
             return activeWorkspace;
         };
