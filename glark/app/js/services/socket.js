@@ -79,7 +79,7 @@ angular.module('glark.services')
                 data = null;
             } else if (typeof callback === 'undefined') {
                 /* Declare a dummy callback. */
-                callback = function () {}
+                callback = function () {};
             }
 
             socket._socket.emit('toHost',

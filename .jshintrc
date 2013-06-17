@@ -21,7 +21,8 @@
         "it", 
         "document", 
         "window", 
-        "$"
+        "$",
+        "io"
     ], 
     "strict": true, 
     "trailing": true, 

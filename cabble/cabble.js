@@ -22,7 +22,7 @@ var crypto = require('crypto');
 var Session = function () {
     this.creationTime = Date.now();
     this.sockets = [];
-}
+};
 
 Session.prototype.isHostSocket = function (socket) {
     if (this.sockets.length === 0) {
@@ -30,7 +30,7 @@ Session.prototype.isHostSocket = function (socket) {
     } else {
         return this.sockets[0].id === socket.id;
     }
-}
+};
 
 Session.prototype.getHostSocket = function () {
     if (this.sockets.length === 0) {
@@ -38,7 +38,7 @@ Session.prototype.getHostSocket = function () {
     } else {
         return this.sockets[0];
     }
-}
+};
 
 module.exports = {
     sessions: {},
