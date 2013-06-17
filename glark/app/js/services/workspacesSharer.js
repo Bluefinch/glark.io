@@ -36,7 +36,7 @@ angular.module('glark.services')
         $rootScope.$on('Workspace.addEntry', function (event, entry) {
             /* An entry was added to the current active workspace. */
             console.log(entry);
-            socket.emit('Workspace.addEntry', entry);
+            socket.broadcast('Workspace.addEntry', entry);
         });
 
         // ---------
@@ -52,10 +52,23 @@ angular.module('glark.services')
             workspaces.getActiveWorkspace().addEntry(entry, true);
         });
 
+        socket.on('getWorkspaces', function (callback) {
+            callback(workspaces);
+        });
+
         // ---------
         workspacesSharer.startSharing = function () {
-            console.log('Start sharing workspaces');
-            socket.emit('workspacesChange', workspaces);
+            /* FIXME Wait for the socket service to be ready with a small
+             * timeout. This might be wrapped in a socket.onReady() event. */
+            setTimeout(function () {
+                console.log('Start sharing workspaces');
+                if (!socket.isHost) {
+                    socket.emitToHost('getWorkspaces', function (workspaces) {
+                        console.log('Host workspaces:');
+                        console.log(workspaces);
+                    });
+                }
+            }, 1000);
         };
 
 

@@ -117,8 +117,9 @@ io.sockets.on('connection', function (socket) {
     console.log('Websocket connection.');
 
     var cabbleSession = null;
-    socket.on('register', function (sessionHash) {
+    socket.on('register', function (sessionHash, callback) {
         cabbleSession = cabble.registerToSession(sessionHash, socket);
+        callback(cabbleSession.isHostSocket(socket));
     });
 
     /* Use this event to proxy some data to all the sockets connected in your
@@ -131,5 +132,16 @@ io.sockets.on('connection', function (socket) {
         }
         // socket.broadcast.emit('proxy', data);
     });
+
+    /* Use this event to proxy some data and callback to the host socket of your room. */
+    socket.on('toHost', function (data, callback) {
+        cabbleSession.getHostSocket().emit('toHost', data, function (clientData) {
+            callback(clientData);
+        });
+    });
+
+    // socket.on('disconnect', function () {
+        // cabbleSession.unregister(socket);
+    // });
 });
 

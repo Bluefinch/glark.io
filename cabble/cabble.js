@@ -19,6 +19,27 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 var crypto = require('crypto');
 
+var Session = function () {
+    this.creationTime = Date.now();
+    this.sockets = [];
+}
+
+Session.prototype.isHostSocket = function (socket) {
+    if (this.sockets.length === 0) {
+        return false;
+    } else {
+        return this.sockets[0].id === socket.id;
+    }
+}
+
+Session.prototype.getHostSocket = function () {
+    if (this.sockets.length === 0) {
+        return null;
+    } else {
+        return this.sockets[0];
+    }
+}
+
 module.exports = {
     sessions: {},
 
@@ -29,7 +50,7 @@ module.exports = {
     /* Start a new session, return its associated hash. */
     startNewSession: function () {
         var hash = this.makeRandomHash();
-        this.sessions[hash] = { creationTime: Date.now(), sockets: [] };
+        this.sessions[hash] = new Session();
         return hash;
     },
 
@@ -56,5 +77,6 @@ module.exports = {
             return session;
         }
     }
+
 };
 
