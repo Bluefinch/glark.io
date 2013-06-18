@@ -31,7 +31,7 @@ angular.module('glark.controllers')
         $scope.addRemoteWorkspace = function () {
             /* Open a modal using the $modal service. */
             $modal({
-                template: 'partials/addConnectorModal.html',
+                template: 'public/partials/addConnectorModal.html',
                 show: true,
                 backdrop: 'static',
                 scope: $scope
