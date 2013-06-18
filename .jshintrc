@@ -1,32 +1,31 @@
 {
-    "curly": true, 
-    "forin": true, 
-    "immed": true, 
-    "latedef": true, 
-    "newcap": true, 
-    "node": true, 
-    "noempty": true, 
-    "nonew": true, 
-    "predef": [
-        "browser",
-        "element",
-        "expect",
-        "Blob",
-        "jasmine",
-        "module",
-        "beforeEach", 
-        "expect", 
-        "angular", 
-        "describe", 
-        "it", 
-        "document", 
-        "window", 
-        "$",
-        "io"
-    ], 
-    "strict": true, 
-    "trailing": true, 
-    "undef": true, 
-    "white": true
+    camelcase: true,
+    curly: true,
+    eqeqeq: true,
+    indent: 4,
+    latedef: true,
+    newcap: true,
+    nonew: true,
+    undef: true,
+    unused: true,
+    trailing: true,
+    white: true,
+    globalstrict: true,
+    browser: true,
+    jquery: true,
+    devel: true,
+    globals: {
+        angular: false,
+        ace: false,
+        io: true,
+        /* Angular test variables. */
+        browser: false,
+        element: false,
+        /* Jasmine variables. */
+        jasmine: false,
+        it: false,
+        describe: false,
+        expect: false,
+        beforeEach: false
+    }
 }
-
