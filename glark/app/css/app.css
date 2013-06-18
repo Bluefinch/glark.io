@@ -21,7 +21,7 @@ html, body {
     /* background-color: rgb(78, 163, 0); */
     /* background: linear-gradient(0deg, #262a2e, #2e3338);  */
 
-    /* font: normal 13px 'Ubuntu', sans-serif; */
+    font-family: normal 11px 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;  
     overflow: hidden;
 }
 
