@@ -105,9 +105,9 @@ app.all('*', function (req, res) {
 // -----------------------------------
 
 var server = http.createServer(app);
-var io = socketio.listen(server);
+// var io = socketio.listen(server);
+var io = socketio.listen(server, {log: false});
 io.set('transports', ['xhr-polling']);
-// var io = socketio.listen(server, {log: false});
 
 server.listen(app.get('port'), function () {
     console.log("Express server listening on port " + app.get('port'));
