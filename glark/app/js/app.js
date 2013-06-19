@@ -24,8 +24,8 @@ angular.module('glark.services', ['ngResource']);
 angular.module('glark', ['glark.controllers', 'glark.directives',
         'glark.filters', 'glark.services', '$strap.directives'])
 
-.run(['$rootScope', 'LocalFile', 'workspaces',
-        function ($rootScope, LocalFile, workspaces) {
+.run(['$rootScope', 'LocalFile', 'workspaces', 'socket',
+        function ($rootScope, LocalFile, workspaces, socket) {
 
     /* Helper function to broadcast events. */
     var applyEvent = function (eventName, event) {
@@ -47,20 +47,27 @@ angular.module('glark', ['glark.controllers', 'glark.directives',
             return applyEvent('save', event);
         }
     });
-
-    /* Create the default local workspace. */
-    var workspace = workspaces.createLocalWorkspace('Workspace');
-    workspaces.setActiveWorkspace(workspace);
-
-    /* Open a file to display tutorial and info to the user. */
-    /* TODO This is hard-coded for now, maybe requesting this from the
-     * server would be better. */
-    var blob = new Blob(["###glark.io###\nWelcome to _glark.io_ the drag'n'collaborate editor.\nJust drag some files here and start editing."], {type: "text"});
-    var welcomeFile = new LocalFile("welcome.md", blob);
-
-    /* Add it to the default workspace and give it the focus. */
-    workspace.addEntry(welcomeFile);
-    workspace.setActiveFile(welcomeFile);
-
-    workspaces.addHostWorkspaces();
+    
+    socket.onReady(function () {
+        $rootScope.$apply(function () {
+            if (socket.isHost) {
+                /* Create the default local workspace. */
+                var workspace = workspaces.createLocalWorkspace('Workspace');
+                workspaces.setActiveWorkspace(workspace);
+            
+                /* Open a file to display tutorial and info to the user. */
+                /* TODO This is hard-coded for now, maybe requesting this from the
+                 * server would be better. */
+                var blob = new Blob(["###glark.io###\nWelcome to _glark.io_ the drag'n'collaborate editor.\nJust drag some files here and start editing."], {type: "text"});
+                var welcomeFile = new LocalFile("welcome.md", blob);
+            
+                /* Add it to the default workspace and give it the focus. */
+                workspace.addEntry(welcomeFile);
+                workspace.setActiveFile(welcomeFile);
+            } else {
+                workspaces.addSharableWorkspaces();
+            }
+        });
+    });
+    
 }]);

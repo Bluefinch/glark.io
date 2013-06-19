@@ -74,12 +74,12 @@ angular.module('glark.services')
 
         /* Make this serializable so that it can be send over the network. */
         LocalFile.prototype.toJSON = function () {
-            return JSON.stringify({
+            return {
                 basename: this.basename,
                 isDirectory: false,
                 isFile: true,
                 name: this.name
-            });
+            };
         };
 
         return LocalFile;

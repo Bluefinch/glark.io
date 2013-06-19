@@ -18,27 +18,43 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('LinkedDirectory', ['LinkedFile', '$q',
-            function (LinkedFile, $q) {
+    .factory('LinkedDirectory', ['$rootScope', 'LinkedFile', '$q', 'socket',
+            function ($rootScope, LinkedFile, $q, socket) {
 
-        var LinkedDirectory = function (workspaceId, basename) {
+        /* Read the directoryEntry and create a list of
+         * services.filesystem.*Local objects. */
+        var createEntries = function (workspaceId, entries) {
+            var children = {};
+            angular.forEach(entries, function (entry) {
+                if (entry.isFile) {
+                    var file = new LinkedFile(workspaceId, entry);
+                    children[entry.name] = file;
+                } else if (entry.isDirectory) {
+                    var directory = new LinkedDirectory(workspaceId, entry);
+                    children[entry.name] = directory;
+                }
+            });
+            return children;
+        };
+        
+        var LinkedDirectory = function (workspaceId, directory) {
             this.isDirectory = true;
             this.isFile = false;
 
+            this.name = directory.name;
             this.workspaceId = workspaceId;
-            this.basename = '/';
-
-            if (basename !== undefined) {
-                this.basename = basename;
-            }
+            this.basename = directory.basename;
 
             this.collapsed = true;
-            this.children = {};
+            this.children = createEntries(workspaceId, directory.children);
         };
 
         LinkedDirectory.prototype.updateChildren = function () {
-            /* Reset children list. */
-            this.children = {};
+            /* For LocalDirectory the children list is
+             * maintened up to date. */
+            var defered = $q.defer();
+            defered.resolve();
+            return defered.promise;
         };
 
         /* @param entry is a services.filesystem.Local*

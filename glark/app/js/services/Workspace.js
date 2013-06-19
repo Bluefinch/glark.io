@@ -40,7 +40,7 @@ angular.module('glark.services')
              * object, extended with a session attribute. */
             this.openFiles = [];
 
-            if(type === 'local' || type === 'remote' || type === 'linked') {
+            if (type === 'local' || type === 'remote' || type === 'linked') {
                 this.type = type;
             } else {
                 throw 'Bad Workspace type: ' + type;
@@ -48,19 +48,19 @@ angular.module('glark.services')
 
         };
         
-        Workspace.prototype.isLocal = function() {
+        Workspace.prototype.isLocal = function () {
             return this.type === 'local';
         };
-        Workspace.prototype.isRemote = function() {
+        Workspace.prototype.isRemote = function () {
             return this.type === 'remote';
         };
-        Workspace.prototype.isLinked = function() {
+        Workspace.prototype.isLinked = function () {
             return this.type === 'linked';
         };
         
-        Workspace.prototype.isSharable = function() {
-            /* Only local and remote Workspace are sharable. */
-            return this.isLocal() || this.isRemote();
+        Workspace.prototype.isSharable = function () {
+            /* Only local Workspace are sharable. */
+            return this.isLocal();
         };
 
         /* @param entry is a services.filesystem.*File or

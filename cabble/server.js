@@ -127,7 +127,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('proxy.getIds', function (data, callback) {
         var socketIds = [];
         var allSocketIds = cabbleSession.getSocketIds();
-        for (var i=0; i<allSocketIds.length; i++) {
+        for (var i = 0; i < allSocketIds.length; i++) {
             if (allSocketIds[i] !== socket.id) {
                 socketIds.push(allSocketIds[i]);
             }

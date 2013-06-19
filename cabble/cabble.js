@@ -38,7 +38,7 @@ Session.prototype.getHostSocket = function () {
 };
 
 Session.prototype.addSocket = function (socket) {
-    if(this.hostSocket === null) {
+    if (this.hostSocket === null) {
         this.hostSocket = socket;
     }
     this.sockets[socket.id] = socket;

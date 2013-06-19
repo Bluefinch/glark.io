@@ -91,7 +91,7 @@ angular.module('glark.services')
                     console.log('Socket ids:');
                     console.log(ids);
                     angular.forEach(ids, function (id) {
-                        socket._socket.emit('proxy.toSingle', 
+                        socket._socket.emit('proxy.toSingle',
                             {'_socketId': id, 'eventName': eventName, 'data': JSON.stringify(data)},
                             callback);
                     });

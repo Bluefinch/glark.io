@@ -55,9 +55,9 @@ angular.module('glark.services')
             return workspace;
         };
         
-        workspaces.createLinkedWorkspace = function (name, id) {
-            var rootDirectory = new LinkedDirectory(id);
-            var workspace = new Workspace(name, rootDirectory, 'linked');
+        workspaces.createLinkedWorkspace = function (workspaceInfo) {
+            var rootDirectory = new LinkedDirectory(workspaceInfo.id, workspaceInfo.rootDirectory);
+            var workspace = new Workspace(workspaceInfo.name, rootDirectory, 'linked');
             this.addWorkspace(workspace);
             return workspace;
         };
@@ -87,32 +87,50 @@ angular.module('glark.services')
             return activeWorkspace;
         };
         
-        workspaces.addHostWorkspaces = function () {
+        workspaces.addSharableWorkspaces = function () {
             socket.broadcast('getSharableWorkspacesInfo', function (workspacesInfo) {
                 $rootScope.$apply(function () {
-                    console.log('Sharable workspace info:');
-                    console.log(workspacesInfo);
-                    angular.forEach(workspacesInfo, function (workspaceName, workspaceId) {
-                        workspaces.createLinkedWorkspace(workspaceName, workspaceId);
+                    angular.forEach(workspacesInfo, function (workspaceInfo) {
+                        workspaces.createLinkedWorkspace(workspaceInfo);
                     });
                 });
             });
         };
         
+        /* --------------------------------
+         * Socket API
+         * -------------------------------- */
+            
         /* Returns a dictionnary containing the ids (as key) and 
          * names (as value) of sharable workspaces. */
-        workspaces.getSharableWorkspacesInfo = function () {
-            var sharableWorkspacesInfo = {};
-            angular.forEach(this.workspaces, function(workspace) {
+        socket.on('getSharableWorkspacesInfo', function (callback) {
+            var sharableWorkspacesInfo = [];
+            angular.forEach(workspaces.workspaces, function(workspace) {
                 if (workspace.isSharable()) {
-                    sharableWorkspacesInfo[workspace.id] = workspace.name;
+                    sharableWorkspacesInfo.push({
+                       name: workspace.name,
+                       id: workspace.id,
+                       rootDirectory: workspace.rootDirectory
+                    });
                 }
             });
-            return sharableWorkspacesInfo;
-        };
+            callback(sharableWorkspacesInfo);
+        });
         
-        socket.on('getSharableWorkspacesInfo', function (callback) {
-            callback(workspaces.getSharableWorkspacesInfo());
+        /* Returns a dictionnary containing the ids (as key) and 
+         * names (as value) of sharable workspaces. */
+        socket.on('getFileContent', function (file, callback) {
+            angular.forEach(workspaces.workspaces, function(workspace) {
+                if (workspace.id == file.workspaceId) {
+                    var child = workspace.rootDirectory.children[file.name];
+                    if (child !== undefined && child.isFile) {
+                        child.getContent().then(function (content) {
+                            callback(content);
+                        });
+                        $rootScope.$digest();
+                    }
+                }
+            });
         });
 
         return workspaces;

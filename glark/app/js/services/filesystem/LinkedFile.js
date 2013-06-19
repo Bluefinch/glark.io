@@ -19,28 +19,29 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.services')
 
     /* Create a glark.services.File object from a html5 File or Blob object. */
-    .factory('LinkedFile', ['$q', function ($q) {
+    .factory('LinkedFile', ['$rootScope', '$q', 'socket', function ($rootScope, $q, socket) {
 
         /* Create a remote file from his name and
          * params, where params contains information
          * to connect the Rest API. */
-        var LinkedFile = function (name, basename) {
+        var LinkedFile = function (workspaceId, file) {
             this.isDirectory = false;
             this.isFile = true;
 
-            this.name = name;
-            this.basename = '/';
+            this.name = file.name;
+            this.workspaceId = workspaceId;
+            this.basename = file.basename;
             this.changed = false;
-
-            if (basename !== undefined) {
-                this.basename = basename;
-            }
         };
 
         /* Get the content of the remote file. */
         LinkedFile.prototype.getContent = function () {
             var defered = $q.defer();
-            defered.resolve("response.data.content");
+            socket.broadcast('getFileContent', this, function (content) {
+                $rootScope.$apply(function () {
+                    defered.resolve(content);
+                });
+            });
             return defered.promise;
         };
 
@@ -56,6 +57,17 @@ angular.module('glark.services')
             var defered = $q.defer();
             defered.resolve("response.data.content");
             return defered.promise;
+        };
+        
+        /* Make this serializable so that it can be send over the network. */
+        LinkedFile.prototype.toJSON = function () {
+            return {
+                isDirectory: false,
+                isFile: true,
+                name: this.name,
+                basename: this.basename,
+                workspaceId: this.workspaceId
+            };
         };
 
         return LinkedFile;
