@@ -27,6 +27,11 @@ angular.module('glark.services')
         /* Our connected socket.io instance. */
         socket._socket = io.connect();
 
+        /* Create an isolated scope. */
+        socket.eventHandler = $rootScope.$new(true);
+
+        socket.isReady = false;
+
         /* Register with our session hash. */
         var splitted = $location.absUrl().split('/');
         socket.sessionHash = splitted[splitted.length - 1];
@@ -34,58 +39,68 @@ angular.module('glark.services')
             console.log('Socket service registered for session ' + socket.sessionHash);
             console.log('Is session host: ' + isHost);
             socket.isHost = isHost;
+
+            socket.isReady = true;
+            /* Broadcast private event socket._ready. */
+            socket.eventHandler.$broadcast('socket._ready');
         });
 
-        // ----------
-        /* The 'proxy' event is used to proxy some data to all the other socket
-         * connected to our room. */
-        socket._socket.on('proxy', function (data) {
-            $rootScope.$broadcast(data.eventName, JSON.parse(data.data));
-        });
-
-        socket._socket.on('toHost', function (data, callback) {
+        socket._socket.on('proxy', function (data, callback) {
             /* If there is no data, do not broadcast it. There is always a
              * callback, it can be useless, but it is always there and valid. */
             if (data.data === 'null') {
-                $rootScope.$broadcast(data.eventName, callback);
+                socket.eventHandler.$broadcast('socket.' + data.eventName, callback);
             } else {
-                $rootScope.$broadcast(data.eventName, JSON.parse(data.data), callback);
+                socket.eventHandler.$broadcast('socket.' + data.eventName, JSON.parse(data.data), callback);
             }
         });
-
-        // ----------
-        /* Socket service public API. */
-        /* Broadcast event to all the other sockets connected to our room. */
-        socket.broadcast = function (eventName, data) {
-            /* The 'proxy' event is used to proxy some data to all the other socket
-             * connected to our room. */
-            // console.log({'eventName': eventName, 'data': JSON.stringify(data)});
-            socket._socket.emit('proxy', {'eventName': eventName, 'data': JSON.stringify(data)});
+        
+        /* -----------------------------
+         * Socket service public API. 
+         * ----------------------------- */
+        
+        socket.onReady = function (callback) {
+            if (!this.isReady) {
+                socket.eventHandler.$on('socket._ready', callback);
+            } else {
+                callback();
+            }
         };
-
+        
         /* Register to event coming from other sockets. */
         socket.on = function (eventName, callback) {
-            $rootScope.$on(eventName, function (event, data, fn) {
+            socket.eventHandler.$on('socket.' + eventName, function (event, data, fn) {
                 callback(data, fn);
             });
         };
-
-        /* Directly emit to the room host, passing data and getting callback
-         * called on completion. Both data and callback are optionnal. */
-        socket.emitToHost = function (eventName, data, callback) {
+        
+        /* Broadcast event to all the other sockets connected to our room, passing 
+         * data and getting callbackcalled on completion. Both data and callback 
+         * are optionnal. */
+        socket.broadcast = function (eventName, data, callback) {
             /* Handle optionnal parameters. */
             if (typeof data === 'function') {
                 callback = data;
                 data = null;
-            } else if (typeof callback === 'undefined') {
-                /* Declare a dummy callback. */
-                callback = function () {};
             }
-
-            socket._socket.emit('toHost',
-                    {'eventName': eventName, 'data': JSON.stringify(data)},
-                    callback);
+            
+            if (callback !== undefined) {
+                /* If broadcast with a callback, broadcast to each ids
+                 * one by one, to handle multiple responses. */
+                socket._socket.emit('proxy.getIds', {}, function (ids) {
+                    console.log('Socket ids:');
+                    console.log(ids);
+                    angular.forEach(ids, function (id) {
+                        socket._socket.emit('proxy.toSingle', 
+                            {'_socketId': id, 'eventName': eventName, 'data': JSON.stringify(data)},
+                            callback);
+                    });
+                });
+            } else {
+                /* If broadcast without callback, broadcast directly to all. */
+                 socket._socket.emit('proxy.toAll', {'eventName': eventName, 'data': JSON.stringify(data)});
+            }
         };
-
+        
         return socket;
     }]);

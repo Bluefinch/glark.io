@@ -23,8 +23,11 @@ angular.module('glark.services')
         /* Main model of the glark.io application. Contains among other all the
          * data describing the files of the workspace, the open ones and the active
          * one. */
-        var Workspace = function (name, rootDirectory, isConnected) {
+        var Workspace = function (name, rootDirectory, type) {
             this.name = name;
+            
+            /* Generate a random id */
+            this.id = Math.random().toString(36).substr(2);
 
             /* Private member active file. */
             this.activeFile = null;
@@ -37,7 +40,27 @@ angular.module('glark.services')
              * object, extended with a session attribute. */
             this.openFiles = [];
 
-            this.isConnected = isConnected;
+            if(type === 'local' || type === 'remote' || type === 'linked') {
+                this.type = type;
+            } else {
+                throw 'Bad Workspace type: ' + type;
+            }
+
+        };
+        
+        Workspace.prototype.isLocal = function() {
+            return this.type === 'local';
+        };
+        Workspace.prototype.isRemote = function() {
+            return this.type === 'remote';
+        };
+        Workspace.prototype.isLinked = function() {
+            return this.type === 'linked';
+        };
+        
+        Workspace.prototype.isSharable = function() {
+            /* Only local and remote Workspace are sharable. */
+            return this.isLocal() || this.isRemote();
         };
 
         /* @param entry is a services.filesystem.*File or

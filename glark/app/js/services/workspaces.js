@@ -18,8 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('workspaces', ['$rootScope', '$q', 'editor', 'Workspace', 'LocalDirectory', 'RemoteDirectory',
-            function ($rootScope, $q, editor, Workspace, LocalDirectory, RemoteDirectory) {
+    .factory('workspaces', ['$rootScope', '$q', '$timeout', 'editor', 'socket', 'Workspace', 'LocalDirectory', 'RemoteDirectory', 'LinkedDirectory',
+            function ($rootScope, $q, $timeout, editor, socket,  Workspace, LocalDirectory, RemoteDirectory, LinkedDirectory) {
 
         var workspaces = {};
 
@@ -43,16 +43,21 @@ angular.module('glark.services')
             if (rootDirectory === undefined) {
                 rootDirectory = new LocalDirectory(name);
             }
-            var isConnected = false;
-            var workspace = new Workspace(name, rootDirectory, isConnected);
+            var workspace = new Workspace(name, rootDirectory, 'local');
             this.addWorkspace(workspace);
             return workspace;
         };
 
         workspaces.createRemoteWorkspace = function (name, params) {
             var rootDirectory = new RemoteDirectory('files', params);
-            var isConnected = true;
-            var workspace = new Workspace(name, rootDirectory, isConnected);
+            var workspace = new Workspace(name, rootDirectory, 'remote');
+            this.addWorkspace(workspace);
+            return workspace;
+        };
+        
+        workspaces.createLinkedWorkspace = function (name, id) {
+            var rootDirectory = new LinkedDirectory(id);
+            var workspace = new Workspace(name, rootDirectory, 'linked');
             this.addWorkspace(workspace);
             return workspace;
         };
@@ -81,6 +86,34 @@ angular.module('glark.services')
         workspaces.getActiveWorkspace = function () {
             return activeWorkspace;
         };
+        
+        workspaces.addHostWorkspaces = function () {
+            socket.broadcast('getSharableWorkspacesInfo', function (workspacesInfo) {
+                $rootScope.$apply(function () {
+                    console.log('Sharable workspace info:');
+                    console.log(workspacesInfo);
+                    angular.forEach(workspacesInfo, function (workspaceName, workspaceId) {
+                        workspaces.createLinkedWorkspace(workspaceName, workspaceId);
+                    });
+                });
+            });
+        };
+        
+        /* Returns a dictionnary containing the ids (as key) and 
+         * names (as value) of sharable workspaces. */
+        workspaces.getSharableWorkspacesInfo = function () {
+            var sharableWorkspacesInfo = {};
+            angular.forEach(this.workspaces, function(workspace) {
+                if (workspace.isSharable()) {
+                    sharableWorkspacesInfo[workspace.id] = workspace.name;
+                }
+            });
+            return sharableWorkspacesInfo;
+        };
+        
+        socket.on('getSharableWorkspacesInfo', function (callback) {
+            callback(workspaces.getSharableWorkspacesInfo());
+        });
 
         return workspaces;
     }]);

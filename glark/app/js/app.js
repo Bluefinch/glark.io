@@ -24,8 +24,8 @@ angular.module('glark.services', ['ngResource']);
 angular.module('glark', ['glark.controllers', 'glark.directives',
         'glark.filters', 'glark.services', '$strap.directives'])
 
-.run(['$rootScope', 'LocalFile', 'workspaces', 'workspacesSharer',
-        function ($rootScope, LocalFile, workspaces, workspacesSharer) {
+.run(['$rootScope', 'LocalFile', 'workspaces',
+        function ($rootScope, LocalFile, workspaces) {
 
     /* Helper function to broadcast events. */
     var applyEvent = function (eventName, event) {
@@ -62,5 +62,5 @@ angular.module('glark', ['glark.controllers', 'glark.directives',
     workspace.addEntry(welcomeFile);
     workspace.setActiveFile(welcomeFile);
 
-    workspacesSharer.startSharing();
+    workspaces.addHostWorkspaces();
 }]);

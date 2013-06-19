@@ -21,23 +21,31 @@ var crypto = require('crypto');
 
 var Session = function () {
     this.creationTime = Date.now();
-    this.sockets = [];
+    this.sockets = {};
+    this.hostSocket = null;
 };
 
 Session.prototype.isHostSocket = function (socket) {
-    if (this.sockets.length === 0) {
+    if (this.hostSocket === null) {
         return false;
     } else {
-        return this.sockets[0].id === socket.id;
+        return this.hostSocket.id === socket.id;
     }
 };
 
 Session.prototype.getHostSocket = function () {
-    if (this.sockets.length === 0) {
-        return null;
-    } else {
-        return this.sockets[0];
+    return this.hostSocket;
+};
+
+Session.prototype.addSocket = function (socket) {
+    if(this.hostSocket === null) {
+        this.hostSocket = socket;
     }
+    this.sockets[socket.id] = socket;
+};
+
+Session.prototype.getSocketIds = function () {
+    return Object.keys(this.sockets);
 };
 
 module.exports = {
@@ -72,7 +80,7 @@ module.exports = {
             return null;
         } else {
             var session = this.sessions[sessionHash];
-            session.sockets.push(socket);
+            session.addSocket(socket);
             console.log(this);
             return session;
         }

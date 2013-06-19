@@ -18,10 +18,13 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('workspacesSharer', ['$rootScope', 'socket', 'workspaces',
-            function ($rootScope, socket, workspaces) {
+    .factory('workspacesSharer', ['$rootScope', '$timeout', 'socket', 'workspaces',
+            function ($rootScope, $timeout, socket, workspaces) {
 
         var workspacesSharer = {};
+        
+        workspacesSharer.name = 'coucou';
+        workspacesSharer.workspaces = [];
 
         // ---------
         /* Register local listeners. */
@@ -60,12 +63,14 @@ angular.module('glark.services')
         workspacesSharer.startSharing = function () {
             /* FIXME Wait for the socket service to be ready with a small
              * timeout. This might be wrapped in a socket.onReady() event. */
-            setTimeout(function () {
+            $timeout(function () {
                 console.log('Start sharing workspaces');
                 if (!socket.isHost) {
                     socket.emitToHost('getWorkspaces', function (workspaces) {
                         console.log('Host workspaces:');
                         console.log(workspaces);
+                        workspacesSharer.workspaces = workspaces.workspaces;
+                        $rootScope.$digest();
                     });
                 }
             }, 1000);

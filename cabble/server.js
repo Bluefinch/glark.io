@@ -121,23 +121,43 @@ io.sockets.on('connection', function (socket) {
         cabbleSession = cabble.registerToSession(sessionHash, socket);
         callback(cabbleSession.isHostSocket(socket));
     });
+    
+    /* Use this event to retreive all the socket ids connected in your
+     * room. */
+    socket.on('proxy.getIds', function (data, callback) {
+        var socketIds = [];
+        var allSocketIds = cabbleSession.getSocketIds();
+        for (var i=0; i<allSocketIds.length; i++) {
+            if (allSocketIds[i] !== socket.id) {
+                socketIds.push(allSocketIds[i]);
+            }
+        }
+        callback(socketIds);
+    });
 
     /* Use this event to proxy some data to all the sockets connected in your
      * room. */
-    socket.on('proxy', function (data) {
-        for (var i = 0; i < cabbleSession.sockets.length; ++i) {
-            if (cabbleSession.sockets[i].id !== socket.id) {
-                cabbleSession.sockets[i].emit('proxy', data);
+    socket.on('proxy.toAll', function (data) {
+        var socketIds = cabbleSession.getSocketIds();
+        for (var id in socketIds) {
+            if (id !== socket.id) {
+                cabbleSession.sockets[id].emit('proxy', data);
             }
         }
-        // socket.broadcast.emit('proxy', data);
     });
-
-    /* Use this event to proxy some data and callback to the host socket of your room. */
-    socket.on('toHost', function (data, callback) {
-        cabbleSession.getHostSocket().emit('toHost', data, function (clientData) {
-            callback(clientData);
-        });
+    
+    /* Use this event to proxy some data and callback a single socket of your room. */
+    socket.on('proxy.toSingle', function (data, callback) {
+        var socket = cabbleSession.sockets[data._socketId];
+        if (socket !== undefined) {
+            /* Remove _socketId field. */        
+            data._socketId = undefined;
+            socket.emit('proxy', data, function(clientData) { 
+                callback(clientData); 
+            });
+        } else {
+            // TODO : Fail.
+        }
     });
 
     // socket.on('disconnect', function () {
