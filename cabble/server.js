@@ -127,11 +127,11 @@ io.sockets.on('connection', function (socket) {
     socket.on('proxy.getIds', function (data, callback) {
         var socketIds = [];
         var allSocketIds = cabbleSession.getSocketIds();
-        for (var i = 0; i < allSocketIds.length; i++) {
-            if (allSocketIds[i] !== socket.id) {
-                socketIds.push(allSocketIds[i]);
+        allSocketIds.forEach(function (id) {
+             if (id !== socket.id) {
+                socketIds.push(id);
             }
-        }
+        });
         callback(socketIds);
     });
 
@@ -139,11 +139,11 @@ io.sockets.on('connection', function (socket) {
      * room. */
     socket.on('proxy.toAll', function (data) {
         var socketIds = cabbleSession.getSocketIds();
-        for (var id in socketIds) {
+        socketIds.forEach(function (id) {
             if (id !== socket.id) {
                 cabbleSession.sockets[id].emit('proxy', data);
             }
-        }
+        });
     });
 
     /* Use this event to proxy some data and callback a single socket of your room. */

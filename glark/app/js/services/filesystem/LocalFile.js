@@ -46,6 +46,11 @@ angular.module('glark.services')
             /* Blob property is a promise. */
             this.blob = defered.promise;
         };
+        
+        /* Set the file basename.*/
+        LocalFile.prototype.setBasename = function (basename) {
+            this.basename = basename;
+        };
 
         /* Get the content of the maintened blob. */
         LocalFile.prototype.getContent = function () {

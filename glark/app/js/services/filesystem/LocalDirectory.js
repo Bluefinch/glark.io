@@ -22,7 +22,7 @@ angular.module('glark.services')
 
         /* Read the directoryEntry and create a list of
          * services.filesystem.*Local objects. */
-        var createEntries = function (directoryEntry) {
+        var createEntries = function (basename, directoryEntry) {
             var defered = $q.defer();
             var directoryReader = directoryEntry.createReader();
             directoryReader.readEntries(function (entries) {
@@ -31,8 +31,10 @@ angular.module('glark.services')
                     var entry = entries[i];
                     if (entry.isFile) {
                         children[entry.name] = new LocalFile(entry.name, entry);
+                        children[entry.name].setBasename(basename);
                     } else if (entry.isDirectory) {
                         children[entry.name] = new LocalDirectory(entry.name, entry);
+                        children[entry.name].setBasename(basename);
                     }
                 }
                 defered.resolve(children);
@@ -54,32 +56,56 @@ angular.module('glark.services')
             this.collapsed = true;
             this.children = {};
 
+            var readyDefered = $q.defer();
+            this.readyPromise = readyDefered.promise;
+            
             /* If the directoryEntry is not undefined, we
              * read the content and we fill the children
              * collection with the services.filesystem.*Local
              * objects. */
             var _this = this;
             if (directoryEntry !== undefined) {
-                var promise = createEntries(directoryEntry);
+                var basename = this.basename + this.name + '/';
+                var promise = createEntries(basename, directoryEntry);
                 promise.then(function (children) {
                     _this.children = children;
+                    
+                    /* Wait for children to be ready. */
+                    var promises = [];
+                    angular.forEach(children, function (child) {
+                        if (child.isDirectory) {
+                            promises.push(child.readyPromise);
+                        }
+                    });
+                    $q.all(promises).then(function () {
+                        readyDefered.resolve();
+                    });
                 });
+            } else {
+                readyDefered.resolve();
             }
+        };
+        
+        /* Set the directory basename.*/
+        LocalDirectory.prototype.setBasename = function (basename) {
+            this.basename = basename;
+            basename = this.basename + this.name + '/';
+            angular.forEach(this.children, function(child) {
+                child.setBasename(basename);
+            });
         };
 
         /* Update the children list. */
         LocalDirectory.prototype.updateChildren = function () {
-            /* For LocalDirectory the children list is
-             * maintened up to date. */
-            var defered = $q.defer();
-            defered.resolve();
-            return defered.promise;
+            /* If the LocalDirectory is ready, it is 
+             * up to date. */
+            return this.readyPromise;
         };
 
         /* @param entry is a services.filestystem.Local*
          * object. */
         LocalDirectory.prototype.addEntry = function (entry) {
-            entry.basename = this.basename + this.name + '/';
+            entry.setBasename(this.basename + this.name + '/');
             this.children[entry.name] = entry;
         };
 

@@ -50,8 +50,7 @@ angular.module('glark.services')
         };
 
         LinkedDirectory.prototype.updateChildren = function () {
-            /* For LocalDirectory the children list is
-             * maintened up to date. */
+            /* The LinkedDirectory is maintened up to date. */
             var defered = $q.defer();
             defered.resolve();
             return defered.promise;
@@ -60,7 +59,7 @@ angular.module('glark.services')
         /* @param entry is a services.filesystem.Local*
          * object. */
         LinkedDirectory.prototype.addEntry = function (entry) {
-            
+            // TODO
         };
 
         LinkedDirectory.prototype.getChildCount = function () {

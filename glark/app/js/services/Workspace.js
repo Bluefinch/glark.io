@@ -62,6 +62,35 @@ angular.module('glark.services')
             /* Only local Workspace are sharable. */
             return this.isLocal();
         };
+        
+        /* Gets the workspace info. */
+        Workspace.prototype.getInfo = function () {
+            return {
+               name: this.name,
+               id: this.id,
+               rootDirectory: this.rootDirectory
+            };
+        };
+        
+        /* Gets an entry by its basename and name. */
+        Workspace.prototype.getEntry = function (basename, name) {
+            var path = basename.split('/');
+            var directory = this.rootDirectory;
+            angular.forEach(path, function(directoryName) {
+                var child = directory.children[directoryName];
+                if (child !== undefined) {
+                    directory = child;
+                } else {
+                    return null;
+                }
+            });
+            var entry = directory.children[name];
+            if (entry !== undefined) {
+                return entry;
+            } else {
+                return null;
+            }
+        };
 
         /* @param entry is a services.filesystem.*File or
          * a services.filesystem.*Directory object.

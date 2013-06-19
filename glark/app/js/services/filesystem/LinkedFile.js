@@ -38,9 +38,11 @@ angular.module('glark.services')
         LinkedFile.prototype.getContent = function () {
             var defered = $q.defer();
             socket.broadcast('getFileContent', this, function (content) {
-                $rootScope.$apply(function () {
-                    defered.resolve(content);
-                });
+                if (content !== null) {
+                    $rootScope.$apply(function () {
+                        defered.resolve(content);
+                    });
+                }
             });
             return defered.promise;
         };

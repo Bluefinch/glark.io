@@ -46,7 +46,7 @@ angular.module('glark.services')
             this.authenticationHeader = 'Basic ' +
                 base64.encode(params.username + ':' + params.password);
         };
-
+        
         RemoteDirectory.prototype.updateChildren = function () {
             /* Reset children list. */
             this.children = {};
