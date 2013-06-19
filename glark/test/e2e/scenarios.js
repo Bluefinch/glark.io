@@ -4,8 +4,8 @@
 
 describe('glark.io', function () {
 
-    it('should automatically redirect to main editor page when location hash/fragment is empty', function () {
-        browser().navigateTo('./app/index.html');
+    iit('should automatically create a new session when hash is empty', function () {
+        browser().navigateTo('/');
         expect(browser().location().url()).toBe('');
     });
 
