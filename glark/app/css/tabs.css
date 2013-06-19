@@ -88,11 +88,11 @@
 }
 
 #tab-list li {
-    background: rgba(19, 19, 19, 0.3);
+    background: rgba(22, 22, 22, 0.3);
 }
  
 #tab-list li.active-true {
-    background: rgb(19, 19, 19);
+    background: rgb(22, 22, 22);
 }
 
 /************************

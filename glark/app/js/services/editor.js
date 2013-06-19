@@ -25,8 +25,8 @@ angular.module('glark.services')
         // ace.setTheme("ace/theme/glarkio_blue");
         ace.setTheme("ace/theme/glarkio_black");
 
-        angular.element('.ace_gutter').css('background', 'rgb(19, 19, 19)');
-        angular.element('.ace_scroller').css('background', 'rgb(19, 19, 19)');
+        angular.element('.ace_gutter').css('background', 'rgb(22, 22, 22)');
+        angular.element('.ace_scroller').css('background', 'rgb(23, 23, 23)');
 
         return {
             focus: function () {
