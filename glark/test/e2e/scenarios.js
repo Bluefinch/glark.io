@@ -77,7 +77,7 @@ describe('glark.io', function () {
         it('should open when clicking the cog icon', function () {
             element('#toolbar a').click();
             expect(element('.modal').count()).toBe(1);
-
+            expect(element('#addConnectorModalLabel').text()).toBe('Connector settings');
         });
 
     });
