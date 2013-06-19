@@ -25,7 +25,7 @@ angular.module('glark.services')
          * one. */
         var Workspace = function (name, rootDirectory, type) {
             this.name = name;
-            
+
             /* Generate a random id */
             this.id = Math.random().toString(36).substr(2);
 
@@ -47,7 +47,7 @@ angular.module('glark.services')
             }
 
         };
-        
+
         Workspace.prototype.isLocal = function () {
             return this.type === 'local';
         };
@@ -57,7 +57,7 @@ angular.module('glark.services')
         Workspace.prototype.isLinked = function () {
             return this.type === 'linked';
         };
-        
+
         Workspace.prototype.isSharable = function () {
             /* Only local Workspace are sharable. */
             return this.isLocal();

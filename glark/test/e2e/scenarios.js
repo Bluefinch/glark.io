@@ -4,14 +4,14 @@
 
 describe('glark.io', function () {
 
-    iit('should automatically create a new session when hash is empty', function () {
+    it('should create a new session when request hash is empty', function () {
         browser().navigateTo('/');
-        expect(browser().location().url()).toBe('');
+        expect(browser().window().path()).toMatch(/\/\w{8}$/);
     });
 
-    it('should automatically redirect to main editor page when location hash/fragment is something', function () {
+    it('should render an error page request hash does not match an existing session', function () {
         browser().navigateTo('/somethingsilly');
-        expect(browser().location().url()).toBe('');
+        expect(element('body').text()).toMatch('Error: Invalid session hash somethingsilly');
     });
 
 
@@ -19,6 +19,9 @@ describe('glark.io', function () {
 
         beforeEach(function () {
             browser().navigateTo('/');
+            /* Hacky sleep to account for page loading and websocket
+             * registering time. */
+            sleep(1);
         });
 
         it('should have ace editor loaded just after initialization', function () {
@@ -36,7 +39,7 @@ describe('glark.io', function () {
         //TODO test that the file has mode 'markdown'.
 
         it('clicking on "close" icon should close the tab', function () {
-            element('.tab-item .close').click();
+            element('.tab-item .tab-close').click();
             expect(element('.tab-item').count()).toBe(0);
         });
 
@@ -46,15 +49,35 @@ describe('glark.io', function () {
 
         beforeEach(function () {
             browser().navigateTo('/');
+            /* Hacky sleep to account for page loading and websocket
+             * registering time. */
+            sleep(1);
         });
 
         it('should contain a file with name "welcome.md"', function () {
-            expect(element('#filetree a').attr('title')).toBe('welcome.md');
+            expect(element('.filetree a').attr('title')).toBe('welcome.md');
         });
 
         it('should contain 6 entries', function () {
             element('#e2e-tests-initializer a').click();
-            expect(element('#filetree a').count()).toBe(6);
+            expect(element('.filetree a').count()).toBe(2);
+        });
+
+    });
+
+    describe('The add connector modal', function () {
+
+        beforeEach(function () {
+            browser().navigateTo('/');
+            /* Hacky sleep to account for page loading and websocket
+             * registering time. */
+            sleep(1);
+        });
+
+        it('should open when clicking the cog icon', function () {
+            element('#toolbar a').click();
+            expect(element('.modal').count()).toBe(1);
+
         });
 
     });

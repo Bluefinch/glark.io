@@ -54,7 +54,7 @@ angular.module('glark.services')
             this.addWorkspace(workspace);
             return workspace;
         };
-        
+
         workspaces.createLinkedWorkspace = function (workspaceInfo) {
             var rootDirectory = new LinkedDirectory(workspaceInfo.id, workspaceInfo.rootDirectory);
             var workspace = new Workspace(workspaceInfo.name, rootDirectory, 'linked');
@@ -86,7 +86,7 @@ angular.module('glark.services')
         workspaces.getActiveWorkspace = function () {
             return activeWorkspace;
         };
-        
+
         workspaces.addSharableWorkspaces = function () {
             socket.broadcast('getSharableWorkspacesInfo', function (workspacesInfo) {
                 $rootScope.$apply(function () {
@@ -96,16 +96,16 @@ angular.module('glark.services')
                 });
             });
         };
-        
+
         /* --------------------------------
          * Socket API
          * -------------------------------- */
-            
-        /* Returns a dictionnary containing the ids (as key) and 
+
+        /* Returns a dictionnary containing the ids (as key) and
          * names (as value) of sharable workspaces. */
         socket.on('getSharableWorkspacesInfo', function (callback) {
             var sharableWorkspacesInfo = [];
-            angular.forEach(workspaces.workspaces, function(workspace) {
+            angular.forEach(workspaces.workspaces, function (workspace) {
                 if (workspace.isSharable()) {
                     sharableWorkspacesInfo.push({
                        name: workspace.name,
@@ -116,11 +116,11 @@ angular.module('glark.services')
             });
             callback(sharableWorkspacesInfo);
         });
-        
-        /* Returns a dictionnary containing the ids (as key) and 
+
+        /* Returns a dictionnary containing the ids (as key) and
          * names (as value) of sharable workspaces. */
         socket.on('getFileContent', function (file, callback) {
-            angular.forEach(workspaces.workspaces, function(workspace) {
+            angular.forEach(workspaces.workspaces, function (workspace) {
                 if (workspace.id == file.workspaceId) {
                     var child = workspace.rootDirectory.children[file.name];
                     if (child !== undefined && child.isFile) {

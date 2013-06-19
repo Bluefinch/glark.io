@@ -121,7 +121,7 @@ io.sockets.on('connection', function (socket) {
         cabbleSession = cabble.registerToSession(sessionHash, socket);
         callback(cabbleSession.isHostSocket(socket));
     });
-    
+
     /* Use this event to retreive all the socket ids connected in your
      * room. */
     socket.on('proxy.getIds', function (data, callback) {
@@ -145,15 +145,15 @@ io.sockets.on('connection', function (socket) {
             }
         }
     });
-    
+
     /* Use this event to proxy some data and callback a single socket of your room. */
     socket.on('proxy.toSingle', function (data, callback) {
         var socket = cabbleSession.sockets[data._socketId];
         if (socket !== undefined) {
-            /* Remove _socketId field. */        
+            /* Remove _socketId field. */
             data._socketId = undefined;
-            socket.emit('proxy', data, function(clientData) { 
-                callback(clientData); 
+            socket.emit('proxy', data, function (clientData) {
+                callback(clientData);
             });
         } else {
             // TODO : Fail.

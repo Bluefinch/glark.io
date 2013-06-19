@@ -54,11 +54,11 @@ angular.module('glark.services')
                 socket.eventHandler.$broadcast('socket.' + data.eventName, JSON.parse(data.data), callback);
             }
         });
-        
+
         /* -----------------------------
-         * Socket service public API. 
+         * Socket service public API.
          * ----------------------------- */
-        
+
         socket.onReady = function (callback) {
             if (!this.isReady) {
                 socket.eventHandler.$on('socket._ready', callback);
@@ -66,16 +66,16 @@ angular.module('glark.services')
                 callback();
             }
         };
-        
+
         /* Register to event coming from other sockets. */
         socket.on = function (eventName, callback) {
             socket.eventHandler.$on('socket.' + eventName, function (event, data, fn) {
                 callback(data, fn);
             });
         };
-        
-        /* Broadcast event to all the other sockets connected to our room, passing 
-         * data and getting callbackcalled on completion. Both data and callback 
+
+        /* Broadcast event to all the other sockets connected to our room, passing
+         * data and getting callbackcalled on completion. Both data and callback
          * are optionnal. */
         socket.broadcast = function (eventName, data, callback) {
             /* Handle optionnal parameters. */
@@ -83,7 +83,7 @@ angular.module('glark.services')
                 callback = data;
                 data = null;
             }
-            
+
             if (callback !== undefined) {
                 /* If broadcast with a callback, broadcast to each ids
                  * one by one, to handle multiple responses. */
@@ -101,6 +101,6 @@ angular.module('glark.services')
                  socket._socket.emit('proxy.toAll', {'eventName': eventName, 'data': JSON.stringify(data)});
             }
         };
-        
+
         return socket;
     }]);

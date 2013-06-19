@@ -35,7 +35,8 @@ module.exports = function (grunt) {
                     it: false,
                     describe: false,
                     expect: false,
-                    beforeEach: false
+                    beforeEach: false,
+                    sleep: false
                 }
             },
             files: [
