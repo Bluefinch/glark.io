@@ -86,12 +86,21 @@ angular.module('glark.services')
             }
         };
         
+        LocalDirectory.prototype.onReady = function (callback) {
+            this.readyPromise.then(callback);
+        };
+        
         /* Set the directory basename.*/
         LocalDirectory.prototype.setBasename = function (basename) {
-            this.basename = basename;
-            basename = this.basename + this.name + '/';
-            angular.forEach(this.children, function(child) {
-                child.setBasename(basename);
+            var _this = this;
+            /* The folder should be ready before updateing
+             * the base name. */
+            this.onReady(function () {
+                _this.basename = basename;
+                basename = _this.basename + _this.name + '/';
+                angular.forEach(_this.children, function(child) {
+                    child.setBasename(basename);
+                });
             });
         };
 
