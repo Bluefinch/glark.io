@@ -48,9 +48,9 @@ angular.module('glark', ['glark.controllers', 'glark.directives',
         }
     });
 
-    socket.onReady(function () {
+    socket.isAlone(function (isAlone) {
         $rootScope.$apply(function () {
-            if (socket.isHost) {
+            if (isAlone) {
                 /* Create the default local workspace. */
                 var workspace = workspaces.createLocalWorkspace('Workspace');
                 workspaces.setActiveWorkspace(workspace);

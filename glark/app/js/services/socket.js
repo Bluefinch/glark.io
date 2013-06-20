@@ -35,10 +35,9 @@ angular.module('glark.services')
         /* Register with our session hash. */
         var splitted = $location.absUrl().split('/');
         socket.sessionHash = splitted[splitted.length - 1];
-        socket._socket.emit('register', socket.sessionHash, function (isHost) {
+        socket._socket.emit('register', socket.sessionHash, function (count) {
             console.log('Socket service registered for session ' + socket.sessionHash);
-            console.log('Is session host: ' + isHost);
-            socket.isHost = isHost;
+            console.log('Session count: ' + count);
 
             socket.isReady = true;
             /* Broadcast private event socket._ready. */
@@ -58,7 +57,7 @@ angular.module('glark.services')
         /* -----------------------------
          * Socket service public API.
          * ----------------------------- */
-
+        
         socket.onReady = function (callback) {
             if (!this.isReady) {
                 socket.eventHandler.$on('socket._ready', callback);
@@ -83,23 +82,32 @@ angular.module('glark.services')
                 callback = data;
                 data = null;
             }
-
-            if (callback !== undefined) {
-                /* If broadcast with a callback, broadcast to each ids
-                 * one by one, to handle multiple responses. */
-                socket._socket.emit('proxy.getIds', {}, function (ids) {
-                    console.log('Socket ids:');
-                    console.log(ids);
-                    angular.forEach(ids, function (id) {
-                        socket._socket.emit('proxy.toSingle',
-                            {'_socketId': id, 'eventName': eventName, 'data': JSON.stringify(data)},
-                            callback);
+            
+            socket.onReady(function () {
+                if (callback !== undefined) {
+                    /* If broadcast with a callback, broadcast to each ids
+                     * one by one, to handle multiple responses. */
+                    socket._socket.emit('proxy.getIds', null, function (ids) {
+                        angular.forEach(ids, function (id) {
+                            socket._socket.emit('proxy.toSingle',
+                                {'_socketId': id, 'eventName': eventName, 'data': JSON.stringify(data)},
+                                callback);
+                        });
                     });
+                } else {
+                    /* If broadcast without callback, broadcast directly to all. */
+                     socket._socket.emit('proxy.toAll', {'eventName': eventName, 'data': JSON.stringify(data)});
+                }
+            });
+        };
+        
+        /* Get the rom socket ids. */
+        socket.isAlone = function (callback) {
+            socket.onReady(function () {
+                socket._socket.emit('proxy.getIds', null, function (ids) {
+                    callback(ids.length === 0);
                 });
-            } else {
-                /* If broadcast without callback, broadcast directly to all. */
-                 socket._socket.emit('proxy.toAll', {'eventName': eventName, 'data': JSON.stringify(data)});
-            }
+            });
         };
 
         return socket;

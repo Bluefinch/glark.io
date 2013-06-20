@@ -22,25 +22,9 @@ var crypto = require('crypto');
 var Session = function () {
     this.creationTime = Date.now();
     this.sockets = {};
-    this.hostSocket = null;
-};
-
-Session.prototype.isHostSocket = function (socket) {
-    if (this.hostSocket === null) {
-        return false;
-    } else {
-        return this.hostSocket.id === socket.id;
-    }
-};
-
-Session.prototype.getHostSocket = function () {
-    return this.hostSocket;
 };
 
 Session.prototype.addSocket = function (socket) {
-    if (this.hostSocket === null) {
-        this.hostSocket = socket;
-    }
     this.sockets[socket.id] = socket;
 };
 
@@ -62,26 +46,22 @@ module.exports = {
         return hash;
     },
 
+    /* Check if the given session has is valid. */
     isValidSessionHash: function (sessionHash) {
-        if (typeof this.sessions[sessionHash] === 'undefined') {
-            return false;
-        } else {
-            return true;
-        }
+        return (typeof this.sessions[sessionHash] !== 'undefined');
     },
 
     registerToSession: function (sessionHash, socket) {
         console.log('Registering socket for session ' + sessionHash);
         console.log('Socket id ' + socket.id);
         if (!this.isValidSessionHash(sessionHash)) {
-            console.log('Invalid session hash ' + sessionHash +
-                '\nClosing socket connection.');
+            console.log('Invalid session hash ' + sessionHash);
+            console.log('Closing socket connection.');
             socket.disconnect();
             return null;
         } else {
             var session = this.sessions[sessionHash];
             session.addSocket(socket);
-            console.log(this);
             return session;
         }
     }

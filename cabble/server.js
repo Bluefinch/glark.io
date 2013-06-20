@@ -73,7 +73,6 @@ app.configure('production', function () {
 
 app.get('/:hash', function (req, res, next) {
     console.log('Request with hash: ' + req.params.hash);
-    console.log(cabble);
 
     if (cabble.isValidSessionHash(req.params.hash)) {
         res.sendfile(path.join(app.get('staticFolder'), 'index.html'));
@@ -119,7 +118,7 @@ io.sockets.on('connection', function (socket) {
     var cabbleSession = null;
     socket.on('register', function (sessionHash, callback) {
         cabbleSession = cabble.registerToSession(sessionHash, socket);
-        callback(cabbleSession.isHostSocket(socket));
+        callback(cabbleSession.getSocketIds().length);
     });
 
     /* Use this event to retreive all the socket ids connected in your
@@ -160,8 +159,9 @@ io.sockets.on('connection', function (socket) {
         }
     });
 
-    // socket.on('disconnect', function () {
-        // cabbleSession.unregister(socket);
-    // });
+    socket.on('disconnect', function () {
+        console.log('Websocket disconnect.');
+        //cabbleSession.unregister(socket);
+    });
 });
 
