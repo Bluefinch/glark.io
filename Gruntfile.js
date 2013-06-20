@@ -1,10 +1,25 @@
-/* jshint node: true */
+/* jshint node: true, camelcase: false */
 'use strict';
 
 module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+
+        jsfiles: [
+            'Gruntfile.js',
+            'glark/app/js/**/*.js',
+            'cabble/**/*.js',
+            'glark/test/unit/**/*.js',
+            'glark/test/e2e/**/*.js'
+        ],
+
+        jsbeautifier: {
+            files: ['<%= jsfiles %>'],
+            options: {
+                space_after_anon_function: true
+            }
+        },
 
         jshint: {
             options: {
@@ -39,13 +54,7 @@ module.exports = function (grunt) {
                     sleep: false
                 }
             },
-            files: [
-                'Gruntfile.js',
-                'glark/app/js/**/*.js',
-                'cabble/**/*.js',
-                'glark/test/unit/**/*.js',
-                'glark/test/e2e/**/*.js'
-            ]
+            files: ['<%= jsfiles %>']
         },
 
         concat: {
@@ -101,22 +110,42 @@ module.exports = function (grunt) {
         /* Copy the necessary files in the dist folder. */
         copy: {
             main: {
-                files: [
-                    {expand: true, cwd: 'glark/app/', src: ['css/lib/**'], dest: 'glark/dist/' },
-                    {expand: true, cwd: 'glark/app/', src: ['fonts/**'], dest: 'glark/dist/' },
-                    {expand: true, cwd: 'glark/app/', src: ['img/**'], dest: 'glark/dist/' },
-                    {expand: true, cwd: 'glark/app/', src: ['lib/**'], dest: 'glark/dist/' },
-                    {expand: true, cwd: 'glark/app/', src: ['partial/**'], dest: 'glark/dist/' }
-                ]
+                files: [{
+                    expand: true,
+                    cwd: 'glark/app/',
+                    src: ['css/lib/**'],
+                    dest: 'glark/dist/'
+                }, {
+                    expand: true,
+                    cwd: 'glark/app/',
+                    src: ['fonts/**'],
+                    dest: 'glark/dist/'
+                }, {
+                    expand: true,
+                    cwd: 'glark/app/',
+                    src: ['img/**'],
+                    dest: 'glark/dist/'
+                }, {
+                    expand: true,
+                    cwd: 'glark/app/',
+                    src: ['lib/**'],
+                    dest: 'glark/dist/'
+                }, {
+                    expand: true,
+                    cwd: 'glark/app/',
+                    src: ['partial/**'],
+                    dest: 'glark/dist/'
+                }]
             }
         },
 
         watch: {
             files: ['<%= jshint.files %>'],
-            tasks: ['jshint']
+            tasks: ['jsbeautifier', 'jshint']
         }
     });
 
+    grunt.loadNpmTasks('grunt-jsbeautifier');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -125,6 +154,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'cssmin', 'targethtml', 'copy']);
+    grunt.registerTask('default', ['jsbeautifier', 'jshint', 'concat', 'uglify', 'cssmin', 'targethtml', 'copy']);
 
 };

@@ -1,4 +1,5 @@
 #!/usr/bin/node
+
 /* Copyright 2013 Florent Galland & Luc Verdier
 
 This file is part of glark.io.
@@ -59,7 +60,10 @@ app.use(express.methodOverride());
 
 /* Error handler. */
 app.configure('development', function () {
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    app.use(express.errorHandler({
+        dumpExceptions: true,
+        showStack: true
+    }));
 });
 
 app.configure('production', function () {
@@ -105,7 +109,9 @@ app.all('*', function (req, res) {
 
 var server = http.createServer(app);
 // var io = socketio.listen(server);
-var io = socketio.listen(server, {log: false});
+var io = socketio.listen(server, {
+    log: false
+});
 io.set('transports', ['xhr-polling']);
 
 server.listen(app.get('port'), function () {
@@ -127,7 +133,7 @@ io.sockets.on('connection', function (socket) {
         var socketIds = [];
         var allSocketIds = cabbleSession.getSocketIds();
         allSocketIds.forEach(function (id) {
-             if (id !== socket.id) {
+            if (id !== socket.id) {
                 socketIds.push(id);
             }
         });
@@ -164,4 +170,3 @@ io.sockets.on('connection', function (socket) {
         //cabbleSession.unregister(socket);
     });
 });
-

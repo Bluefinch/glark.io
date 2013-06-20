@@ -18,29 +18,29 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.filters')
 
-    .filter('foldersFirst', function () {
-        return function (entries) {
+.filter('foldersFirst', function () {
+    return function (entries) {
 
-            var result = [];
-            angular.forEach(entries, function (entry) {
-                result.push(entry);
-            });
+        var result = [];
+        angular.forEach(entries, function (entry) {
+            result.push(entry);
+        });
 
-            result = result.sort(function (entry1, entry2) {
-                if (entry1.isDirectory && entry2.isFile) {
-                    return -1;
-                }
-                if (entry1.isFile && entry2.isDirectory) {
-                    return 1;
-                }
-                if (entry1.isFile && entry2.isFile) {
-                    return entry1.name.toLowerCase() > entry2.name.toLowerCase();
-                }
-                if (entry1.isDirectory && entry2.isDirectory) {
-                    return entry1.name.toLowerCase() > entry2.name.toLowerCase();
-                }
-            });
+        result = result.sort(function (entry1, entry2) {
+            if (entry1.isDirectory && entry2.isFile) {
+                return -1;
+            }
+            if (entry1.isFile && entry2.isDirectory) {
+                return 1;
+            }
+            if (entry1.isFile && entry2.isFile) {
+                return entry1.name.toLowerCase() > entry2.name.toLowerCase();
+            }
+            if (entry1.isDirectory && entry2.isDirectory) {
+                return entry1.name.toLowerCase() > entry2.name.toLowerCase();
+            }
+        });
 
-            return result;
-        };
-    });
+        return result;
+    };
+});

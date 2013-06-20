@@ -18,68 +18,81 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('LayoutComponent', function () {
-        var LayoutComponent = function (name, $element, options) {
-            var settings = {
-                defaultWidth: null,
-                defaultHeight: null,
-                maxWidth: null,
-                minWidth: null,
-                setWidth: null,
-                maxHeight: null,
-                minHeight: null,
-                setHeight: null
-            };
-            options = jQuery.extend({}, settings, options);
-
-            if (options.setWidth !== null) {
-                options.setWidth.bind(this);
-            }
-            if (options.setHeight !== null) {
-                options.setHeight.bind(this);
-            }
-
-            this.options = options;
-            this.name = name;
-            this.$el = $element;
+.factory('LayoutComponent', function () {
+    var LayoutComponent = function (name, $element, options) {
+        var settings = {
+            defaultWidth: null,
+            defaultHeight: null,
+            maxWidth: null,
+            minWidth: null,
+            setWidth: null,
+            maxHeight: null,
+            minHeight: null,
+            setHeight: null
         };
+        options = jQuery.extend({}, settings, options);
 
-        LayoutComponent.prototype.setWidth = function (width) {
-            var options = this.options;
+        if (options.setWidth !== null) {
+            options.setWidth.bind(this);
+        }
+        if (options.setHeight !== null) {
+            options.setHeight.bind(this);
+        }
 
-            if (options.setWidth === null) { return; }
-            if (options.minWidth !== null && width < options.minWidth) { return; }
-            if (options.maxWidth !== null && width > options.maxWidth) { return; }
+        this.options = options;
+        this.name = name;
+        this.$el = $element;
+    };
 
-            options.setWidth(width);
-        };
+    LayoutComponent.prototype.setWidth = function (width) {
+        var options = this.options;
 
-        LayoutComponent.prototype.setHeight = function (height) {
-            var options = this.options;
+        if (options.setWidth === null) {
+            return;
+        }
+        if (options.minWidth !== null && width < options.minWidth) {
+            return;
+        }
+        if (options.maxWidth !== null && width > options.maxWidth) {
+            return;
+        }
 
-            if (options.setHeight === null) { return; }
-            if (options.minHeight !== null && height < options.minHeight) { return; }
-            if (options.maxHeight !== null && height > options.maxHeight) { return; }
+        options.setWidth(width);
+    };
 
-            options.setHeight(height);
-        };
+    LayoutComponent.prototype.setHeight = function (height) {
+        var options = this.options;
 
-        LayoutComponent.prototype.resetSize = function () {
-            var options = this.options;
+        if (options.setHeight === null) {
+            return;
+        }
+        if (options.minHeight !== null && height < options.minHeight) {
+            return;
+        }
+        if (options.maxHeight !== null && height > options.maxHeight) {
+            return;
+        }
 
-            if (options.defaultWidth !== null) {
-                this.setWidth(options.defaultWidth);
-            }
-            if (options.defaultHeight !== null) {
-                this.setHeight(options.defaultHeight);
-            }
-        };
+        options.setHeight(height);
+    };
 
-        return LayoutComponent;
-    })
+    LayoutComponent.prototype.resetSize = function () {
+        var options = this.options;
 
-    /* Helper providing services to manage the layout . */
-    .factory('layout', ['LayoutComponent', function (LayoutComponent) {
+        if (options.defaultWidth !== null) {
+            this.setWidth(options.defaultWidth);
+        }
+        if (options.defaultHeight !== null) {
+            this.setHeight(options.defaultHeight);
+        }
+    };
+
+    return LayoutComponent;
+})
+
+/* Helper providing services to manage the layout . */
+.factory('layout', ['LayoutComponent',
+    function (LayoutComponent) {
         var layout = {};
 
         /* List of registered components. */
@@ -138,4 +151,5 @@ angular.module('glark.services')
         //layout.resetLayout();
 
         return layout;
-    }]);
+    }
+]);

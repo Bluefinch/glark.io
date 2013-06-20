@@ -18,15 +18,15 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    /* Base 64 encoder/decoder. Accepts utf-8 strings. */
-    .factory('base64', function () {
-        return {
-            encode: function (str) {
-                return window.btoa(window.unescape(encodeURIComponent(str)));
-            },
+/* Base 64 encoder/decoder. Accepts utf-8 strings. */
+.factory('base64', function () {
+    return {
+        encode: function (str) {
+            return window.btoa(window.unescape(encodeURIComponent(str)));
+        },
 
-            decode: function (str) {
-                return decodeURIComponent(window.escape(window.atob(str)));
-            }
-        };
-    });
+        decode: function (str) {
+            return decodeURIComponent(window.escape(window.atob(str)));
+        }
+    };
+});

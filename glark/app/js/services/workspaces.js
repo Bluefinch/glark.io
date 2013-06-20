@@ -18,8 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('workspaces', ['$rootScope', '$q', '$timeout', 'editor', 'socket', 'Workspace', 'LocalDirectory', 'RemoteDirectory', 'LinkedDirectory',
-            function ($rootScope, $q, $timeout, editor, socket,  Workspace, LocalDirectory, RemoteDirectory, LinkedDirectory) {
+.factory('workspaces', ['$rootScope', '$q', '$timeout', 'editor', 'socket', 'Workspace', 'LocalDirectory', 'RemoteDirectory', 'LinkedDirectory',
+    function ($rootScope, $q, $timeout, editor, socket, Workspace, LocalDirectory, RemoteDirectory, LinkedDirectory) {
 
         var workspaces = {};
 
@@ -98,7 +98,7 @@ angular.module('glark.services')
                 });
             });
         };
-        
+
         workspaces.getWorkspaceById = function (workspaceId) {
             var resultWorkspace = null;
             angular.forEach(workspaces.workspaces, function (workspace) {
@@ -142,16 +142,16 @@ angular.module('glark.services')
             } else {
                 callback(null);
             }
-                
+
         });
-        
+
         /* Broadcast the new workspace if it is sharable. */
         $rootScope.$on('workspaces.addWorkspace', function (event, workspace) {
-            if(workspace.isSharable()) {
-                socket.broadcast('addWorkspace', workspace.getInfo());   
+            if (workspace.isSharable()) {
+                socket.broadcast('addWorkspace', workspace.getInfo());
             }
         });
-        
+
         /* Add a LinkedWorkspace. */
         socket.on('addWorkspace', function (workspaceInfo) {
             $rootScope.$apply(function () {
@@ -160,4 +160,5 @@ angular.module('glark.services')
         });
 
         return workspaces;
-    }]);
+    }
+]);

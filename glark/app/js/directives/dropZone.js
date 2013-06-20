@@ -18,12 +18,13 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.directives')
 
-    /* This makes any element dropZone. It should be used
-     * with the ngModel directive.
-     * Exemple:
-     * <div ng-model="myDroppedFile" drop-zone="onDrop()"></div>
-     */
-    .directive('dropZone', ['$parse', function ($parse) {
+/* This makes any element dropZone. It should be used
+ * with the ngModel directive.
+ * Exemple:
+ * <div ng-model="myDroppedFile" drop-zone="onDrop()"></div>
+ */
+.directive('dropZone', ['$parse',
+    function ($parse) {
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
@@ -34,10 +35,13 @@ angular.module('glark.directives')
                     event.preventDefault();
                     var fn = $parse(attrs.dropZone);
                     scope.$apply(function () {
-                        fn(scope, {$event: event});
+                        fn(scope, {
+                            $event: event
+                        });
                     });
                     return false;
                 });
             }
         };
-    }]);
+    }
+]);

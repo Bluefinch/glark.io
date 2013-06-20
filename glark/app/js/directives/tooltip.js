@@ -18,15 +18,13 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.directives')
 
-    .directive('tooltip', function () {
-        return {
-            restrict: 'A',
-            link: function (scope, element, attrs) {
-                var options = scope.$eval(attrs.tooltip);
-                $(element).attr('rel', 'tooltip');
-                $(element).attr('title', options.text).tooltip(options);
-            }
-        };
-    });
-
-
+.directive('tooltip', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var options = scope.$eval(attrs.tooltip);
+            $(element).attr('rel', 'tooltip');
+            $(element).attr('title', options.text).tooltip(options);
+        }
+    };
+});

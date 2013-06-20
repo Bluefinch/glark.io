@@ -18,7 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('LocalDirectory', ['$rootScope', 'LocalFile', '$q', function ($rootScope, LocalFile, $q) {
+.factory('LocalDirectory', ['$rootScope', 'LocalFile', '$q',
+    function ($rootScope, LocalFile, $q) {
 
         /* Read the directoryEntry and create a list of
          * services.filesystem.*Local objects. */
@@ -58,7 +59,7 @@ angular.module('glark.services')
 
             var readyDefered = $q.defer();
             this.readyPromise = readyDefered.promise;
-            
+
             /* If the directoryEntry is not undefined, we
              * read the content and we fill the children
              * collection with the services.filesystem.*Local
@@ -69,7 +70,7 @@ angular.module('glark.services')
                 var promise = createEntries(basename, directoryEntry);
                 promise.then(function (children) {
                     _this.children = children;
-                    
+
                     /* Wait for children to be ready. */
                     var promises = [];
                     angular.forEach(children, function (child) {
@@ -85,11 +86,11 @@ angular.module('glark.services')
                 readyDefered.resolve();
             }
         };
-        
+
         LocalDirectory.prototype.onReady = function (callback) {
             this.readyPromise.then(callback);
         };
-        
+
         /* Set the directory basename.*/
         LocalDirectory.prototype.setBasename = function (basename) {
             var _this = this;
@@ -98,7 +99,7 @@ angular.module('glark.services')
             this.onReady(function () {
                 _this.basename = basename;
                 basename = _this.basename + _this.name + '/';
-                angular.forEach(_this.children, function(child) {
+                angular.forEach(_this.children, function (child) {
                     child.setBasename(basename);
                 });
             });
@@ -123,5 +124,5 @@ angular.module('glark.services')
         };
 
         return LocalDirectory;
-    }]);
-
+    }
+]);

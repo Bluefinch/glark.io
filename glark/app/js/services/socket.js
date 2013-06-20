@@ -18,9 +18,10 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    /* The socket service allows to send and receive events to and from
-     * the other sockets connected to our room. */
-    .factory('socket', ['$rootScope', '$location', function ($rootScope, $location) {
+/* The socket service allows to send and receive events to and from
+ * the other sockets connected to our room. */
+.factory('socket', ['$rootScope', '$location',
+    function ($rootScope, $location) {
 
         var socket = {};
 
@@ -57,7 +58,7 @@ angular.module('glark.services')
         /* -----------------------------
          * Socket service public API.
          * ----------------------------- */
-        
+
         socket.onReady = function (callback) {
             if (!this.isReady) {
                 socket.eventHandler.$on('socket._ready', callback);
@@ -82,25 +83,31 @@ angular.module('glark.services')
                 callback = data;
                 data = null;
             }
-            
+
             socket.onReady(function () {
                 if (callback !== undefined) {
                     /* If broadcast with a callback, broadcast to each ids
                      * one by one, to handle multiple responses. */
                     socket._socket.emit('proxy.getIds', null, function (ids) {
                         angular.forEach(ids, function (id) {
-                            socket._socket.emit('proxy.toSingle',
-                                {'_socketId': id, 'eventName': eventName, 'data': JSON.stringify(data)},
+                            socket._socket.emit('proxy.toSingle', {
+                                    '_socketId': id,
+                                    'eventName': eventName,
+                                    'data': JSON.stringify(data)
+                                },
                                 callback);
                         });
                     });
                 } else {
                     /* If broadcast without callback, broadcast directly to all. */
-                     socket._socket.emit('proxy.toAll', {'eventName': eventName, 'data': JSON.stringify(data)});
+                    socket._socket.emit('proxy.toAll', {
+                        'eventName': eventName,
+                        'data': JSON.stringify(data)
+                    });
                 }
             });
         };
-        
+
         /* Get the rom socket ids. */
         socket.isAlone = function (callback) {
             socket.onReady(function () {
@@ -111,4 +118,5 @@ angular.module('glark.services')
         };
 
         return socket;
-    }]);
+    }
+]);

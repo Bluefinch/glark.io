@@ -18,7 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.directives')
 
-    .directive('layoutLeftSlider', ['layout', function (layout) {
+.directive('layoutLeftSlider', ['layout',
+    function (layout) {
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
@@ -45,4 +46,5 @@ angular.module('glark.directives')
                 });
             }
         };
-    }]);
+    }
+]);

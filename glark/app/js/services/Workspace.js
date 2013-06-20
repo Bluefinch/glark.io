@@ -18,8 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('Workspace', ['$rootScope', 'editor', 'EditSession', 'extensionFilter', 'filetypes',
-            function ($rootScope, editor, EditSession, extensionFilter, filetypes) {
+.factory('Workspace', ['$rootScope', 'editor', 'EditSession', 'extensionFilter', 'filetypes',
+    function ($rootScope, editor, EditSession, extensionFilter, filetypes) {
         /* Main model of the glark.io application. Contains among other all the
          * data describing the files of the workspace, the open ones and the active
          * one. */
@@ -62,21 +62,21 @@ angular.module('glark.services')
             /* Only local Workspace are sharable. */
             return this.isLocal();
         };
-        
+
         /* Gets the workspace info. */
         Workspace.prototype.getInfo = function () {
             return {
-               name: this.name,
-               id: this.id,
-               rootDirectory: this.rootDirectory
+                name: this.name,
+                id: this.id,
+                rootDirectory: this.rootDirectory
             };
         };
-        
+
         /* Gets an entry by its basename and name. */
         Workspace.prototype.getEntry = function (basename, name) {
             var path = basename.split('/');
             var directory = this.rootDirectory;
-            angular.forEach(path, function(directoryName) {
+            angular.forEach(path, function (directoryName) {
                 var child = directory.children[directoryName];
                 if (child !== undefined) {
                     directory = child;
@@ -178,4 +178,5 @@ angular.module('glark.services')
         };
 
         return Workspace;
-    }]);
+    }
+]);

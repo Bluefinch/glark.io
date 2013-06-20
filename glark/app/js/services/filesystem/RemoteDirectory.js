@@ -18,8 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('RemoteDirectory', ['RemoteFile', 'base64', '$q', '$http',
-            function (RemoteFile, base64, $q, $http) {
+.factory('RemoteDirectory', ['RemoteFile', 'base64', '$q', '$http',
+    function (RemoteFile, base64, $q, $http) {
 
         var RemoteDirectory = function (name, params, basename) {
             this.isDirectory = true;
@@ -40,20 +40,24 @@ angular.module('glark.services')
             this.hostname = params.hostname;
             this.port = params.port;
 
-            this.baseurl =  'http://' + params.hostname + ':' + params.port + '/connector';
+            this.baseurl = 'http://' + params.hostname + ':' + params.port + '/connector';
             this.baseurl += this.basename + this.name;
 
             this.authenticationHeader = 'Basic ' +
                 base64.encode(params.username + ':' + params.password);
         };
-        
+
         RemoteDirectory.prototype.updateChildren = function () {
             /* Reset children list. */
             this.children = {};
 
             /* Then update it. */
             var _this = this;
-            $http.get(this.baseurl, {headers: {'Authorization': this.authenticationHeader}})
+            $http.get(this.baseurl, {
+                headers: {
+                    'Authorization': this.authenticationHeader
+                }
+            })
                 .success(function (response) {
                     angular.forEach(response.data, function (entry) {
                         var basename = _this.basename + _this.name + '/';
@@ -66,7 +70,7 @@ angular.module('glark.services')
                         }
                     });
                 })
-                .error(function (/* response, status */) {
+                .error(function ( /* response, status */ ) {
                     console.log('Error in $http get. Unable to update children of remote directory.');
                 });
         };
@@ -91,5 +95,5 @@ angular.module('glark.services')
         };
 
         return RemoteDirectory;
-    }]);
-
+    }
+]);

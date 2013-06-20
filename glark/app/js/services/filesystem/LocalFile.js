@@ -18,8 +18,9 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    /* Create a glark.services.File object from a html5 File or Blob object. */
-    .factory('LocalFile', ['$rootScope', '$q', function ($rootScope, $q) {
+/* Create a glark.services.File object from a html5 File or Blob object. */
+.factory('LocalFile', ['$rootScope', '$q',
+    function ($rootScope, $q) {
 
         /* Create a local file from a Blob or a
          * FileEntry object */
@@ -46,7 +47,7 @@ angular.module('glark.services')
             /* Blob property is a promise. */
             this.blob = defered.promise;
         };
-        
+
         /* Set the file basename.*/
         LocalFile.prototype.setBasename = function (basename) {
             this.basename = basename;
@@ -69,7 +70,9 @@ angular.module('glark.services')
         /* Set the content of the maintened blob. */
         LocalFile.prototype.setContent = function (content) {
             var defered = $q.defer();
-            var blob = new Blob([content], {type: this.blob.type});
+            var blob = new Blob([content], {
+                type: this.blob.type
+            });
             defered.resolve(blob);
             /* Blob property should be a promise. */
             this.blob = defered.promise;
@@ -88,4 +91,5 @@ angular.module('glark.services')
         };
 
         return LocalFile;
-    }]);
+    }
+]);

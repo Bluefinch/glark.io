@@ -8,8 +8,12 @@ describe('The services:', function () {
         angular.mock.module('glark.services');
         angular.mock.module('glark.filters');
 
-        var mockEditor = { setSession: jasmine.createSpy() };
-        var mockSession = { setValue: jasmine.createSpy() };
+        var mockEditor = {
+            setSession: jasmine.createSpy()
+        };
+        var mockSession = {
+            setValue: jasmine.createSpy()
+        };
 
         angular.mock.module(function ($provide) {
             $provide.value('EditSession', mockSession);
@@ -22,14 +26,13 @@ describe('The services:', function () {
         var localDirectory, file1, file1bis, file2, file3;
 
         beforeEach(angular.mock.inject(function (LocalDirectory, LocalFile) {
-                localDirectory = new LocalDirectory('root');
+            localDirectory = new LocalDirectory('root');
 
-                file1 = new LocalFile("tata", {});
-                file1bis = new LocalFile("tata", {});
-                file2 = new LocalFile("titi", {});
-                file3 = new LocalFile("toto", {});
-            })
-        );
+            file1 = new LocalFile("tata", {});
+            file1bis = new LocalFile("tata", {});
+            file2 = new LocalFile("titi", {});
+            file3 = new LocalFile("toto", {});
+        }));
 
         it('is a directory and not a file', function () {
             expect(localDirectory.isDirectory).toBeTruthy();

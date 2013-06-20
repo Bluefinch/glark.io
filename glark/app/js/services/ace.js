@@ -18,10 +18,10 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('ace', function () {
-        return ace.edit('editor');
-    })
+.factory('ace', function () {
+    return ace.edit('editor');
+})
 
-    .factory('EditSession', function () {
-        return ace.require("ace/edit_session").EditSession;
-    });
+.factory('EditSession', function () {
+    return ace.require("ace/edit_session").EditSession;
+});

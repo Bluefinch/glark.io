@@ -18,10 +18,9 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.filters')
 
-    .filter('extension', function () {
-        return function (input) {
-            var pos = input.lastIndexOf(".");
-            return input.substring(pos + 1, input.length);
-        };
-    });
-
+.filter('extension', function () {
+    return function (input) {
+        var pos = input.lastIndexOf(".");
+        return input.substring(pos + 1, input.length);
+    };
+});

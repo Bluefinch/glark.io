@@ -18,7 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('editor', ['$rootScope', 'EditSession', 'ace', function ($rootScope, EditSession, ace) {
+.factory('editor', ['$rootScope', 'EditSession', 'ace',
+    function ($rootScope, EditSession, ace) {
         // ace.setTheme("ace/theme/twilight");
         // ace.setTheme("ace/theme/tomorrow_night_eighties");
         // ace.setTheme("ace/theme/solarized_dark");
@@ -73,4 +74,5 @@ angular.module('glark.services')
                 return angular.element('.ace_scroller').css('background-color');
             }
         };
-    }]);
+    }
+]);

@@ -22,52 +22,56 @@ angular.module('glark.filters', []);
 angular.module('glark.services', ['ngResource']);
 
 angular.module('glark', ['glark.controllers', 'glark.directives',
-        'glark.filters', 'glark.services', '$strap.directives'])
+    'glark.filters', 'glark.services', '$strap.directives'
+])
 
 .run(['$rootScope', 'LocalFile', 'workspaces', 'socket',
-        function ($rootScope, LocalFile, workspaces, socket) {
+    function ($rootScope, LocalFile, workspaces, socket) {
 
-    /* Helper function to broadcast events. */
-    var applyEvent = function (eventName, event) {
-        event.preventDefault();
-        $rootScope.$apply(function () {
-            $rootScope.$broadcast(eventName);
-        });
-    };
+        /* Helper function to broadcast events. */
+        var applyEvent = function (eventName, event) {
+            event.preventDefault();
+            $rootScope.$apply(function () {
+                $rootScope.$broadcast(eventName);
+            });
+        };
 
-    /* Bind keys with events. */
-    document.addEventListener('keydown', function (event) {
+        /* Bind keys with events. */
+        document.addEventListener('keydown', function (event) {
 
-        if (!event.metaKey && !event.ctrlKey) {
-            return;
-        }
+            if (!event.metaKey && !event.ctrlKey) {
+                return;
+            }
 
-        switch (event.keyCode) {
-        case 83 : // s
-            return applyEvent('save', event);
-        }
-    });
-
-    socket.isAlone(function (isAlone) {
-        $rootScope.$apply(function () {
-            if (isAlone) {
-                /* Create the default local workspace. */
-                var workspace = workspaces.createLocalWorkspace('Workspace');
-                workspaces.setActiveWorkspace(workspace);
-
-                /* Open a file to display tutorial and info to the user. */
-                /* TODO This is hard-coded for now, maybe requesting this from the
-                 * server would be better. */
-                var blob = new Blob(["###glark.io###\nWelcome to _glark.io_ the drag'n'collaborate editor.\nJust drag some files here and start editing."], {type: "text"});
-                var welcomeFile = new LocalFile("welcome.md", blob);
-
-                /* Add it to the default workspace and give it the focus. */
-                workspace.addEntry(welcomeFile);
-                workspace.setActiveFile(welcomeFile);
-            } else {
-                workspaces.addSharableWorkspaces();
+            switch (event.keyCode) {
+            case 83: // s
+                return applyEvent('save', event);
             }
         });
-    });
 
-}]);
+        socket.isAlone(function (isAlone) {
+            $rootScope.$apply(function () {
+                if (isAlone) {
+                    /* Create the default local workspace. */
+                    var workspace = workspaces.createLocalWorkspace('Workspace');
+                    workspaces.setActiveWorkspace(workspace);
+
+                    /* Open a file to display tutorial and info to the user. */
+                    /* TODO This is hard-coded for now, maybe requesting this from the
+                     * server would be better. */
+                    var blob = new Blob(["###glark.io###\nWelcome to _glark.io_ the drag'n'collaborate editor.\nJust drag some files here and start editing."], {
+                        type: "text"
+                    });
+                    var welcomeFile = new LocalFile("welcome.md", blob);
+
+                    /* Add it to the default workspace and give it the focus. */
+                    workspace.addEntry(welcomeFile);
+                    workspace.setActiveFile(welcomeFile);
+                } else {
+                    workspaces.addSharableWorkspaces();
+                }
+            });
+        });
+
+    }
+]);

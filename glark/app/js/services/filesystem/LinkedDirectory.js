@@ -18,8 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    .factory('LinkedDirectory', ['$rootScope', 'LinkedFile', '$q', 'socket',
-            function ($rootScope, LinkedFile, $q, socket) {
+.factory('LinkedDirectory', ['$rootScope', 'LinkedFile', '$q', 'socket',
+    function ($rootScope, LinkedFile, $q, socket) {
 
         /* Read the directoryEntry and create a list of
          * services.filesystem.*Local objects. */
@@ -36,7 +36,7 @@ angular.module('glark.services')
             });
             return children;
         };
-        
+
         var LinkedDirectory = function (workspaceId, directory) {
             this.isDirectory = true;
             this.isFile = false;
@@ -67,5 +67,5 @@ angular.module('glark.services')
         };
 
         return LinkedDirectory;
-    }]);
-
+    }
+]);

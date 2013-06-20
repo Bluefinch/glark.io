@@ -18,16 +18,19 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.directives')
 
-    /* Allow to bind action to the right click event. */
-    .directive('rightClick', ['$parse', function ($parse) {
+/* Allow to bind action to the right click event. */
+.directive('rightClick', ['$parse',
+    function ($parse) {
         return function (scope, element, attrs) {
             element.bind('contextmenu', function (event) {
                 event.preventDefault();
                 var fn = $parse(attrs.rightClick);
                 scope.$apply(function () {
-                    fn(scope, {$event: event});
+                    fn(scope, {
+                        $event: event
+                    });
                 });
             });
         };
-    }]);
-
+    }
+]);

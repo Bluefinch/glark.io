@@ -18,8 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.controllers')
 
-    .controller('WorkspacesController', ['$scope', '$modal', 'editor', 'workspaces', 'filesystem',
-            function ($scope, $modal, editor, workspaces, filesystem) {
+.controller('WorkspacesController', ['$scope', '$modal', 'editor', 'workspaces', 'filesystem',
+    function ($scope, $modal, editor, workspaces, filesystem) {
         $scope.workspaces = workspaces;
         $scope.editor = editor;
 
@@ -67,5 +67,5 @@ angular.module('glark.controllers')
                 directory.updateChildren();
             }
         };
-    }]);
-
+    }
+]);

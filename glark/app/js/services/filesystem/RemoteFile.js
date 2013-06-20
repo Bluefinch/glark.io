@@ -18,8 +18,9 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    /* Create a glark.services.File object from a html5 File or Blob object. */
-    .factory('RemoteFile', ['base64', '$q', '$http', function (base64, $q, $http) {
+/* Create a glark.services.File object from a html5 File or Blob object. */
+.factory('RemoteFile', ['base64', '$q', '$http',
+    function (base64, $q, $http) {
 
         /* Create a remote file from his name and
          * params, where params contains information
@@ -38,7 +39,7 @@ angular.module('glark.services')
 
             this.params = params;
 
-            this.baseurl =  'http://' + params.hostname + ':' + params.port + '/connector';
+            this.baseurl = 'http://' + params.hostname + ':' + params.port + '/connector';
             this.baseurl += this.basename + this.name;
 
             this.authenticationHeader = 'Basic ' +
@@ -48,8 +49,11 @@ angular.module('glark.services')
         /* Get the content of the remote file. */
         RemoteFile.prototype.getContent = function () {
             var defered = $q.defer();
-            $http.get(this.baseurl,
-                    {headers: {'Authorization': this.authenticationHeader}})
+            $http.get(this.baseurl, {
+                headers: {
+                    'Authorization': this.authenticationHeader
+                }
+            })
                 .success(function (response) {
                     defered.resolve(response.data.content);
                 })
@@ -63,8 +67,13 @@ angular.module('glark.services')
         /* Set the content of the remote file. */
         RemoteFile.prototype.setContent = function (content) {
             var defered = $q.defer();
-            $http.put(this.baseurl, {'content': content},
-                    {headers: {'Authorization': this.authenticationHeader}})
+            $http.put(this.baseurl, {
+                'content': content
+            }, {
+                headers: {
+                    'Authorization': this.authenticationHeader
+                }
+            })
                 .success(function (response) {
                     defered.resolve(response.data.content);
                 })
@@ -78,8 +87,13 @@ angular.module('glark.services')
         /* Create file on remote. */
         RemoteFile.prototype.create = function (content) {
             var defered = $q.defer();
-            $http.post(this.baseurl, {'content': content},
-                    {headers: {'Authorization': this.authenticationHeader}})
+            $http.post(this.baseurl, {
+                'content': content
+            }, {
+                headers: {
+                    'Authorization': this.authenticationHeader
+                }
+            })
                 .success(function (response) {
                     defered.resolve(response.data.content);
                 })
@@ -91,4 +105,5 @@ angular.module('glark.services')
         };
 
         return RemoteFile;
-    }]);
+    }
+]);

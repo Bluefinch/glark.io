@@ -18,8 +18,9 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-    /* Create a glark.services.File object from a html5 File or Blob object. */
-    .factory('LinkedFile', ['$rootScope', '$q', 'socket', function ($rootScope, $q, socket) {
+/* Create a glark.services.File object from a html5 File or Blob object. */
+.factory('LinkedFile', ['$rootScope', '$q', 'socket',
+    function ($rootScope, $q, socket) {
 
         /* Create a remote file from his name and
          * params, where params contains information
@@ -60,7 +61,7 @@ angular.module('glark.services')
             defered.resolve("response.data.content");
             return defered.promise;
         };
-        
+
         /* Make this serializable so that it can be send over the network. */
         LinkedFile.prototype.toJSON = function () {
             return {
@@ -73,4 +74,5 @@ angular.module('glark.services')
         };
 
         return LinkedFile;
-    }]);
+    }
+]);
