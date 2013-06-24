@@ -1,0 +1,23 @@
+<!--**********************
+*   Dialogs
+**************************-->
+
+<div class="modal-header">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" type="button" aria-hidden="true">×</button>
+        <h3 id="setUserNameModalLabel">Collaborative session settings</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal">
+                <label>Please choose a username which will be used for this collaboration session:</label>
+                <div class="controls">
+                    <input class="input-small" type="text" id="inputUsername" ng-model="me.name" placeholder="Username">
+                </div> 
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" type="submit" ng-click="notifyConnection()">Collaborate!</button>
+    </div>
+</div>
+
+

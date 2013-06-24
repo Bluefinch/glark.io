@@ -18,10 +18,12 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.controllers')
 
-.controller('WorkspacesController', ['$scope', '$modal', 'editor', 'workspaces', 'filesystem',
-    function ($scope, $modal, editor, workspaces, filesystem) {
+.controller('WorkspacesController', ['$scope', '$modal', 'editor', 'workspaces', 'filesystem', 'collaboration',
+    function ($scope, $modal, editor, workspaces, filesystem, collaboration) {
         $scope.workspaces = workspaces;
         $scope.editor = editor;
+
+        $scope.collaboration = collaboration;
 
         $scope.addLocalWorkspace = function () {
             var workspace = workspaces.createLocalWorkspace('Local');

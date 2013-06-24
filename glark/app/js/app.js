@@ -25,8 +25,8 @@ angular.module('glark', ['glark.controllers', 'glark.directives',
     'glark.filters', 'glark.services', '$strap.directives'
 ])
 
-.run(['$rootScope', 'LocalFile', 'workspaces', 'socket',
-    function ($rootScope, LocalFile, workspaces, socket) {
+.run(['$rootScope', 'LocalFile', 'workspaces', 'socket', 'collaboration',
+    function ($rootScope, LocalFile, workspaces, socket, collaboration) {
 
         /* Helper function to broadcast events. */
         var applyEvent = function (eventName, event) {
@@ -49,6 +49,7 @@ angular.module('glark', ['glark.controllers', 'glark.directives',
             }
         });
 
+        /* Share the workspaces. */
         socket.isAlone(function (isAlone) {
             $rootScope.$apply(function () {
                 if (isAlone) {
@@ -59,7 +60,10 @@ angular.module('glark', ['glark.controllers', 'glark.directives',
                     /* Open a file to display tutorial and info to the user. */
                     /* TODO This is hard-coded for now, maybe requesting this from the
                      * server would be better. */
-                    var blob = new Blob(["###glark.io###\nWelcome to _glark.io_ the drag'n'collaborate editor.\nJust drag some files here and start editing."], {
+                    var blob = new Blob(["###glark.io###\n" +
+                        "Welcome to _glark.io_ the drag'n'collaborate editor.\n" +
+                        "Just drag some files here and start editing."
+                    ], {
                         type: "text"
                     });
                     var welcomeFile = new LocalFile("welcome.md", blob);
@@ -72,6 +76,9 @@ angular.module('glark', ['glark.controllers', 'glark.directives',
                 }
             });
         });
+
+        /* Start the collaborative editing logic. */
+        collaboration.start();
 
     }
 ]);

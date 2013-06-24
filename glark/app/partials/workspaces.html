@@ -44,6 +44,19 @@
     </div>
 
     <!--**********************
+    *   Collaborators (FIXME should be moved in another partial)
+    **************************-->
+
+    <div id="collaborators">
+        <a> <i class="icon-user"></i> {{collaboration.me.name}} </a>
+        <ul ng-repeat="collaborator in collaboration.collaborators">
+            <li>
+                <a> {{collaborator.name}} </a>
+            </li>
+        </ul>
+    </div>
+
+    <!--**********************
     *   Workspaces
     **************************-->
 

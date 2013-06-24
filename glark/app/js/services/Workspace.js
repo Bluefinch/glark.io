@@ -51,11 +51,11 @@ angular.module('glark.services')
         Workspace.prototype.isLocal = function () {
             return this.type === 'local';
         };
-        
+
         Workspace.prototype.isRemote = function () {
             return this.type === 'remote';
         };
-        
+
         Workspace.prototype.isLinked = function () {
             return this.type === 'linked';
         };

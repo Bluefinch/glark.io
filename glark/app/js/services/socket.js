@@ -75,7 +75,7 @@ angular.module('glark.services')
         };
 
         /* Broadcast event to all the other sockets connected to our room, passing
-         * data and getting callbackcalled on completion. Both data and callback
+         * data and getting callback called on completion. Both data and callback
          * are optionnal. */
         socket.broadcast = function (eventName, data, callback) {
             /* Handle optionnal parameters. */
@@ -108,7 +108,7 @@ angular.module('glark.services')
             });
         };
 
-        /* Get the rom socket ids. */
+        /* Get the room socket ids. */
         socket.isAlone = function (callback) {
             socket.onReady(function () {
                 socket._socket.emit('proxy.getIds', null, function (ids) {

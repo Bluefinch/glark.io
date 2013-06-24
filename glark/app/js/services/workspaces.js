@@ -18,8 +18,10 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-.factory('workspaces', ['$rootScope', '$q', '$timeout', 'editor', 'socket', 'Workspace', 'LocalDirectory', 'RemoteDirectory', 'LinkedDirectory',
-    function ($rootScope, $q, $timeout, editor, socket, Workspace, LocalDirectory, RemoteDirectory, LinkedDirectory) {
+.factory('workspaces', ['$rootScope', '$q', '$timeout', 'editor', 'socket',
+    'Workspace', 'LocalDirectory', 'RemoteDirectory', 'LinkedDirectory',
+    function ($rootScope, $q, $timeout, editor, socket, Workspace,
+        LocalDirectory, RemoteDirectory, LinkedDirectory) {
 
         var workspaces = {};
 
@@ -113,7 +115,7 @@ angular.module('glark.services')
          * Socket API
          * -------------------------------- */
 
-        /* Returns a dictionnary containing the ids (as key) and
+        /* Return a dictionnary containing the ids (as key) and
          * names (as value) of sharable workspaces. */
         socket.on('getSharableWorkspacesInfo', function (callback) {
             var sharableWorkspacesInfo = [];
@@ -125,7 +127,7 @@ angular.module('glark.services')
             callback(sharableWorkspacesInfo);
         });
 
-        /* Returns a dictionnary containing the ids (as key) and
+        /* Return a dictionnary containing the ids (as key) and
          * names (as value) of sharable workspaces. */
         socket.on('getFileContent', function (file, callback) {
             var workspace = workspaces.getWorkspaceById(file.workspaceId);
