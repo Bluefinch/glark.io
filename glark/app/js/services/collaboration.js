@@ -18,14 +18,43 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-.factory('collaboration', ['$rootScope', 'editor', 'socket', '$modal',
-    function ($rootScope, editor, socket, $modal) {
+.factory('Collaborator', ['$rootScope',
+    function ($rootScope) {
+        return function () {
+            var $scope = $rootScope.$new();
+
+            $scope.name = null;
+            $scope.filename = null;
+
+            /* The selection is an object like:
+             * {start: {row: 12, column: 14}, end: {row: 14, column: 19}} */
+            $scope.selection = null;
+
+            $scope.toJSON = function () {
+                return {
+                    name: this.name,
+                    filename: this.filename,
+                    selection: this.selection
+                };
+            };
+
+            $scope.fromJSON = function (json) {
+                this.name = json.name;
+                this.filename = json.filename;
+                this.selection = json.selection;
+            };
+
+            return $scope;
+        };
+    }
+])
+
+.factory('collaboration', ['$rootScope', 'socket', '$modal', 'Collaborator', 'editor',
+    function ($rootScope, socket, $modal, Collaborator, editor) {
 
         var $scope = $rootScope.$new(true);
 
-        $scope.me = {
-            name: null
-        };
+        $scope.me = new Collaborator();
 
         $scope.collaborators = [];
 
@@ -38,24 +67,53 @@ angular.module('glark.services')
                 scope: $scope
             });
 
-            $scope.getCollaborators();
+            $scope.initializeCollaborators();
         };
 
-        $scope.addCollaborator = function (collaborator) {
+        /* --------------------------------
+         * Private API
+         * -------------------------------- */
+
+        $scope.me.$watch('selection', function (selection) {
+            $scope.sendCollaboratorUpdate();
+        });
+
+        $scope.addCollaborator = function (collaboratorJSON) {
             $rootScope.$apply(function () {
+                var collaborator = new Collaborator();
+                collaborator.fromJSON(collaboratorJSON);
                 $scope.collaborators.push(collaborator);
             });
         };
 
-        $scope.getCollaborators = function () {
-            socket.broadcast('getCollaborators', function (collaborator) {
-                $scope.addCollaborator(collaborator);
+        $scope.initializeCollaborators = function () {
+            socket.broadcast('getCollaborators', function (collaboratorJSON) {
+                $scope.addCollaborator(collaboratorJSON);
             });
         };
 
         $scope.notifyConnection = function () {
             socket.broadcast('notifyConnection', $scope.me);
         };
+
+        $scope.sendCollaboratorUpdate = function () {
+            socket.broadcast('sendCollaboratorUpdate', $scope.me);
+        };
+
+        $scope.onSelectionChange = function () {
+            if (!$rootScope.$$phase) {
+                $scope.$apply(function () {
+                    $scope.me.selection = JSON.stringify(editor.getSelection().getRange());
+                });
+            }
+        };
+
+        $rootScope.$on('Workspace.activeFileChange', function (event, file) {
+            $scope.me.filename = file.name;
+            editor.getSelection().on('changeCursor', $scope.onSelectionChange);
+            editor.getSelection().on('changeSelection', $scope.onSelectionChange);
+            $scope.sendCollaboratorUpdate();
+        });
 
         /* --------------------------------
          * Socket API
@@ -67,6 +125,15 @@ angular.module('glark.services')
 
         socket.on('notifyConnection', function (collaborator) {
             $scope.addCollaborator(collaborator);
+        });
+
+        socket.on('sendCollaboratorUpdate', function (updatedCollab) {
+            angular.forEach($scope.collaborators, function (collaborator) {
+                if (collaborator.name === updatedCollab.name) {
+                    collaborator.fromJSON(updatedCollab);
+                    return 1;
+                }
+            });
         });
 
         return $scope;

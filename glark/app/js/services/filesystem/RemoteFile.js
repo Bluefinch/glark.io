@@ -44,6 +44,9 @@ angular.module('glark.services')
 
             this.authenticationHeader = 'Basic ' +
                 base64.encode(params.username + ':' + params.password);
+
+            /* The file edit session. */
+            this.session = null;
         };
 
         /* Get the content of the remote file. */

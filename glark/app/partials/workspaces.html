@@ -38,7 +38,7 @@
     **************************-->
 
     <div id="toolbar">
-        <a tooltip="{'title': 'Add Connector', 'placement': 'bottom'}" ng-click="addRemoteWorkspace()">
+        <a bs-tooltip="'Add Connector'" data-placement="bottom"  ng-click="addRemoteWorkspace()">
             <i class="icon-cog"></i>
         </a>
     </div>
@@ -48,10 +48,15 @@
     **************************-->
 
     <div id="collaborators">
-        <a> <i class="icon-user"></i> {{collaboration.me.name}} </a>
+        <a bs-tooltip="collaboration.me.filename" data-placement="right">
+            <i class="icon-user"></i>
+            {{collaboration.me.name}}
+        </a>
         <ul ng-repeat="collaborator in collaboration.collaborators">
             <li>
-                <a> {{collaborator.name}} </a>
+                <a bs-tooltip="collaborator.filename" data-placement="right">
+                    {{collaborator.name}}
+                </a>
             </li>
         </ul>
     </div>

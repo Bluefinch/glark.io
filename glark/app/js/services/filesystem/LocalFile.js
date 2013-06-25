@@ -32,6 +32,9 @@ angular.module('glark.services')
             this.basename = '/';
             this.changed = false;
 
+            /* The file edit session. */
+            this.session = null;
+
             var defered = $q.defer();
             if (entry.file !== undefined) {
                 /* entry is a FileEntry object. */

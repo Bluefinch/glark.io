@@ -20,10 +20,6 @@ angular.module('glark.services')
 
 .factory('editor', ['$rootScope', 'EditSession', 'ace',
     function ($rootScope, EditSession, ace) {
-        // ace.setTheme("ace/theme/twilight");
-        // ace.setTheme("ace/theme/tomorrow_night_eighties");
-        // ace.setTheme("ace/theme/solarized_dark");
-        // ace.setTheme("ace/theme/glarkio_blue");
         ace.setTheme("ace/theme/glarkio_black");
 
         angular.element('.ace_gutter').css('background', 'rgb(22, 22, 22)');
@@ -72,6 +68,10 @@ angular.module('glark.services')
 
             getBackgroundColor: function () {
                 return angular.element('.ace_scroller').css('background-color');
+            },
+
+            getSelection: function () {
+                return ace.getSelection();
             }
         };
     }

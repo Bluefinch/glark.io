@@ -165,9 +165,12 @@ angular.module('glark.services')
 
         /* @param file is a services.filesystem.*File object. */
         Workspace.prototype.setActiveFile = function (file) {
-            this.openFile(file);
-            this.activeFile = file;
-            editor.setSession(file.session);
+            if (file !== this.activeFile) {
+                this.openFile(file);
+                this.activeFile = file;
+                editor.setSession(file.session);
+                $rootScope.$broadcast('Workspace.activeFileChange', file);
+            }
         };
 
         /* @param file is a services.filesystem.*File object. */

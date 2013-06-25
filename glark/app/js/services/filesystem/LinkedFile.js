@@ -33,6 +33,9 @@ angular.module('glark.services')
             this.workspaceId = workspaceId;
             this.basename = file.basename;
             this.changed = false;
+
+            /* The file edit session. */
+            this.session = null;
         };
 
         /* Get the content of the remote file. */
