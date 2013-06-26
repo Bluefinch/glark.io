@@ -128,7 +128,7 @@ a:focus {
     top: 0;
     bottom: 0;
     left: 0;
-    width: 150px;
+    width: 200px;
 }
 
 #center-panel {
@@ -137,7 +137,7 @@ a:focus {
     position: fixed;
     top: 0;
     bottom: 0;
-    left: 150px;
+    left: 200px;
     right: 0;
 }
 

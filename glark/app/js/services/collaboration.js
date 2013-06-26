@@ -18,43 +18,22 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-.factory('Collaborator', ['$rootScope',
-    function ($rootScope) {
-        return function () {
-            var $scope = $rootScope.$new();
-
-            $scope.name = null;
-            $scope.filename = null;
-
-            /* The selection is an object like:
-             * {start: {row: 12, column: 14}, end: {row: 14, column: 19}} */
-            $scope.selection = null;
-
-            $scope.toJSON = function () {
-                return {
-                    name: this.name,
-                    filename: this.filename,
-                    selection: this.selection
-                };
-            };
-
-            $scope.fromJSON = function (json) {
-                this.name = json.name;
-                this.filename = json.filename;
-                this.selection = json.selection;
-            };
-
-            return $scope;
-        };
-    }
-])
-
-.factory('collaboration', ['$rootScope', 'socket', '$modal', 'Collaborator', 'editor',
-    function ($rootScope, socket, $modal, Collaborator, editor) {
+.factory('collaboration', ['$rootScope', 'socket', '$modal', 'editor',
+    function ($rootScope, socket, $modal, editor) {
 
         var $scope = $rootScope.$new(true);
 
-        $scope.me = new Collaborator();
+        /* A collaborator object looks like:
+         * {
+         *   name: 'toto'
+         *   filename: 'my/current/file',
+         *   selection: {start: {row: 12, column: 14}, end: {row: 14, column: 19}}
+         * } */
+        $scope.me = {
+            name: null,
+            filename: null,
+            selection: null
+        };
 
         $scope.collaborators = [];
 
@@ -74,21 +53,15 @@ angular.module('glark.services')
          * Private API
          * -------------------------------- */
 
-        $scope.me.$watch('selection', function (selection) {
-            $scope.sendCollaboratorUpdate();
-        });
-
-        $scope.addCollaborator = function (collaboratorJSON) {
+        $scope.addCollaborator = function (collaborator) {
             $rootScope.$apply(function () {
-                var collaborator = new Collaborator();
-                collaborator.fromJSON(collaboratorJSON);
                 $scope.collaborators.push(collaborator);
             });
         };
 
         $scope.initializeCollaborators = function () {
-            socket.broadcast('getCollaborators', function (collaboratorJSON) {
-                $scope.addCollaborator(collaboratorJSON);
+            socket.broadcast('getCollaborators', function (collaborator) {
+                $scope.addCollaborator(collaborator);
             });
         };
 
@@ -97,20 +70,21 @@ angular.module('glark.services')
         };
 
         $scope.sendCollaboratorUpdate = function () {
-            socket.broadcast('sendCollaboratorUpdate', $scope.me);
+            socket.broadcast('collaboratorUpdate', $scope.me);
         };
 
         $scope.onSelectionChange = function () {
             if (!$rootScope.$$phase) {
                 $scope.$apply(function () {
                     $scope.me.selection = JSON.stringify(editor.getSelection().getRange());
+                    $scope.sendCollaboratorUpdate();
                 });
             }
         };
 
         $rootScope.$on('Workspace.activeFileChange', function (event, file) {
             $scope.me.filename = file.name;
-            editor.getSelection().on('changeCursor', $scope.onSelectionChange);
+            // editor.getSelection().on('changeCursor', $scope.onSelectionChange);
             editor.getSelection().on('changeSelection', $scope.onSelectionChange);
             $scope.sendCollaboratorUpdate();
         });
@@ -127,10 +101,11 @@ angular.module('glark.services')
             $scope.addCollaborator(collaborator);
         });
 
-        socket.on('sendCollaboratorUpdate', function (updatedCollab) {
+        socket.on('collaboratorUpdate', function (updatedCollab) {
             angular.forEach($scope.collaborators, function (collaborator) {
                 if (collaborator.name === updatedCollab.name) {
-                    collaborator.fromJSON(updatedCollab);
+                    collaborator = updatedCollab;
+                    $scope.$broadcast('collaboratorUpdate', collaborator);
                     return 1;
                 }
             });

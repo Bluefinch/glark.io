@@ -46,7 +46,12 @@
             </div>
         </div>
     </div>
-    
+
+    <!--**********************
+    *   Collaboration selections
+    **************************-->
+    <div ng-include="'public/partials/collaborationSelections.html'"></div>
+
     <!--**********************
     *   Hidden div to initialize e2e tests
     **************************-->
@@ -121,6 +126,7 @@
         <script src="public/js/services/filesystem/LinkedDirectory.js"></script>
         <script src="public/js/services/filesystem/LinkedFile.js"></script>
         <!-- Controllers -->
+        <script src="public/js/controllers/CollaborationController.js"></script>
         <script src="public/js/controllers/EditorController.js"></script>
         <script src="public/js/controllers/WorkspacesController.js"></script>
         <script src="public/js/controllers/TabController.js"></script>
