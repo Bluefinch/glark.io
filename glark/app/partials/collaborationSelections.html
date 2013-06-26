@@ -1,0 +1,8 @@
+<div id="collaboration-selections-wrapper" ng-controller="CollaborationController">
+    <div id="collaboration-selection-{{collaborator.name}}" class="collaboration-selection-wrapper" ng-repeat="collaborator in collaboration.collaborators">
+        <div class="collaboration-selection-cursor" ng-click="{show: !show}"></div>
+        <div class="collaboration-selection-tooltip" ng-show="show">
+            {{collaborator.name}}
+        </div>
+    </div>
+</div>

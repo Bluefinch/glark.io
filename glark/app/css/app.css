@@ -141,13 +141,29 @@ a:focus {
     right: 0;
 }
 
+/* -------------------- */
 /* Collaboration stuff. */
-.collaboration-selection {
+.collaboration-selection-wrapper {
     display: block;
     position: fixed;
     color: red;
 }
 
+.collaboration-selection-cursor {
+    width: 2px;
+    background-color: red;
+    height: 12pt;
+}
+
+.collaboration-selection-tooltip {
+    display: none;
+    position: relative;
+    top: -24pt;
+    padding: 0 3px;
+    background-color: red;
+}
+
+/* -------------------- */
 /* Clear Fix took from HTML 5 Boilerplate. */
 .clearfix:before, .clearfix:after { content: ""; display: table; }
 .clearfix:after { clear: both; }
