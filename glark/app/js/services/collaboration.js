@@ -76,7 +76,7 @@ angular.module('glark.services')
         $scope.onSelectionChange = function () {
             if (!$rootScope.$$phase) {
                 $scope.$apply(function () {
-                    $scope.me.selection = JSON.stringify(editor.getSelection().getRange());
+                    $scope.me.selection = editor.getSelection().getRange();
                     $scope.sendCollaboratorUpdate();
                 });
             }

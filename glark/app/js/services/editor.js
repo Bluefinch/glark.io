@@ -72,6 +72,10 @@ angular.module('glark.services')
 
             getSelection: function () {
                 return ace.getSelection();
+            },
+
+            getRenderer: function () {
+                return ace.renderer;
             }
         };
     }
