@@ -49,7 +49,7 @@ angular.module('glark', ['glark.controllers', 'glark.directives',
             }
         });
 
-        /* Share the workspaces. */
+        /* Initialize workspaces. */
         socket.isAlone(function (isAlone) {
             $rootScope.$apply(function () {
                 if (isAlone) {
@@ -78,7 +78,7 @@ angular.module('glark', ['glark.controllers', 'glark.directives',
         });
 
         /* Start the collaborative editing logic. */
-        collaboration.start();
+        //collaboration.start();
 
     }
 ]);

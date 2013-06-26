@@ -129,10 +129,10 @@ angular.module('glark.services')
 
         /* Return a dictionnary containing the ids (as key) and
          * names (as value) of sharable workspaces. */
-        socket.on('getFileContent', function (file, callback) {
-            var workspace = workspaces.getWorkspaceById(file.workspaceId);
+        socket.on('getFileContent', function (data, callback) {
+            var workspace = workspaces.getWorkspaceById(data.workspaceId);
             if (workspace !== null) {
-                var child = workspace.getEntry(file.basename, file.name);
+                var child = workspace.getEntry(data.file.basename, data.file.name);
                 if (child !== null && child.isFile) {
                     child.getContent().then(function (content) {
                         callback(content);
@@ -158,6 +158,24 @@ angular.module('glark.services')
         socket.on('addWorkspace', function (workspaceInfo) {
             $rootScope.$apply(function () {
                 workspaces.createLinkedWorkspace(workspaceInfo);
+            });
+        });
+
+        /* Broadcast the new entry if it is sharable. */
+        $rootScope.$on('directory.addEntry', function (event, data) {
+            socket.broadcast('addEntry', data);
+        });
+
+        /* Add an Entry. */
+        socket.on('addEntry', function (data) {
+            $rootScope.$apply(function () {
+                angular.forEach(workspaces.workspaces, function (workspace) {
+                    if (workspace.isLinked() && workspace.rootDirectory.linkedWorkspaceId === data.workspaceId) {
+                        var entry = data.entry;
+                        var directory = workspace.getEntry(entry.basename);
+                        directory.addLinkedEntry(data.workspaceId, entry);
+                    }
+                });
             });
         });
 

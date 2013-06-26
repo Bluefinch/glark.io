@@ -18,35 +18,45 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-.factory('LinkedDirectory', ['$rootScope', 'LinkedFile', '$q', 'socket',
-    function ($rootScope, LinkedFile, $q, socket) {
+.factory('LinkedDirectory', ['AbstractDirectory', '$rootScope', 'LinkedFile', '$q', 'socket',
+    function (AbstractDirectory, $rootScope, LinkedFile, $q, socket) {
 
-        /* Read the directoryEntry and create a list of
-         * services.filesystem.*Local objects. */
-        var createEntries = function (workspaceId, entries) {
-            var children = {};
-            angular.forEach(entries, function (entry) {
-                if (entry.isFile) {
-                    var file = new LinkedFile(workspaceId, entry);
-                    children[entry.name] = file;
-                } else if (entry.isDirectory) {
-                    var directory = new LinkedDirectory(workspaceId, entry);
-                    children[entry.name] = directory;
-                }
+        var LinkedDirectory = function (linkedWorkspaceId, directory) {
+            AbstractDirectory.call(this, directory.name);
+
+            this.basename = directory.basename;
+            this.linkedWorkspaceId = linkedWorkspaceId;
+
+            var _this = this;
+            angular.forEach(directory.children, function (child) {
+                _this.addLinkedEntry(linkedWorkspaceId, child);
             });
-            return children;
         };
 
-        var LinkedDirectory = function (workspaceId, directory) {
-            this.isDirectory = true;
-            this.isFile = false;
+        /* LinkedDirectory extends AbstractDirectory. */
+        LinkedDirectory.prototype = Object.create(AbstractDirectory.prototype);
+        LinkedDirectory.prototype.constructor = LinkedDirectory;
 
-            this.name = directory.name;
-            this.workspaceId = workspaceId;
-            this.basename = directory.basename;
+        /* --------------------------
+         *  Public Methods.
+         * -------------------------- */
 
-            this.collapsed = true;
-            this.children = createEntries(workspaceId, directory.children);
+        LinkedDirectory.prototype.addLinkedEntry = function (linkedWorkspaceId, entry) {
+            if (entry.isFile) {
+                var file = new LinkedFile(linkedWorkspaceId, entry);
+                this.children[entry.name] = file;
+            } else if (entry.isDirectory) {
+                var directory = new LinkedDirectory(linkedWorkspaceId, entry);
+                this.children[entry.name] = directory;
+            }
+        };
+
+        /* --------------------------
+         *  Override Methods.
+         * -------------------------- */
+
+        LinkedDirectory.prototype.onReady = function (callback) {
+            callback();
         };
 
         LinkedDirectory.prototype.updateChildren = function () {
@@ -56,14 +66,8 @@ angular.module('glark.services')
             return defered.promise;
         };
 
-        /* @param entry is a services.filesystem.Local*
-         * object. */
         LinkedDirectory.prototype.addEntry = function (entry) {
-            // TODO
-        };
-
-        LinkedDirectory.prototype.getChildCount = function () {
-            return Object.keys(this.children).length;
+            throw 'Abstract method "AbstractDirectory.addEntry" is not implemented.';
         };
 
         return LinkedDirectory;
