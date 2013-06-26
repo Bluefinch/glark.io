@@ -146,7 +146,6 @@ a:focus {
 .collaboration-selection-wrapper {
     display: block;
     position: fixed;
-    color: red;
 }
 
 .collaboration-selection-cursor {
@@ -156,7 +155,6 @@ a:focus {
 }
 
 .collaboration-selection-tooltip {
-    display: none;
     position: relative;
     top: -24pt;
     padding: 0 3px;

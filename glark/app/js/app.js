@@ -78,7 +78,7 @@ angular.module('glark', ['glark.controllers', 'glark.directives',
         });
 
         /* Start the collaborative editing logic. */
-        //collaboration.start();
+        collaboration.start();
 
     }
 ]);
