@@ -19,18 +19,13 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.services')
 
 /* Create a glark.services.File object from a html5 File or Blob object. */
-.factory('LocalFile', ['$rootScope', '$q',
-    function ($rootScope, $q) {
+.factory('LocalFile', ['AbstractFile', '$rootScope', '$q',
+    function (AbstractFile, $rootScope, $q) {
 
         /* Create a local file from a Blob or a
          * FileEntry object */
         var LocalFile = function (name, entry) {
-            this.isDirectory = false;
-            this.isFile = true;
-
-            this.name = name;
-            this.basename = '/';
-            this.changed = false;
+            AbstractFile.call(this, name);
 
             var defered = $q.defer();
             if (entry.file !== undefined) {
@@ -48,9 +43,17 @@ angular.module('glark.services')
             this.blob = defered.promise;
         };
 
-        /* Set the file basename.*/
-        LocalFile.prototype.setBasename = function (basename) {
-            this.basename = basename;
+        /* LocalFile extends AbstractFile. */
+        LocalFile.prototype = Object.create(AbstractFile.prototype);
+        LocalFile.prototype.constructor = LocalFile;
+
+        /* --------------------------
+         *  Override Methods.
+         * -------------------------- */
+
+        LocalFile.prototype.onReady = function (callback) {
+            /* A file is always ready. */
+            callback();
         };
 
         /* Get the content of the maintened blob. */
@@ -80,15 +83,7 @@ angular.module('glark.services')
             return defered.promise;
         };
 
-        /* Make this serializable so that it can be send over the network. */
-        LocalFile.prototype.toJSON = function () {
-            return {
-                basename: this.basename,
-                isDirectory: false,
-                isFile: true,
-                name: this.name
-            };
-        };
+
 
         return LocalFile;
     }

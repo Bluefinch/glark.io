@@ -18,12 +18,12 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-.factory('LocalDirectory', ['$rootScope', 'LocalFile', '$q',
-    function ($rootScope, LocalFile, $q) {
+.factory('LocalDirectory', ['AbstractDirectory', '$rootScope', 'LocalFile', '$q',
+    function (AbstractDirectory, $rootScope, LocalFile, $q) {
 
         /* Read the directoryEntry and create a list of
          * services.filesystem.*Local objects. */
-        var createEntries = function (basename, directoryEntry) {
+        var createEntries = function (directoryEntry) {
             var defered = $q.defer();
             var directoryReader = directoryEntry.createReader();
             directoryReader.readEntries(function (entries) {
@@ -32,30 +32,21 @@ angular.module('glark.services')
                     var entry = entries[i];
                     if (entry.isFile) {
                         children[entry.name] = new LocalFile(entry.name, entry);
-                        children[entry.name].setBasename(basename);
                     } else if (entry.isDirectory) {
                         children[entry.name] = new LocalDirectory(entry.name, entry);
-                        children[entry.name].setBasename(basename);
                     }
                 }
                 defered.resolve(children);
-                $rootScope.$apply();
+                $rootScope.$digest();
             }, function (err) {
                 defered.reject(err);
-                $rootScope.$apply();
+                $rootScope.$digest();
             });
             return defered.promise;
         };
 
         var LocalDirectory = function (name, directoryEntry) {
-            this.isDirectory = true;
-            this.isFile = false;
-
-            this.name = name;
-            this.basename = '/';
-
-            this.collapsed = true;
-            this.children = {};
+            AbstractDirectory.call(this, name);
 
             var readyDefered = $q.defer();
             this.readyPromise = readyDefered.promise;
@@ -66,8 +57,7 @@ angular.module('glark.services')
              * objects. */
             var _this = this;
             if (directoryEntry !== undefined) {
-                var basename = this.basename + this.name + '/';
-                var promise = createEntries(basename, directoryEntry);
+                var promise = createEntries(directoryEntry);
                 promise.then(function (children) {
                     _this.children = children;
 
@@ -85,42 +75,42 @@ angular.module('glark.services')
             } else {
                 readyDefered.resolve();
             }
+
+            this.setBasename('/');
         };
+
+        /* LocalDirectory extends AbstractDirectory. */
+        LocalDirectory.prototype = Object.create(AbstractDirectory.prototype);
+        LocalDirectory.prototype.constructor = LocalDirectory;
+
+        /* --------------------------
+         *  Override Methods.
+         * -------------------------- */
 
         LocalDirectory.prototype.onReady = function (callback) {
             this.readyPromise.then(callback);
         };
 
-        /* Set the directory basename.*/
-        LocalDirectory.prototype.setBasename = function (basename) {
-            var _this = this;
-            /* The folder should be ready before updateing
-             * the base name. */
-            this.onReady(function () {
-                _this.basename = basename;
-                basename = _this.basename + _this.name + '/';
-                angular.forEach(_this.children, function (child) {
-                    child.setBasename(basename);
-                });
-            });
-        };
-
-        /* Update the children list. */
         LocalDirectory.prototype.updateChildren = function () {
             /* If the LocalDirectory is ready, it is 
              * up to date. */
             return this.readyPromise;
         };
 
-        /* @param entry is a services.filestystem.Local*
-         * object. */
         LocalDirectory.prototype.addEntry = function (entry) {
-            entry.setBasename(this.basename + this.name + '/');
+            var basename = this.isRoot ? '/' : this.basename + this.name + '/';
+            entry.setBasename(basename);
+            entry.setWorkspaceId(this.workspaceId);
             this.children[entry.name] = entry;
-        };
 
-        LocalDirectory.prototype.getChildCount = function () {
-            return Object.keys(this.children).length;
+            /* Broadcast event. */
+            var _this = this;
+            entry.onReady(function () {
+                $rootScope.$broadcast('directory.addEntry', {
+                    workspaceId: _this.workspaceId,
+                    entry: entry
+                });
+            });
         };
 
         return LocalDirectory;

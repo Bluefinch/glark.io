@@ -19,26 +19,45 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.services')
 
 /* Create a glark.services.File object from a html5 File or Blob object. */
-.factory('LinkedFile', ['$rootScope', '$q', 'socket',
-    function ($rootScope, $q, socket) {
+.factory('LinkedFile', ['AbstractFile', '$rootScope', '$q', 'socket',
+    function (AbstractFile, $rootScope, $q, socket) {
 
         /* Create a remote file from his name and
          * params, where params contains information
          * to connect the Rest API. */
-        var LinkedFile = function (workspaceId, file) {
+        var LinkedFile = function (linkedWorkspaceId, file) {
             this.isDirectory = false;
             this.isFile = true;
 
             this.name = file.name;
-            this.workspaceId = workspaceId;
             this.basename = file.basename;
+
+            this.workspaceId = null;
+            this.linkedWorkspaceId = linkedWorkspaceId;
+
             this.changed = false;
         };
 
-        /* Get the content of the remote file. */
+        /* LocalFile extends AbstractFile. */
+        LinkedFile.prototype = Object.create(AbstractFile.prototype);
+        LinkedFile.prototype.constructor = LinkedFile;
+
+        /* --------------------------
+         *  Override Methods.
+         * -------------------------- */
+
+        LinkedFile.prototype.onReady = function (callback) {
+            /* A file is always ready. */
+            callback();
+        };
+
         LinkedFile.prototype.getContent = function () {
             var defered = $q.defer();
-            socket.broadcast('getFileContent', this, function (content) {
+            var data = {
+                file: this,
+                workspaceId: this.linkedWorkspaceId
+            };
+            socket.broadcast('getFileContent', data, function (content) {
                 if (content !== null) {
                     $rootScope.$apply(function () {
                         defered.resolve(content);
@@ -48,29 +67,10 @@ angular.module('glark.services')
             return defered.promise;
         };
 
-        /* Set the content of the remote file. */
         LinkedFile.prototype.setContent = function (content) {
             var defered = $q.defer();
             defered.resolve("response.data.content");
             return defered.promise;
-        };
-
-        /* Create file on remote. */
-        LinkedFile.prototype.create = function (content) {
-            var defered = $q.defer();
-            defered.resolve("response.data.content");
-            return defered.promise;
-        };
-
-        /* Make this serializable so that it can be send over the network. */
-        LinkedFile.prototype.toJSON = function () {
-            return {
-                isDirectory: false,
-                isFile: true,
-                name: this.name,
-                basename: this.basename,
-                workspaceId: this.workspaceId
-            };
         };
 
         return LinkedFile;

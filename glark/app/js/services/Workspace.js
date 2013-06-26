@@ -26,15 +26,17 @@ angular.module('glark.services')
         var Workspace = function (name, rootDirectory, type) {
             this.name = name;
 
-            /* Generate a random id */
+            /* Generate a random id. */
             this.id = Math.random().toString(36).substr(2);
 
             /* Private member active file. */
             this.activeFile = null;
 
-            /* A services.filesystem.*Directory object. */
+            /* An AbstractDirectory object. */
             this.rootDirectory = rootDirectory;
+            rootDirectory.setAsRoot();
             rootDirectory.collapsed = false;
+            rootDirectory.setWorkspaceId(this.id);
 
             /* Open files of the workspace. A collection of glark.services.File,
              * object, extended with a session attribute. */
@@ -74,18 +76,40 @@ angular.module('glark.services')
             };
         };
 
-        /* Gets an entry by its basename and name. */
+        /* Gets an entry by a basename and optionally a name. */
         Workspace.prototype.getEntry = function (basename, name) {
             var path = basename.split('/');
+            /* remove the first and last empty elements. */
+            path = path.slice(1, path.length - 1);
+
+            /* If the name is not defined, we search an item
+             * by its fullpath. We extract the name and remove
+             * it from the basename. */
+            if (name === undefined) {
+                if (path.length === 0) {
+                    return this.rootDirectory;
+                } else {
+                    name = path[path.length - 1];
+                    path = path.slice(0, path.length - 1);
+                }
+            }
+
             var directory = this.rootDirectory;
             angular.forEach(path, function (directoryName) {
-                var child = directory.children[directoryName];
-                if (child !== undefined) {
-                    directory = child;
-                } else {
-                    return null;
+                if (directory !== null) {
+                    var child = directory.children[directoryName];
+                    if (child !== undefined) {
+                        directory = child;
+                    } else {
+                        directory = null;
+                    }
                 }
             });
+
+            if (directory === null) {
+                return null;
+            }
+
             var entry = directory.children[name];
             if (entry !== undefined) {
                 return entry;
