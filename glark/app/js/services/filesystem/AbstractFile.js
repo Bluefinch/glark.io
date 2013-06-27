@@ -62,6 +62,7 @@ angular.module('glark.services')
          * -------------------------- */
 
         AbstractFile.prototype.onReady = function (callback) {
+            callback = callback; /* Keep jshint happy. */
             throw 'Abstract method "AbstractFile.onReady" is not implemented.';
         };
 
@@ -72,6 +73,7 @@ angular.module('glark.services')
 
         /* Set the content of the maintened blob. */
         AbstractFile.prototype.setContent = function (content) {
+            content = content; /* Keep jshint happy. */
             throw 'Abstract method "AbstractFile.setContent" is not implemented.';
         };
 

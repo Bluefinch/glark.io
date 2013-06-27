@@ -71,9 +71,11 @@ angular.module('glark.services')
         };
 
         LinkedFile.prototype.setContent = function (content) {
-            var defered = $q.defer();
-            defered.resolve("response.data.content");
-            return defered.promise;
+            content = content; /* Keep jshint happy. */
+            throw 'LinkedFile.prototype.setContent is not implemented.';
+            // var defered = $q.defer();
+            // defered.resolve("response.data.content");
+            // return defered.promise;
         };
 
         return LinkedFile;

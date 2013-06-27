@@ -18,8 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-.factory('LinkedDirectory', ['AbstractDirectory', '$rootScope', 'LinkedFile', '$q', 'socket',
-    function (AbstractDirectory, $rootScope, LinkedFile, $q, socket) {
+.factory('LinkedDirectory', ['AbstractDirectory', '$rootScope', 'LinkedFile', '$q',
+    function (AbstractDirectory, $rootScope, LinkedFile, $q) {
 
         var LinkedDirectory = function (linkedWorkspaceId, directory) {
             AbstractDirectory.call(this, directory.name);
@@ -67,6 +67,7 @@ angular.module('glark.services')
         };
 
         LinkedDirectory.prototype.addEntry = function (entry) {
+            entry = entry; /* Keep jshint happy. */
             throw 'Abstract method "AbstractDirectory.addEntry" is not implemented.';
         };
 

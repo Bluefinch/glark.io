@@ -99,6 +99,7 @@ angular.module('glark.services')
          * -------------------------- */
 
         AbstractDirectory.prototype.onReady = function (callback) {
+            callback = callback; /* Keep jshint happy. */
             throw 'Abstract method "AbstractDirectory.onReady" is not implemented.';
         };
 
@@ -109,6 +110,7 @@ angular.module('glark.services')
 
         /* Add an entry */
         AbstractDirectory.prototype.addEntry = function (entry) {
+            entry = entry; /* Keep jshint happy. */
             throw 'Abstract method "AbstractDirectory.addEntry" is not implemented.';
         };
 
