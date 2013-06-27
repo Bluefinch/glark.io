@@ -25,11 +25,13 @@ angular.module('glark.services')
 
         /* A collaborator object looks like:
          * {
+         *   id: 'iuhyfJokKOHJ'
          *   name: 'toto'
          *   filename: 'my/current/file',
          *   selection: {start: {row: 12, column: 14}, end: {row: 14, column: 19}}
          * } */
         $scope.me = {
+            id: socket.id,
             name: null,
             filename: null,
             selection: null

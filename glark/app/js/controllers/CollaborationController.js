@@ -26,7 +26,7 @@ angular.module('glark.controllers')
             if (collaborator.selection !== null) {
                 var screenCoordinates = editor.getRenderer()
                     .textToScreenCoordinates(collaborator.selection.start.row,
-                                            collaborator.selection.start.column);
+                        collaborator.selection.start.column);
                 console.log(screenCoordinates);
                 /* Update the selection css to the correct position. Should
                  * this go in a directive? */

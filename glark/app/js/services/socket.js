@@ -28,6 +28,9 @@ angular.module('glark.services')
         /* Our connected socket.io instance. */
         socket._socket = io.connect();
 
+        /* Our socket id, also know by the server side. */
+        socket.id = socket._socket.socket.sessionid;
+
         /* Create an isolated scope. */
         socket.eventHandler = $rootScope.$new(true);
 

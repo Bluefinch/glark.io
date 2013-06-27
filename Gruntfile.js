@@ -67,7 +67,7 @@ module.exports = function (grunt) {
                 dest: 'glark/dist/js/<%= pkg.name %>.js'
             },
             css: {
-                src: ['glark/app/css/**/*.css'],
+                src: ['glark/app/css/*.css'],
                 dest: 'glark/dist/css/<%= pkg.name %>.css'
             }
         },
@@ -133,7 +133,7 @@ module.exports = function (grunt) {
                 }, {
                     expand: true,
                     cwd: 'glark/app/',
-                    src: ['partial/**'],
+                    src: ['partials/**'],
                     dest: 'glark/dist/'
                 }]
             }

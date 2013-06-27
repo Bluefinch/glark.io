@@ -14,7 +14,7 @@
     height: 35px;
     left: 0;
     right: 0;
-        
+
     font-size: 12px;
     overflow: hidden;
 }
@@ -25,7 +25,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    
+
     box-shadow: 0 0 10px -1px rgba(0, 0, 0, 0.7);
     overflow: hidden;
     border-radius: 2px;
