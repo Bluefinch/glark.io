@@ -66,7 +66,7 @@ angular.module('glark', ['glark.controllers', 'glark.directives',
                     ], {
                         type: "text"
                     });
-                    var welcomeFile = new LocalFile("welcome.md", blob);
+                    var welcomeFile = new LocalFile(null, "welcome.md", blob);
 
                     /* Add it to the default workspace and give it the focus. */
                     workspace.addEntry(welcomeFile);

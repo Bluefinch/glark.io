@@ -31,17 +31,17 @@ angular.module('glark.services')
                     if (typeof item.webkitGetAsEntry === "function") {
                         var entry = item.webkitGetAsEntry();
                         if (entry.isFile) {
-                            var localFile = new LocalFile(entry.name, entry);
+                            var localFile = new LocalFile(null, entry.name, entry);
                             entries.push(localFile);
                         } else {
-                            var localDirectory = new LocalDirectory(entry.name, entry);
+                            var localDirectory = new LocalDirectory(null, entry.name, entry);
                             entries.push(localDirectory);
                         }
                     }
                 });
             } else {
                 angular.forEach(dataTransfer.files, function (entry) {
-                    var localFile = new LocalFile(entry.name, entry);
+                    var localFile = new LocalFile(null, entry.name, entry);
                     entries.push(localFile);
                 });
             }

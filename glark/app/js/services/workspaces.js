@@ -33,7 +33,7 @@ angular.module('glark.services')
         workspaces.addWorkspace = function (workspace) {
             if (this.workspaces.indexOf(workspace) === -1) {
                 this.workspaces.push(workspace);
-                workspace.rootDirectory.updateChildren().then(function () {
+                workspace.rootDirectory.onReady(function () {
                     /* Wait for children to be updated before broadcasting the
                      * addWorspace event. */
                     $rootScope.$broadcast('workspaces.addWorkspace', workspace);
@@ -45,7 +45,7 @@ angular.module('glark.services')
          * could be specified as rootDirectory. */
         workspaces.createLocalWorkspace = function (name, rootDirectory) {
             if (rootDirectory === undefined) {
-                rootDirectory = new LocalDirectory(name);
+                rootDirectory = new LocalDirectory(null, name);
             }
             var workspace = new Workspace(name, rootDirectory, 'local');
             this.addWorkspace(workspace);
@@ -53,14 +53,14 @@ angular.module('glark.services')
         };
 
         workspaces.createRemoteWorkspace = function (name, params) {
-            var rootDirectory = new RemoteDirectory('files', params);
+            var rootDirectory = new RemoteDirectory(null, 'files', params);
             var workspace = new Workspace(name, rootDirectory, 'remote');
             this.addWorkspace(workspace);
             return workspace;
         };
 
         workspaces.createLinkedWorkspace = function (workspaceInfo) {
-            var rootDirectory = new LinkedDirectory(workspaceInfo.id, workspaceInfo.rootDirectory);
+            var rootDirectory = new LinkedDirectory(null, workspaceInfo.id, workspaceInfo.rootDirectory);
             var workspace = new Workspace(workspaceInfo.name, rootDirectory, 'linked');
             this.addWorkspace(workspace);
             return workspace;

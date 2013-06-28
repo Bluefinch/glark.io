@@ -32,11 +32,10 @@ angular.module('glark.services')
             /* Private member active file. */
             this.activeFile = null;
 
-            /* An AbstractDirectory object. */
+            /* Set the root directory. */
             this.rootDirectory = rootDirectory;
-            rootDirectory.setAsRoot();
-            rootDirectory.collapsed = false;
-            rootDirectory.setWorkspaceId(this.id);
+            rootDirectory.setParentDirectory(null);
+            rootDirectory.workspaceId = this.id;
 
             /* Open files of the workspace. A collection of glark.services.File,
              * object, extended with a session attribute. */

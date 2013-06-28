@@ -23,30 +23,28 @@ angular.module('glark.services')
 
         /* Read the directoryEntry and create a list of
          * services.filesystem.*Local objects. */
-        var createEntries = function (directoryEntry) {
-            var defered = $q.defer();
+        var createEntries = function (localDirectory, directoryEntry, callback) {
             var directoryReader = directoryEntry.createReader();
             directoryReader.readEntries(function (entries) {
                 var children = {};
                 for (var i = 0; i < entries.length; ++i) {
                     var entry = entries[i];
                     if (entry.isFile) {
-                        children[entry.name] = new LocalFile(entry.name, entry);
+                        children[entry.name] = new LocalFile(localDirectory, entry.name, entry);
                     } else if (entry.isDirectory) {
-                        children[entry.name] = new LocalDirectory(entry.name, entry);
+                        children[entry.name] = new LocalDirectory(localDirectory, entry.name, entry);
                     }
                 }
-                defered.resolve(children);
-                $rootScope.$digest();
+                callback(children);
             }, function (err) {
-                defered.reject(err);
-                $rootScope.$digest();
+                console.log('Error in LocalDirectory createEntries method: ' + err);
+                /* Error, return an empty list. */
+                callback([]);
             });
-            return defered.promise;
         };
 
-        var LocalDirectory = function (name, directoryEntry) {
-            AbstractDirectory.call(this, name);
+        var LocalDirectory = function (parentDirectory, name, directoryEntry) {
+            AbstractDirectory.call(this, parentDirectory, name);
 
             var readyDefered = $q.defer();
             this.readyPromise = readyDefered.promise;
@@ -57,10 +55,8 @@ angular.module('glark.services')
              * objects. */
             var _this = this;
             if (directoryEntry !== undefined) {
-                var promise = createEntries(directoryEntry);
-                promise.then(function (children) {
+                createEntries(_this, directoryEntry, function (children) {
                     _this.children = children;
-
                     /* Wait for children to be ready. */
                     var promises = [];
                     angular.forEach(children, function (child) {
@@ -75,8 +71,6 @@ angular.module('glark.services')
             } else {
                 readyDefered.resolve();
             }
-
-            this.setBasename('/');
         };
 
         /* LocalDirectory extends AbstractDirectory. */
@@ -98,9 +92,7 @@ angular.module('glark.services')
         };
 
         LocalDirectory.prototype.addEntry = function (entry) {
-            var basename = this.isRoot ? '/' : this.basename + this.name + '/';
-            entry.setBasename(basename);
-            entry.setWorkspaceId(this.workspaceId);
+            entry.setParentDirectory(this);
             this.children[entry.name] = entry;
 
             /* Broadcast event. */

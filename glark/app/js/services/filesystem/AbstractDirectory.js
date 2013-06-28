@@ -21,13 +21,12 @@ angular.module('glark.services')
 .factory('AbstractDirectory', [
     function () {
 
-        var AbstractDirectory = function (name) {
+        var AbstractDirectory = function (parentDirectory, name) {
             this.isDirectory = true;
             this.isFile = false;
 
+            this.parentDirectory = parentDirectory;
             this.name = name;
-            this.basename = null;
-            this.isRoot = false;
 
             this.workspaceId = null;
 
@@ -36,62 +35,61 @@ angular.module('glark.services')
         };
 
         /* --------------------------
-         *  Private Methods.
-         * -------------------------- */
-
-        AbstractDirectory.prototype._updateChildBasename = function () {
-            var basename = this.isRoot ? '/' : this.basename + this.name + '/';
-
-            /* The folder should be ready before updateing
-             * the children base name. */
-            var _this = this;
-            this.onReady(function () {
-                angular.forEach(_this.children, function (child) {
-                    child.setBasename(basename);
-                });
-            });
-        };
-
-        /* --------------------------
          *  Public Methods.
          * -------------------------- */
 
-        /* Set the directory as root.*/
-        AbstractDirectory.prototype.setAsRoot = function () {
-            this.isRoot = true;
-            this.name = null;
-            this.basename = '/';
-            this._updateChildBasename();
+        /* Stets the folder parent directory.*/
+        AbstractDirectory.prototype.setParentDirectory = function (directory) {
+            this.parentDirectory = directory;
         };
 
-        /* Set the directory name.*/
-        AbstractDirectory.prototype.setName = function (name) {
-            this.name = name;
-            this._updateChildBasename();
+        /* Gets the folder full path.*/
+        AbstractDirectory.prototype.getFullPath = function () {
+            if (this.parentDirectory !== null) {
+                return this.parentDirectory.getFullPath() + '/' + this.name;
+            } else {
+                /* This is the root directory y (ie. parentDirecotry 
+                 * is null), the folder name is ignored. */
+                return '';
+            }
         };
 
-        /* Set the directory basename.*/
-        AbstractDirectory.prototype.setBasename = function (basename) {
-            this.basename = basename;
-            this._updateChildBasename();
+        /* Gets the folder basename.*/
+        AbstractDirectory.prototype.getBasename = function () {
+            if (this.parentDirectory !== null) {
+                return this.parentDirectory.getFullPath() + '/';
+            } else {
+                /* This is the root directory y (ie. parentDirecotry 
+                 * is null). */
+                return '/';
+            }
         };
 
-        /* Set the directory workspace.*/
-        AbstractDirectory.prototype.setWorkspaceId = function (workspaceId) {
-            this.workspaceId = workspaceId;
-
-            /* The folder should be ready before updateing
-             * the children workspace id. */
-            var _this = this;
-            this.onReady(function () {
-                angular.forEach(_this.children, function (child) {
-                    child.setWorkspaceId(workspaceId);
-                });
-            });
+        /* Gets the folder workspace id.*/
+        AbstractDirectory.prototype.getWorkspaceId = function () {
+            if (this.parentDirectory !== null) {
+                return this.parentDirectory.getWorkspaceId();
+            } else {
+                /* Only the root directory (ie. parentDirecotry is null) 
+                 * contains the valid workspace id. */
+                return this.workspaceId;
+            }
         };
 
         AbstractDirectory.prototype.getChildCount = function () {
             return Object.keys(this.children).length;
+        };
+
+        /* Make AbstractDirectory serializable. */
+        AbstractDirectory.prototype.toJSON = function () {
+            return {
+                isDirectory: true,
+                isFile: false,
+                name: this.name,
+                children: this.children,
+                basename: this.getBasename(),
+                workspaceId: this.getWorkspaceId()
+            };
         };
 
         /* --------------------------

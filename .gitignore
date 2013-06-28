@@ -5,3 +5,4 @@ node_modules
 .project
 nbproject
 .glarkconnector.conf
+dist

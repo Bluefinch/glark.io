@@ -21,10 +21,9 @@ angular.module('glark.services')
 .factory('LinkedDirectory', ['AbstractDirectory', '$rootScope', 'LinkedFile', '$q',
     function (AbstractDirectory, $rootScope, LinkedFile, $q) {
 
-        var LinkedDirectory = function (linkedWorkspaceId, directory) {
-            AbstractDirectory.call(this, directory.name);
+        var LinkedDirectory = function (parentDirectory, linkedWorkspaceId, directory) {
+            AbstractDirectory.call(this, parentDirectory, directory.name);
 
-            this.basename = directory.basename;
             this.linkedWorkspaceId = linkedWorkspaceId;
 
             var _this = this;
@@ -43,10 +42,10 @@ angular.module('glark.services')
 
         LinkedDirectory.prototype.addLinkedEntry = function (linkedWorkspaceId, entry) {
             if (entry.isFile) {
-                var file = new LinkedFile(linkedWorkspaceId, entry);
+                var file = new LinkedFile(this, linkedWorkspaceId, entry);
                 this.children[entry.name] = file;
             } else if (entry.isDirectory) {
-                var directory = new LinkedDirectory(linkedWorkspaceId, entry);
+                var directory = new LinkedDirectory(this, linkedWorkspaceId, entry);
                 this.children[entry.name] = directory;
             }
         };

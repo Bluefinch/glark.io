@@ -28,7 +28,7 @@
                <div ng-include="'directory_node_template'"></div>
             </div>
             <div ng-switch-when="false">
-                <a title="{{entry.name}}" ng-click="workspace.setActiveFile(entry)">{{entry.name}}</a>
+                <a title="{{entry.getFullPath()}}" ng-click="workspace.setActiveFile(entry)">{{entry.name}}</a>
             </div>
         </div>
     </script>

@@ -25,20 +25,12 @@ angular.module('glark.services')
         /* Create a remote file from his name and
          * params, where params contains information
          * to connect the Rest API. */
-        var LinkedFile = function (linkedWorkspaceId, file) {
-            this.isDirectory = false;
-            this.isFile = true;
+        var LinkedFile = function (parentDirectory, linkedWorkspaceId, file) {
+            AbstractFile.call(this, parentDirectory, file.name);
 
-            this.name = file.name;
-            this.basename = file.basename;
-
-            this.workspaceId = null;
             this.linkedWorkspaceId = linkedWorkspaceId;
 
             this.changed = false;
-
-            /* The file edit session. */
-            this.session = null;
         };
 
         /* LocalFile extends AbstractFile. */
@@ -72,10 +64,7 @@ angular.module('glark.services')
 
         LinkedFile.prototype.setContent = function (content) {
             content = content; /* Keep jshint happy. */
-            throw 'LinkedFile.prototype.setContent is not implemented.';
-            // var defered = $q.defer();
-            // defered.resolve("response.data.content");
-            // return defered.promise;
+            throw 'LinkedFile.setContent is not implemented.';
         };
 
         return LinkedFile;

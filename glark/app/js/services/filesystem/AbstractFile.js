@@ -21,29 +21,54 @@ angular.module('glark.services')
 .factory('AbstractFile', [
     function () {
 
-        var AbstractFile = function (name) {
+        var AbstractFile = function (parentDirectory, name) {
             this.isDirectory = false;
             this.isFile = true;
 
+            this.parentDirectory = parentDirectory;
             this.name = name;
-            this.basename = null;
             this.changed = false;
 
             this.workspaceId = null;
+
+            /* The file edit session. */
+            this.session = null;
         };
 
         /* --------------------------
          *  Public Methods.
          * -------------------------- */
 
-        /* Set the file basename.*/
-        AbstractFile.prototype.setBasename = function (basename) {
-            this.basename = basename;
+        /* Stets the file parent directory.*/
+        AbstractFile.prototype.setParentDirectory = function (directory) {
+            this.parentDirectory = directory;
         };
 
-        /* Set the file workspace id.*/
-        AbstractFile.prototype.setWorkspaceId = function (workspaceId) {
-            this.workspaceId = workspaceId;
+        /* Gets the file full path.*/
+        AbstractFile.prototype.getFullPath = function () {
+            if (this.parentDirectory !== null) {
+                return this.parentDirectory.getFullPath() + '/' + this.name;
+            } else {
+                return '';
+            }
+        };
+
+        /* Gets the file basename.*/
+        AbstractFile.prototype.getBasename = function () {
+            if (this.parentDirectory !== null) {
+                return this.parentDirectory.getFullPath() + '/';
+            } else {
+                return '';
+            }
+        };
+
+        /* Gets the file workspace id.*/
+        AbstractFile.prototype.getWorkspaceId = function () {
+            if (this.parentDirectory !== null) {
+                return this.parentDirectory.getWorkspaceId();
+            } else {
+                return null;
+            }
         };
 
         /* Make AbstractFile serializable. */
@@ -52,8 +77,8 @@ angular.module('glark.services')
                 isDirectory: false,
                 isFile: true,
                 name: this.name,
-                basename: this.basename,
-                workspaceId: this.workspaceId
+                basename: this.getBasename(),
+                workspaceId: this.getWorkspaceId()
             };
         };
 
@@ -66,12 +91,12 @@ angular.module('glark.services')
             throw 'Abstract method "AbstractFile.onReady" is not implemented.';
         };
 
-        /* Get the content of the maintened blob. */
+        /* Get the content of the file. */
         AbstractFile.prototype.getContent = function () {
             throw 'Abstract method "AbstractFile.getContent" is not implemented.';
         };
 
-        /* Set the content of the maintened blob. */
+        /* Set the content of the file. */
         AbstractFile.prototype.setContent = function (content) {
             content = content; /* Keep jshint happy. */
             throw 'Abstract method "AbstractFile.setContent" is not implemented.';

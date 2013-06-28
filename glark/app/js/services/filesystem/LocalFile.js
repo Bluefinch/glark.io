@@ -24,11 +24,8 @@ angular.module('glark.services')
 
         /* Create a local file from a Blob or a
          * FileEntry object */
-        var LocalFile = function (name, entry) {
-            AbstractFile.call(this, name);
-
-            /* The file edit session. */
-            this.session = null;
+        var LocalFile = function (parentDirectory, name, entry) {
+            AbstractFile.call(this, parentDirectory, name);
 
             var defered = $q.defer();
             if (entry.file !== undefined) {
