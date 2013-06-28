@@ -19,40 +19,41 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 angular.module('glark.services')
 
 /* Create a glark.services.File object from a html5 File or Blob object. */
-.factory('RemoteFile', ['base64', '$q', '$http',
-    function (base64, $q, $http) {
+.factory('RemoteFile', ['AbstractFile', 'base64', '$q', '$http',
+    function (AbstractFile, base64, $q, $http) {
 
         /* Create a remote file from his name and
          * params, where params contains information
          * to connect the Rest API. */
-        var RemoteFile = function (name, params, basename) {
-            this.isDirectory = false;
-            this.isFile = true;
-
-            this.name = name;
-            this.basename = '/';
-            this.changed = false;
-
-            if (basename !== undefined) {
-                this.basename = basename;
-            }
+        var RemoteFile = function (parentDirectory, name, params) {
+            AbstractFile.call(this, parentDirectory, name);
 
             this.params = params;
 
-            this.baseurl = 'http://' + params.hostname + ':' + params.port + '/connector';
-            this.baseurl += this.basename + this.name;
-
             this.authenticationHeader = 'Basic ' +
                 base64.encode(params.username + ':' + params.password);
-
-            /* The file edit session. */
-            this.session = null;
         };
+
+        /* RemoteFile extends AbstractFile. */
+        RemoteFile.prototype = Object.create(AbstractFile.prototype);
+        RemoteFile.prototype.constructor = RemoteFile;
+
+        /* --------------------------
+         *  Public Methods.
+         * -------------------------- */
+
+        RemoteFile.prototype.getFullUrl = function () {
+            return 'http://' + this.params.hostname + ':' + this.params.port + '/connector/files' + this.getFullPath();
+        };
+
+        /* --------------------------
+         *  Override Methods.
+         * -------------------------- */
 
         /* Get the content of the remote file. */
         RemoteFile.prototype.getContent = function () {
             var defered = $q.defer();
-            $http.get(this.baseurl, {
+            $http.get(this.getFullUrl(), {
                 headers: {
                     'Authorization': this.authenticationHeader
                 }
@@ -70,7 +71,7 @@ angular.module('glark.services')
         /* Set the content of the remote file. */
         RemoteFile.prototype.setContent = function (content) {
             var defered = $q.defer();
-            $http.put(this.baseurl, {
+            $http.put(this.getFullUrl(), {
                 'content': content
             }, {
                 headers: {
@@ -90,7 +91,7 @@ angular.module('glark.services')
         /* Create file on remote. */
         RemoteFile.prototype.create = function (content) {
             var defered = $q.defer();
-            $http.post(this.baseurl, {
+            $http.post(this.getFullUrl(), {
                 'content': content
             }, {
                 headers: {
