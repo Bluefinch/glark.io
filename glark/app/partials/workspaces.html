@@ -48,13 +48,16 @@
     **************************-->
 
     <div id="collaborators">
-        <a bs-tooltip="collaboration.me.filename" data-placement="right">
-            <i class="icon-user"></i>
-            {{collaboration.me.name}}
-        </a>
-        <ul ng-repeat="collaborator in collaboration.collaborators">
+        <ul>
             <li>
+                <a bs-tooltip="collaboration.me.filename" data-placement="right">
+                    <i class="icon-user"></i>
+                    {{collaboration.me.name}} (me)
+                </a>
+            </li>
+            <li ng-repeat="collaborator in collaboration.collaborators">
                 <a bs-tooltip="collaborator.filename" data-placement="right">
+                    <i class="icon-user"></i>
                     {{collaborator.name}}
                 </a>
             </li>
