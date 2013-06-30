@@ -28,8 +28,9 @@ angular.module('glark.services')
         /* Our connected socket.io instance. */
         socket._socket = io.connect();
 
-        /* Our socket id, also know by the server side. */
-        socket.id = socket._socket.socket.sessionid;
+        /* Our socket id, also know by the server side. Filled on 'register'
+         * call. */
+        socket.id = null;
 
         /* Create an isolated scope. */
         socket.eventHandler = $rootScope.$new(true);
@@ -39,9 +40,11 @@ angular.module('glark.services')
         /* Register with our session hash. */
         var splitted = $location.absUrl().split('/');
         socket.sessionHash = splitted[splitted.length - 1];
-        socket._socket.emit('register', socket.sessionHash, function (count) {
+        socket._socket.emit('register', socket.sessionHash, function (connectedUserCount) {
             console.log('Socket service registered for session ' + socket.sessionHash);
-            console.log('Session count: ' + count);
+            console.log('Session connected user count: ' + connectedUserCount);
+
+            socket.id = socket._socket.socket.sessionid;
 
             socket.isReady = true;
             /* Broadcast private event socket._ready. */
@@ -56,6 +59,10 @@ angular.module('glark.services')
             } else {
                 socket.eventHandler.$broadcast('socket.' + data.eventName, JSON.parse(data.data), callback);
             }
+        });
+
+        socket._socket.on('notifyDisconnection', function (id) {
+            socket.eventHandler.$broadcast('socket.notifyDisconnection', id);
         });
 
         /* -----------------------------

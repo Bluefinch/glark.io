@@ -72,11 +72,16 @@ describe('glark.io', function () {
             /* Hacky sleep to account for page loading and websocket
              * registering time. */
             sleep(1);
+
+            /* Close the collaborative session settings modal. */
+            input('me.name').enter('Flolagale');
+            element('.modal-footer button').click();
+            sleep(1);
         });
 
         it('should open when clicking the cog icon', function () {
             element('#toolbar a').click();
-            expect(element('.modal').count()).toBe(1);
+            expect(element('#addConnectorModalLabel').count()).toBe(1);
             expect(element('#addConnectorModalLabel').text()).toBe('Connector settings');
         });
 

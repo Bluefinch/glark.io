@@ -31,7 +31,8 @@ angular.module('glark.services')
          *   selection: {start: {row: 12, column: 14}, end: {row: 14, column: 19}}
          * } */
         $scope.me = {
-            id: socket.id,
+            id: null,
+            /* The socket id, set asynchronously. */
             name: null,
             filename: null,
             selection: null
@@ -55,9 +56,24 @@ angular.module('glark.services')
          * Private API
          * -------------------------------- */
 
+        /* Set the socket id when its available, asynchronously. */
+        socket.onReady(function () {
+            $scope.me.id = socket.id;
+        });
+
         $scope.addCollaborator = function (collaborator) {
             $rootScope.$apply(function () {
                 $scope.collaborators.push(collaborator);
+            });
+        };
+
+        $scope.removeCollaboratorById = function (id) {
+            angular.forEach($scope.collaborators, function (collaborator) {
+                if (collaborator.id === id) {
+                    $rootScope.$apply(function () {
+                        $scope.collaborators.splice($scope.collaborators.indexOf(collaborator), 1);
+                    });
+                }
             });
         };
 
@@ -67,8 +83,11 @@ angular.module('glark.services')
             });
         };
 
+        /* Notify the other users that we connected when the socket is ready. */
         $scope.notifyConnection = function () {
-            socket.broadcast('notifyConnection', $scope.me);
+            socket.onReady(function () {
+                socket.broadcast('notifyConnection', $scope.me);
+            });
         };
 
         $scope.sendCollaboratorUpdate = function () {
@@ -101,6 +120,10 @@ angular.module('glark.services')
 
         socket.on('notifyConnection', function (collaborator) {
             $scope.addCollaborator(collaborator);
+        });
+
+        socket.on('notifyDisconnection', function (id) {
+            $scope.removeCollaboratorById(id);
         });
 
         socket.on('collaboratorUpdate', function (updatedCollab) {

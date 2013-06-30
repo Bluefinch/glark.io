@@ -34,9 +34,6 @@ app.set('title', 'glark.io');
 /* Listen to the port given in the env var if it exists or the one given in config. */
 app.set('port', process.env.PORT || config.server.listenPort);
 
-/* From now on, log everything. */
-app.use(express.logger('dev'));
-
 /* Serve static files. */
 app.use(express.compress());
 
@@ -54,6 +51,9 @@ app.use(express.favicon(path.join(app.get('staticFolder'), 'favicon.ico')));
 
 /* Mount the static folder at the /public url. */
 app.use('/public', express.static(app.get('staticFolder')));
+
+/* From now on, log everything. */
+app.use(express.logger('dev'));
 
 app.use(express.bodyParser());
 app.use(express.methodOverride());
@@ -74,6 +74,11 @@ app.configure('production', function () {
 // -----------------------------------
 //  Route the requests.
 // -----------------------------------
+
+app.get('/monitor', function (req, res) {
+    /* Route used to monitor the app state. */
+    res.send(cabble);
+});
 
 app.get('/:hash', function (req, res, next) {
     console.log('Request with hash: ' + req.params.hash);
@@ -108,10 +113,8 @@ app.all('*', function (req, res) {
 // -----------------------------------
 
 var server = http.createServer(app);
-// var io = socketio.listen(server);
-var io = socketio.listen(server, {
-    log: false
-});
+var io = socketio.listen(server);
+io.set('log level', 0);
 io.set('transports', ['xhr-polling']);
 
 server.listen(app.get('port'), function () {
@@ -161,12 +164,20 @@ io.sockets.on('connection', function (socket) {
                 callback(clientData);
             });
         } else {
-            // TODO : Fail.
+            console.log('Error: Trying to proxy to a non-existing socket ' + socket.id);
+            console.dir(cabbleSession);
         }
     });
 
     socket.on('disconnect', function () {
-        console.log('Websocket disconnect.');
-        //cabbleSession.unregister(socket);
+        console.log('Websocket ' + socket.id + ' disconnect.');
+        var socketIds = cabbleSession.getSocketIds();
+        socketIds.forEach(function (id) {
+            if (id !== socket.id) {
+                cabbleSession.sockets[id].emit('notifyDisconnection', socket.id);
+            }
+        });
+
+        cabble.unregisterFromSession(cabbleSession, socket);
     });
 });

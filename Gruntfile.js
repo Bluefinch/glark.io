@@ -51,7 +51,8 @@ module.exports = function (grunt) {
                     describe: false,
                     expect: false,
                     beforeEach: false,
-                    sleep: false
+                    sleep: false,
+                    input: false
                 }
             },
             files: ['<%= jsfiles %>']

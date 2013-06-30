@@ -27,6 +27,7 @@
         describe: false,
         expect: false,
         beforeEach: false,
-        sleep: false
+        sleep: false,
+        input: false
     }
 }
