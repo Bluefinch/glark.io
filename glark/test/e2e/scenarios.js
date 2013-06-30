@@ -55,10 +55,11 @@ describe('glark.io', function () {
         });
 
         it('should contain a file with name "welcome.md"', function () {
-            expect(element('.filetree a').attr('title')).toBe('welcome.md');
+            expect(element('.filetree a').attr('title')).toBe('/welcome.md');
+            expect(element('.filetree a').text()).toBe('welcome.md');
         });
 
-        it('should contain 6 entries', function () {
+        it('should contain 2 entries', function () {
             element('#e2e-tests-initializer a').click();
             expect(element('.filetree a').count()).toBe(2);
         });
