@@ -25,9 +25,12 @@ angular.module('glark', ['glark.controllers', 'glark.directives',
     'glark.filters', 'glark.services', '$strap.directives'
 ])
 
+.config(['$locationProvider', function ($locationProvider) {
+    $locationProvider.html5Mode(true);
+}])
+
 .run(['$rootScope', 'LocalFile', 'workspaces', 'socket', 'collaboration',
     function ($rootScope, LocalFile, workspaces, socket, collaboration) {
-
         /* Helper function to broadcast events. */
         var applyEvent = function (eventName, event) {
             event.preventDefault();
