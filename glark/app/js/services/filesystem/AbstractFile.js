@@ -78,6 +78,7 @@ angular.module('glark.services')
                 isFile: true,
                 name: this.name,
                 basename: this.getBasename(),
+                fullpath: this.getFullPath(),
                 workspaceId: this.getWorkspaceId()
             };
         };

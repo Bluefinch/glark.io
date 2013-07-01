@@ -75,22 +75,27 @@ angular.module('glark.services')
             };
         };
 
-        /* Gets an entry by a basename and optionally a name. */
-        Workspace.prototype.getEntry = function (basename, name) {
-            var path = basename.split('/');
-            /* remove the first and last empty elements. */
-            path = path.slice(1, path.length - 1);
+        /* Gets an entry by a its fullname. */
+        Workspace.prototype.getEntry = function (fullname) {
+            
+            /* Remove fist and last slash. */
+            if(fullname.charAt(0) === '/') {
+                fullname = fullname.substring(1);
+            }
+            if(fullname.charAt(fullname.length - 1) === '/') {
+                fullname = fullname.substring(0, fullname.length - 1);
+            }
+            
+            var name = 0;
+            var path = fullname.split('/');
 
-            /* If the name is not defined, we search an item
-             * by its fullpath. We extract the name and remove
-             * it from the basename. */
-            if (name === undefined) {
-                if (path.length === 0) {
-                    return this.rootDirectory;
-                } else {
-                    name = path[path.length - 1];
-                    path = path.slice(0, path.length - 1);
-                }
+            /* We extract the name and remove
+             * it from the path. */
+            if (path.length === 1 && path[0] === '') {
+                return this.rootDirectory;
+            } else {
+                name = path[path.length - 1];
+                path = path.slice(0, path.length - 1);
             }
 
             var directory = this.rootDirectory;

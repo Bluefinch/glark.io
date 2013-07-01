@@ -132,7 +132,7 @@ angular.module('glark.services')
         socket.on('getFileContent', function (data, callback) {
             var workspace = workspaces.getWorkspaceById(data.workspaceId);
             if (workspace !== null) {
-                var child = workspace.getEntry(data.file.basename, data.file.name);
+                var child = workspace.getEntry(data.file.fullpath);
                 if (child !== null && child.isFile) {
                     child.getContent().then(function (content) {
                         callback(content);

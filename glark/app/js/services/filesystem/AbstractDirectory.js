@@ -88,6 +88,7 @@ angular.module('glark.services')
                 name: this.name,
                 children: this.children,
                 basename: this.getBasename(),
+                fullpath: this.getFullPath(),
                 workspaceId: this.getWorkspaceId()
             };
         };
