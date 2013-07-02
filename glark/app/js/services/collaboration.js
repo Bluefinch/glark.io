@@ -129,8 +129,14 @@ angular.module('glark.services')
         socket.on('collaboratorUpdate', function (updatedCollab) {
             angular.forEach($scope.collaborators, function (collaborator) {
                 if (collaborator.name === updatedCollab.name) {
-                    collaborator = updatedCollab;
-                    $scope.$broadcast('collaboratorUpdate', collaborator);
+                    /* TODO Use id to find collab and also update name here. */
+                    $scope.$apply(function () {
+                        collaborator.selection = updatedCollab.selection;
+                        collaborator.filename = updatedCollab.filename;
+
+                        $scope.$broadcast('collaboratorUpdate', collaborator);
+                    });
+
                     return 1;
                 }
             });
