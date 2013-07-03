@@ -7,7 +7,6 @@ files = [
 ];
 
 autoWatch = false;
-// autoWatch = true;
 
 browsers = ['chromium-browser'];
 // browsers = ['PhantomJS'];
