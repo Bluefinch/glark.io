@@ -88,7 +88,7 @@
     </script>
 
     <!-- Include ace _after_ angular so that we intercept drag n drop events first. -->
-    <script src='public/lib/ace/src-min-noconflict/ace.js' type='text/javascript'></script>
+    <script src="public/lib/ace/src-min-noconflict/ace.js" type="text/javascript"></script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js"></script>
     <script type="text/javascript">
@@ -104,7 +104,10 @@
         }
     </script>
 
+    <!-- TODO Add fallback to cdn. -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/0.7.2/angular-strap.min.js"></script>
+
+    <script src="public/lib/diff_match_patch.js"></script>
 
     <!--(if target dev)><!-->
         <script src="public/js/app.js"></script>

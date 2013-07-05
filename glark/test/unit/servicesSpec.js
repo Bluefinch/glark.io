@@ -1,3 +1,4 @@
+/* jshint camelcase: false */
 'use strict';
 
 /* jasmine specs for services go here */
@@ -26,12 +27,12 @@ describe('The services:', function () {
         var localDirectory, file1, file1bis, file2, file3;
 
         beforeEach(angular.mock.inject(function (LocalDirectory, LocalFile) {
-            localDirectory = new LocalDirectory('root');
+            localDirectory = new LocalDirectory(null, 'root');
 
-            file1 = new LocalFile("tata", {});
-            file1bis = new LocalFile("tata", {});
-            file2 = new LocalFile("titi", {});
-            file3 = new LocalFile("toto", {});
+            file1 = new LocalFile(localDirectory, "tata", {});
+            file1bis = new LocalFile(localDirectory, "tata", {});
+            file2 = new LocalFile(localDirectory, "titi", {});
+            file3 = new LocalFile(localDirectory, "toto", {});
         }));
 
         it('is a directory and not a file', function () {
@@ -39,9 +40,9 @@ describe('The services:', function () {
             expect(localDirectory.isFile).toBeFalsy();
         });
 
-        it('has a name and basename', function () {
+        it('has a name a basename and a full path', function () {
             expect(localDirectory.name).toBe('root');
-            expect(localDirectory.basename).toBe('/');
+            expect(localDirectory.getBasename()).toBe('/');
         });
 
         it('has a children collection', function () {
@@ -71,7 +72,6 @@ describe('The services:', function () {
             expect(localDirectory.children[file1.name]).not.toBe(file1);
             expect(localDirectory.children[file1.name]).toBe(file1bis);
         });
-
     });
 
     describe('The base64 encoder/decoder', function () {
@@ -87,6 +87,21 @@ describe('The services:', function () {
                 var toDecode = 'dXNlcm5hbWU6cGFzc3dvcmQ=';
                 var decoded = base64.decode(toDecode);
                 expect(decoded).toBe('username:password');
+            }));
+    });
+
+    describe('The DiffMatchPatch service', function () {
+        it('should see the diff_match_patch variable', function () {
+            expect(typeof diff_match_patch).not.toBe('undefined');
+        });
+
+        it('should allow get a patch image of the differences between two strings',
+            angular.mock.inject(function (DiffMatchPatch) {
+                var dmp = new DiffMatchPatch();
+                var patch = dmp.diffAndMakePatch('This is the original string', 'Thiss is the new string');
+                expect(patch).toBe({
+                    'yopi': 'koko'
+                });
             }));
     });
 });
