@@ -15,32 +15,17 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 /* jshint camelcase: false */
+/* global self, importScripts */
 'use strict';
 
-angular.module('glark.services')
+importScripts('../../lib/diff_match_patch.js');
 
-.factory('DiffMatchPatch', function () {
-    var DiffMatchPatch = function () {
-        this._worker = new Worker('public/js/services/diffMatchPatchWorker.js');
+self.onmessage = function (e) {
+    var original = e.data.original;
+    var modified = e.data.modified;
 
-        this._worker.onerror = function () {
-            console.log('Error: unable to diff.');
-        };
+    var dmp = new diff_match_patch();
+    var patch = dmp.patch_toText(dmp.patch_make(original, modified));
 
-    };
-
-    /* Gives a patch text from the diff between the two given strings to
-     * the callback. */
-    DiffMatchPatch.prototype.diffAndMakePatch = function (original, modified, callback) {
-        this._worker.onmessage = function (e) {
-            callback(e.data);
-        };
-
-        this._worker.postMessage({
-            original: original,
-            modified: modified
-        });
-    };
-
-    return DiffMatchPatch;
-});
+    self.postMessage(patch);
+};

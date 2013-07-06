@@ -1,8 +1,6 @@
 /* jshint camelcase: false */
 'use strict';
 
-/* jasmine specs for services go here */
-
 describe('The services:', function () {
 
     beforeEach(function () {
@@ -91,17 +89,9 @@ describe('The services:', function () {
     });
 
     describe('The DiffMatchPatch service', function () {
-        it('should see the diff_match_patch variable', function () {
-            expect(typeof diff_match_patch).not.toBe('undefined');
-        });
-
-        it('should allow get a patch image of the differences between two strings',
+        it('should have a method to get a patch from a diff of two strings',
             angular.mock.inject(function (DiffMatchPatch) {
-                var dmp = new DiffMatchPatch();
-                var patch = dmp.diffAndMakePatch('This is the original string', 'Thiss is the new string');
-                expect(patch).toBe({
-                    'yopi': 'koko'
-                });
+                expect(typeof DiffMatchPatch.prototype.diffAndMakePatch).toBe('function');
             }));
     });
 });

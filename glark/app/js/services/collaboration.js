@@ -18,8 +18,8 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-.factory('collaboration', ['$rootScope', 'socket', '$modal', 'editor',
-    function ($rootScope, socket, $modal, editor) {
+.factory('collaboration', ['$rootScope', '$modal', 'DiffMatchPatch', 'socket', 'editor',
+    function ($rootScope, $modal, DiffMatchPatch, socket, editor) {
 
         var $scope = $rootScope.$new(true);
 
@@ -95,6 +95,12 @@ angular.module('glark.services')
         };
 
         $scope.onSelectionChange = function () {
+            // var dmp = new DiffMatchPatch();
+            // dmp.diffAndMakePatch('toto', 'titi', function (patch) {
+            // console.log(patch);
+            // });
+
+
             if (!$rootScope.$$phase) {
                 $scope.$apply(function () {
                     $scope.me.selection = editor.getSelection().getRange();

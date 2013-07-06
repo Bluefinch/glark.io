@@ -5,11 +5,12 @@ files = [
   JASMINE_ADAPTER,
   'app/lib/angular/angular.js',
   'app/lib/angular/angular-*.js',
-  'app/lib/diff_match_patch.js',
   'test/lib/angular/angular-mocks.js',
   'app/js/**/*.js',
   'test/unit/**/*.js'
 ];
+
+exclude = ['app/js/services/diffMatchPatchWorker.js'];
 
 autoWatch = true;
 
