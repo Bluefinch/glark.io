@@ -65,7 +65,7 @@ module.exports = function (grunt) {
                 separator: ';'
             },
             js: {
-                src: ['glark/app/js/**/*.js'],
+                src: ['glark/app/js/**/*.js', '!glark/app/js/**/*Worker.js'],
                 dest: 'glark/dist/js/<%= pkg.name %>.js'
             },
             css: {

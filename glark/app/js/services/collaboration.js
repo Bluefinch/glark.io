@@ -18,21 +18,20 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-.factory('collaboration', ['$rootScope', '$modal', 'DiffMatchPatch', 'socket', 'editor',
-    function ($rootScope, $modal, DiffMatchPatch, socket, editor) {
+.factory('collaboration', ['$rootScope', '$modal', 'DiffMatchPatch', 'socket', 'editor', 'workspaces',
+    function ($rootScope, $modal, DiffMatchPatch, socket, editor, workspaces) {
 
         var $scope = $rootScope.$new(true);
 
         /* A collaborator object looks like:
          * {
-         *   id: 'iuhyfJokKOHJ'
+         *   id: 'iuhyfJokKOHJ' // The socket id, set asynchronously.
          *   name: 'toto'
-         *   filename: 'my/current/file',
+         *   filename: 'my/current/file', // The currently edited file.
          *   selection: {start: {row: 12, column: 14}, end: {row: 14, column: 19}}
          * } */
         $scope.me = {
             id: null,
-            /* The socket id, set asynchronously. */
             name: null,
             filename: null,
             selection: null
@@ -43,6 +42,10 @@ angular.module('glark.services')
         /* Store the text shadow for every edited files.
          * {'filename': shadowString, ... } */
         $scope.shadows = {};
+
+        /* Store the server text for every edited files.
+         * {'filename': serverTextString, ... } */
+        $scope.serverTexts = {};
 
         $scope.start = function () {
             /* Open a modal using the $modal service. */
@@ -114,9 +117,24 @@ angular.module('glark.services')
         };
 
         $rootScope.$on('Workspace.activeFileChange', function (event, file) {
+            /* Update the currently edited file */
             $scope.me.filename = file.name;
+
+            /* Update the shadow, and the server text as well if the file is
+             * ours. */
+            file.getContent().then(function (content) {
+                /* FIXME Manipulate files by some id or at least full path. */
+                $scope.shadows[file.name] = content;
+
+                if (workspaces.getWorkspaceById(file.getWorkspaceId()).isSharable()) {
+                    $scope.serverTexts[file.name] = content;
+                }
+            });
+
+            /* Add listeners. */
             // editor.getSelection().on('changeCursor', $scope.onSelectionChange);
             editor.getSelection().on('changeSelection', $scope.onSelectionChange);
+
             $scope.sendCollaboratorUpdate();
         });
 

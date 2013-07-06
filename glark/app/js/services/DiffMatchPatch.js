@@ -19,28 +19,30 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 
 angular.module('glark.services')
 
-.factory('DiffMatchPatch', function () {
-    var DiffMatchPatch = function () {
-        this._worker = new Worker('public/js/services/diffMatchPatchWorker.js');
+.factory('DiffMatchPatch', [
+    function () {
+        var DiffMatchPatch = function () {
+            this._worker = new Worker('public/js/services/diffMatchPatchWorker.js');
 
-        this._worker.onerror = function () {
-            console.log('Error: unable to diff.');
+            this._worker.onerror = function () {
+                console.log('Error: unable to diff.');
+            };
+
         };
 
-    };
+        /* Gives a patch text from the diff between the two given strings to
+         * the callback. */
+        DiffMatchPatch.prototype.diffAndMakePatch = function (original, modified, callback) {
+            this._worker.onmessage = function (e) {
+                callback(e.data);
+            };
 
-    /* Gives a patch text from the diff between the two given strings to
-     * the callback. */
-    DiffMatchPatch.prototype.diffAndMakePatch = function (original, modified, callback) {
-        this._worker.onmessage = function (e) {
-            callback(e.data);
+            this._worker.postMessage({
+                original: original,
+                modified: modified
+            });
         };
 
-        this._worker.postMessage({
-            original: original,
-            modified: modified
-        });
-    };
-
-    return DiffMatchPatch;
-});
+        return DiffMatchPatch;
+    }
+]);

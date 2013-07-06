@@ -37,7 +37,7 @@ angular.module('glark.services')
          *  Public Methods.
          * -------------------------- */
 
-        /* Sets the file parent directory.*/
+        /* Set the file parent directory.*/
         AbstractFile.prototype.setParentDirectory = function (directory) {
             this.parentDirectory = directory;
         };
@@ -46,7 +46,7 @@ angular.module('glark.services')
             return this.parentDirectory;
         };
 
-        /* Gets the file full path.*/
+        /* Get the file full path.*/
         AbstractFile.prototype.getFullPath = function () {
             if (this.parentDirectory !== null) {
                 return this.parentDirectory.getFullPath() + '/' + this.name;
@@ -55,7 +55,7 @@ angular.module('glark.services')
             }
         };
 
-        /* Gets the file basename.*/
+        /* Get the file basename.*/
         AbstractFile.prototype.getBasename = function () {
             if (this.parentDirectory !== null) {
                 return this.parentDirectory.getFullPath() + '/';
@@ -64,7 +64,7 @@ angular.module('glark.services')
             }
         };
 
-        /* Gets the file workspace id.*/
+        /* Get the file workspace id.*/
         AbstractFile.prototype.getWorkspaceId = function () {
             if (this.parentDirectory !== null) {
                 return this.parentDirectory.getWorkspaceId();
@@ -94,12 +94,12 @@ angular.module('glark.services')
             throw 'Abstract method "AbstractFile.onReady" is not implemented.';
         };
 
-        /* Get the content of the file. */
+        /* Get the content of the file, must return a promise. */
         AbstractFile.prototype.getContent = function () {
             throw 'Abstract method "AbstractFile.getContent" is not implemented.';
         };
 
-        /* Set the content of the file. */
+        /* Set the content of the file, must return a promise. */
         AbstractFile.prototype.setContent = function (content) {
             content = content; /* Keep jshint happy. */
             throw 'Abstract method "AbstractFile.setContent" is not implemented.';

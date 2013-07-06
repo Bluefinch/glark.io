@@ -101,6 +101,8 @@ angular.module('glark.services')
             });
         };
 
+        /* Get the workspace corresponding to the given id, throw an exception
+         * if not found. */
         workspaces.getWorkspaceById = function (workspaceId) {
             var resultWorkspace = null;
             angular.forEach(workspaces.workspaces, function (workspace) {
@@ -108,6 +110,11 @@ angular.module('glark.services')
                     resultWorkspace = workspace;
                 }
             });
+
+            if (resultWorkspace === null) {
+                throw 'Unable to find workspace with id ' + workspaceId;
+            }
+
             return resultWorkspace;
         };
 
