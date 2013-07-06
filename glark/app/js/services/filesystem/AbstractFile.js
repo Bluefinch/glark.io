@@ -29,8 +29,6 @@ angular.module('glark.services')
             this.name = name;
             this.changed = false;
 
-            this.workspaceId = null;
-
             /* The file edit session. */
             this.session = null;
         };
@@ -39,9 +37,13 @@ angular.module('glark.services')
          *  Public Methods.
          * -------------------------- */
 
-        /* Stets the file parent directory.*/
+        /* Sets the file parent directory.*/
         AbstractFile.prototype.setParentDirectory = function (directory) {
             this.parentDirectory = directory;
+        };
+
+        AbstractFile.prototype.getParentDirectory = function () {
+            return this.parentDirectory;
         };
 
         /* Gets the file full path.*/

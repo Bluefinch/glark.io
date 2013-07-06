@@ -21,11 +21,52 @@ describe('The services:', function () {
 
     });
 
-    describe('The LocalDirectory', function () {
-        var localDirectory, file1, file1bis, file2, file3;
+    describe('The LocalFile', function () {
+        var directory, file;
 
         beforeEach(angular.mock.inject(function (LocalDirectory, LocalFile) {
-            localDirectory = new LocalDirectory(null, 'root');
+            directory = new LocalDirectory(null, 'root');
+            directory.setWorkspaceId('theWorkspaceId');
+
+            file = new LocalFile(directory, 'localFileExample.file', {});
+        }));
+
+        it('is a file and not a directory', function () {
+            expect(file.isFile).toBeTruthy();
+            expect(file.isDirectory).toBeFalsy();
+        });
+
+        it('has a parent directory', function () {
+            expect(file.getParentDirectory()).toBe(directory);
+        });
+
+        it('has a parent directory which is a root directory', function () {
+            expect(file.getParentDirectory().isRootDirectory()).toBeTruthy();
+        });
+
+        it('has a parent directory which has a workspaceId', function () {
+            expect(file.getParentDirectory().getWorkspaceId()).toBe('theWorkspaceId');
+        });
+
+        it('has a name a basename and a full path', function () {
+            expect(file.name).toBe('localFileExample.file');
+            expect(file.getBasename()).toBe('/');
+            expect(file.getFullPath()).toBe('/localFileExample.file');
+        });
+
+        it('has a workspaceId', function () {
+            expect(file.getWorkspaceId()).toBe('theWorkspaceId');
+        });
+    });
+
+    describe('The LocalDirectory', function () {
+        var localDirectory, rootDirectory, file1, file1bis, file2, file3;
+
+        beforeEach(angular.mock.inject(function (LocalDirectory, LocalFile) {
+            rootDirectory = new LocalDirectory(null, 'rootDirectoryExample');
+            rootDirectory.setWorkspaceId('theWorkspaceId');
+
+            localDirectory = new LocalDirectory(rootDirectory, 'localDirectoryExample');
 
             file1 = new LocalFile(localDirectory, "tata", {});
             file1bis = new LocalFile(localDirectory, "tata", {});
@@ -38,9 +79,26 @@ describe('The services:', function () {
             expect(localDirectory.isFile).toBeFalsy();
         });
 
+        it('has a parent directory', function () {
+            expect(localDirectory.getParentDirectory()).toBe(rootDirectory);
+        });
+
+        it('has a parent directory which is a root directory', function () {
+            expect(localDirectory.getParentDirectory().isRootDirectory()).toBeTruthy();
+        });
+
+        it('has a parent directory which has a workspaceId', function () {
+            expect(localDirectory.getParentDirectory().getWorkspaceId()).toBe('theWorkspaceId');
+        });
+
         it('has a name a basename and a full path', function () {
-            expect(localDirectory.name).toBe('root');
+            expect(localDirectory.name).toBe('localDirectoryExample');
             expect(localDirectory.getBasename()).toBe('/');
+            expect(localDirectory.getFullPath()).toBe('/localDirectoryExample');
+        });
+
+        it('has a workspaceId', function () {
+            expect(localDirectory.getWorkspaceId()).toBe('theWorkspaceId');
         });
 
         it('has a children collection', function () {

@@ -35,7 +35,7 @@ angular.module('glark.services')
             /* Set the root directory. */
             this.rootDirectory = rootDirectory;
             rootDirectory.setParentDirectory(null);
-            rootDirectory.workspaceId = this.id;
+            rootDirectory.setWorkspaceId(this.id);
 
             /* Open files of the workspace. A collection of glark.services.File,
              * object, extended with a session attribute. */

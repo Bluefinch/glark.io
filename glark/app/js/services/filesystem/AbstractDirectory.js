@@ -28,7 +28,7 @@ angular.module('glark.services')
             this.parentDirectory = parentDirectory;
             this.name = name;
 
-            this.workspaceId = null;
+            this._workspaceId = null;
 
             this.collapsed = true;
             this.children = {};
@@ -38,41 +38,61 @@ angular.module('glark.services')
          *  Public Methods.
          * -------------------------- */
 
-        /* Stets the folder parent directory.*/
+        /* Sets the folder parent directory.*/
         AbstractDirectory.prototype.setParentDirectory = function (directory) {
             this.parentDirectory = directory;
+            return this.parentDirectory;
+        };
+
+        AbstractDirectory.prototype.getParentDirectory = function () {
+            return this.parentDirectory;
+        };
+
+        AbstractDirectory.prototype.isRootDirectory = function () {
+            return this.parentDirectory === null;
         };
 
         /* Gets the folder full path.*/
         AbstractDirectory.prototype.getFullPath = function () {
-            if (this.parentDirectory !== null) {
-                return this.parentDirectory.getFullPath() + '/' + this.name;
-            } else {
-                /* This is the root directory y (ie. parentDirecotry 
+            if (this.isRootDirectory()) {
+                /* This is the root directory (ie. parentDirecotry 
                  * is null), the folder name is ignored. */
                 return '';
+            } else {
+                return this.parentDirectory.getFullPath() + '/' + this.name;
             }
         };
 
         /* Gets the folder basename.*/
         AbstractDirectory.prototype.getBasename = function () {
-            if (this.parentDirectory !== null) {
-                return this.parentDirectory.getFullPath() + '/';
-            } else {
+            if (this.isRootDirectory()) {
                 /* This is the root directory y (ie. parentDirecotry 
                  * is null). */
                 return '/';
+            } else {
+                return this.parentDirectory.getFullPath() + '/';
             }
         };
 
         /* Gets the folder workspace id.*/
         AbstractDirectory.prototype.getWorkspaceId = function () {
-            if (this.parentDirectory !== null) {
-                return this.parentDirectory.getWorkspaceId();
-            } else {
-                /* Only the root directory (ie. parentDirecotry is null) 
+            if (this.isRootDirectory()) {
+                /* Only the root directory (ie. parentDirectory is null) 
                  * contains the valid workspace id. */
-                return this.workspaceId;
+                return this._workspaceId;
+            } else {
+                return this.parentDirectory.getWorkspaceId();
+            }
+        };
+
+        /* Set the workspace is. If the directory is not a root directory,
+         * throw an exception. */
+        AbstractDirectory.prototype.setWorkspaceId = function (id) {
+            if (this.isRootDirectory()) {
+                this._workspaceId = id;
+                return this._workspaceId;
+            } else {
+                throw 'Unable to set the workspace id for a non root directory.';
             }
         };
 
@@ -89,7 +109,7 @@ angular.module('glark.services')
                 children: this.children,
                 basename: this.getBasename(),
                 fullpath: this.getFullPath(),
-                workspaceId: this.getWorkspaceId()
+                _workspaceId: this.getWorkspaceId()
             };
         };
 

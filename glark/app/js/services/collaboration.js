@@ -40,6 +40,10 @@ angular.module('glark.services')
 
         $scope.collaborators = [];
 
+        /* Store the text shadow for every edited files.
+         * {'filename': shadowString, ... } */
+        $scope.shadows = {};
+
         $scope.start = function () {
             /* Open a modal using the $modal service. */
             $modal({

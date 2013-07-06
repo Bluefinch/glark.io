@@ -56,7 +56,7 @@ angular.module('glark.services')
             callback();
         };
 
-        /* Get the content of the maintened blob. */
+        /* Get the content of the maintained blob. */
         LocalFile.prototype.getContent = function () {
             var defered = $q.defer();
             this.blob.then(function (blob) {
@@ -70,7 +70,7 @@ angular.module('glark.services')
             return defered.promise;
         };
 
-        /* Set the content of the maintened blob. */
+        /* Set the content of the maintained blob. */
         LocalFile.prototype.setContent = function (content) {
             var defered = $q.defer();
             var blob = new Blob([content], {
@@ -82,8 +82,6 @@ angular.module('glark.services')
             /* Set content should return a promise. */
             return defered.promise;
         };
-
-
 
         return LocalFile;
     }

@@ -99,7 +99,7 @@ angular.module('glark.services')
             var _this = this;
             entry.onReady(function () {
                 $rootScope.$broadcast('directory.addEntry', {
-                    workspaceId: _this.workspaceId,
+                    workspaceId: _this.getWorkspaceId(),
                     entry: entry
                 });
             });
