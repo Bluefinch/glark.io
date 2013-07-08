@@ -50,7 +50,7 @@ angular.module('glark.services')
         $scope.start = function () {
             /* Open a modal using the $modal service. */
             $modal({
-                template: 'public/partials/setUserNameModal.html',
+                template: 'public/partials/setUsernameModal.html',
                 show: true,
                 backdrop: 'static',
                 scope: $scope

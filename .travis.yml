@@ -12,7 +12,7 @@ before_script:
   - node server.js &
   - sleep 3 # give server some time to start
   - cd ../glark/test/e2e/glarkconnector/tests/fixtures
-  - ../../glarkconnector.py 3001
+  - ../../glarkconnector.py 3001 &
   - sleep 3 # give glarkconnector some time to start
   - cd ../../../../../glark
 
