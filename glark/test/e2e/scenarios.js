@@ -76,7 +76,7 @@ describe('glark.io', function () {
 
             /* Close the collaborative session settings modal. */
             input('me.name').enter('Flolagale');
-            element('.modal-footer button').click();
+            element('#submitUsernameButton').click();
             sleep(1);
         });
 
@@ -86,6 +86,20 @@ describe('glark.io', function () {
             expect(element('#addConnectorModalLabel').text()).toBe('Connector settings');
         });
 
+        it('should connect to a running glarkconnector', function () {
+            element('#toolbar a').click();
+
+            input('params.hostname').enter('localhost');
+            input('params.port').enter(3001);
+            input('params.username').enter('lucho');
+            input('params.password').enter('verYseCure');
+            element('#submitConnectorParametersButton').click();
+
+            sleep(1);
+
+            expect(element('.workspace').count()).toBe(2);
+            expect(element('.filetree a').count()).toBe(5);
+        });
     });
 
 });
