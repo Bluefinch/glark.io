@@ -27,6 +27,7 @@ angular.module('glark.services')
          * {
          *   id: 'iuhyfJokKOHJ' // The socket id, set asynchronously.
          *   name: 'toto'
+         *   workspaceId: 'fhrpf5458' // The current active workspace id.
          *   filename: 'my/current/file', // The currently edited file.
          *   selection: {start: {row: 12, column: 14}, end: {row: 14, column: 19}}
          * } */
@@ -120,13 +121,13 @@ angular.module('glark.services')
             /* Update the currently edited file */
             $scope.me.filename = file.name;
 
-            /* Update the shadow, and the server text as well if the file is
-             * ours. */
+            /* Update the shadow, and create the server text if the file is ours. */
             file.getContent().then(function (content) {
                 /* FIXME Manipulate files by some id or at least full path. */
                 $scope.shadows[file.name] = content;
 
-                if (workspaces.getWorkspaceById(file.getWorkspaceId()).isSharable()) {
+                if (!(file.name in $scope.serverTexts) &&
+                    workspaces.getWorkspaceById(file.getWorkspaceId()).isSharable()) {
                     $scope.serverTexts[file.name] = content;
                 }
             });

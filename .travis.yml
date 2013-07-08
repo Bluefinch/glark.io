@@ -8,13 +8,15 @@ before_script:
   - npm install --quiet -g karma
   - npm install --quiet -g grunt-cli
   - npm install --quiet
-  - cd cabble
+  - cd cabble/
   - node server.js &
   - sleep 3 # give server some time to start
-  - cd ../glark/test/e2e/glarkconnector/tests/fixtures
+  - cd -
+  - cd glark/test/e2e/glarkconnector/tests/fixtures/
   - ../../glarkconnector.py 3001 &
   - sleep 3 # give glarkconnector some time to start
-  - cd ../../../../../glark
+  - cd -
+  - cd glark/
 
 script:
   - grunt jshint
