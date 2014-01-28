@@ -29,7 +29,10 @@ angular.module('glark.controllers')
                         collaborator.selection.start.column);
                 console.log(screenCoordinates);
                 /* Update the selection css to the correct position. Should
-                 * this go in a directive? */
+                 * this go in a directive? DOM shouldn't be modified from
+                  * inside a controller but this is a very special case.
+                  * Maybe the position styling should be inlined inside the
+                  * collaboration selection div. */
                 angular.element('#collaboration-selection-' + collaborator.name)
                     .css({
                         left: screenCoordinates.pageX,
