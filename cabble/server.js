@@ -22,6 +22,9 @@ along with glark.io.  If not, see <http://www.gnu.org/licenses/>. */
 var cabble = require('./cabble.js');
 var config = require('./config.js');
 var express = require('express');
+var morgan = require('morgan');
+var favicon = require('serve-favicon');
+var bodyParser = require('body-parser')
 var http = require('http');
 var path = require('path');
 var socketio = require('socket.io');
@@ -35,40 +38,35 @@ app.set('title', 'glark.io');
 app.set('port', process.env.PORT || config.server.listenPort);
 
 /* Serve static files. */
-app.use(express.compress());
+// app.use(express.compress());
 
-app.configure('development', function () {
-    app.set('staticFolder', config.server.devFolder);
-});
-
-app.configure('production', function () {
-    app.set('staticFolder', config.server.distFolder);
-});
+app.set('staticFolder', config.server.devFolder);
+//app.set('staticFolder', config.server.distFolder);
 
 console.log('Using static folder: ' + app.get('staticFolder'));
 
-app.use(express.favicon(path.join(app.get('staticFolder'), 'favicon.ico')));
+//app.use(favicon(path.join(app.get('staticFolder'), 'favicon.ico')));
 
 /* Mount the static folder at the /public url. */
 app.use('/public', express.static(app.get('staticFolder')));
 
 /* From now on, log everything. */
-app.use(express.logger('dev'));
+app.use(morgan('dev'));
 
-app.use(express.bodyParser());
-app.use(express.methodOverride());
+app.use(bodyParser());
+//app.use(express.methodOverride());
 
 /* Error handler. */
-app.configure('development', function () {
+/*app.configure('development', function () {
     app.use(express.errorHandler({
         dumpExceptions: true,
         showStack: true
     }));
-});
+})*/;
 
-app.configure('production', function () {
+/*app.configure('production', function () {
     app.use(express.errorHandler());
-});
+});*/
 
 
 // -----------------------------------

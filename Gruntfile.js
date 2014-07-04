@@ -156,6 +156,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['jsbeautifier', 'jshint', 'concat', 'uglify', 'cssmin', 'targethtml', 'copy']);
+    grunt.registerTask('lint', ['jsbeautifier', 'jshint']);
+    grunt.registerTask('default', ['lint', 'concat', 'uglify', 'cssmin', 'targethtml', 'copy']);
 
 };
